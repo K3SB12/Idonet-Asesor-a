@@ -2,293 +2,577 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Idonet+ | Ecosistema Docente PNFT 2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Idonet+ | Plataforma de Formación y Asesoría</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons (alternative to emojis for a more professional look) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --azure: #007FFF;
-            --forest: #228B22;
-            --slate: #1e293b;
-            --light-slate: #64748b;
-            --bg: #f8fafc;
-            --white: #ffffff;
-            --danger: #ef4444;
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafc;
         }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 8px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: var(--bg); color: var(--slate); display: flex; min-height: 100vh; }
-
-        /* --- NAVEGACIÓN LATERAL --- */
-        nav { 
-            width: 260px; background: var(--slate); color: white; padding: 2rem 1.5rem; 
-            display: flex; flex-direction: column; position: fixed; height: 100vh;
+        /* Animations */
+        .fade-in { animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Glassmorphism cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
-        .logo { font-weight: 800; font-size: 1.6rem; margin-bottom: 2.5rem; letter-spacing: -1px; }
-        .logo span { color: var(--forest); }
-        .nav-link { 
-            padding: 12px 16px; border-radius: 12px; cursor: pointer; transition: 0.3s; 
-            margin-bottom: 0.5rem; color: #94a3b8; display: flex; align-items: center; gap: 10px;
+        /* Custom gradient */
+        .gradient-azure {
+            background: linear-gradient(145deg, #0077BE 0%, #005a94 100%);
         }
-        .nav-link:hover, .nav-link.active { background: var(--azure); color: white; }
-
-        /* --- ÁREA PRINCIPAL --- */
-        main { margin-left: 260px; flex: 1; padding: 2.5rem; max-width: 1200px; }
-        .view { display: none; animation: slideIn 0.4s ease-out; }
-        .view.active { display: block; }
-
-        @keyframes slideIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* --- COMPONENTES --- */
-        .card { background: var(--white); border-radius: 20px; padding: 2rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 2rem; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
-
-        /* --- DASHBOARD STATS --- */
-        .stat-box { background: var(--white); padding: 1.5rem; border-radius: 16px; border-left: 5px solid var(--azure); }
-        .stat-box h3 { font-size: 0.8rem; color: var(--light-slate); text-transform: uppercase; }
-        .stat-box p { font-size: 2rem; font-weight: 800; }
-
-        /* --- TIMER --- */
-        .timer-display { font-size: 7rem; font-weight: 800; margin: 2rem 0; color: var(--slate); letter-spacing: -3px; }
-        .controls button { 
-            padding: 1rem 2.5rem; border-radius: 50px; border: none; font-weight: 700; 
-            cursor: pointer; transition: 0.2s; font-size: 1rem;
+        .gradient-forest {
+            background: linear-gradient(145deg, #2e8b57 0%, #1e5f3a 100%);
         }
-        .btn-start { background: var(--azure); color: white; }
-        .btn-reset { background: #e2e8f0; color: var(--slate); margin-left: 10px; }
-
-        /* --- SIMULADOR --- */
-        .quiz-option { 
-            padding: 1.2rem; border: 2px solid #e2e8f0; border-radius: 14px; 
-            margin-bottom: 1rem; cursor: pointer; transition: 0.2s; font-weight: 500;
+        /* Active nav style */
+        .nav-active {
+            background-color: #1e3a5f;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 119, 190, 0.2);
         }
-        .quiz-option:hover { border-color: var(--azure); background: #f0f7ff; }
-        .correct { background: #dcfce7 !important; border-color: var(--forest) !important; color: #166534; }
-        .incorrect { background: #fee2e2 !important; border-color: var(--danger) !important; color: #991b1b; }
-
-        /* --- CHAT TUTOR --- */
-        .chat-container { height: 400px; overflow-y: auto; padding: 1rem; background: #f1f5f9; border-radius: 15px; margin-bottom: 1rem; }
-        .msg { margin-bottom: 1rem; padding: 1rem; border-radius: 12px; max-width: 80% ; font-size: 0.95rem; }
-        .msg-bot { background: var(--white); align-self: flex-start; border-bottom-left-radius: 2px; }
-        .msg-user { background: var(--azure); color: white; margin-left: auto; border-bottom-right-radius: 2px; }
-
-        input[type="text"] { width: 100%; padding: 1rem; border: 2px solid #e2e8f0; border-radius: 12px; outline: none; }
-        input[type="text"]:focus { border-color: var(--azure); }
+        /* Map milestone styling */
+        .milestone {
+            transition: all 0.2s ease;
+        }
+        .milestone:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 8px 12px rgba(0,0,0,0.15));
+        }
+        /* File upload button */
+        .file-upload-label:hover {
+            background-color: #e6f0fa;
+        }
+        /* Hide default sections initially except dashboard */
+        .section:not(#dashboard) {
+            display: none;
+        }
+        /* Chat bot message style */
+        .chat-message-bot {
+            background-color: #f0f4fa;
+            border-radius: 20px 20px 20px 5px;
+        }
+        .chat-message-user {
+            background: #0077BE;
+            color: white;
+            border-radius: 20px 20px 5px 20px;
+        }
+        /* Ripple effect for buttons */
+        .ripple-btn {
+            position: relative;
+            overflow: hidden;
+        }
     </style>
 </head>
-<body>
+<body class="h-screen flex overflow-hidden text-gray-800">
 
-    <nav>
-        <div class="logo">Idonet<span>+</span></div>
-        <div class="nav-link active" onclick="switchView('dash')">🏠 Dashboard</div>
-        <div class="nav-link" onclick="switchView('focus')">⏱️ Enfoque Flow</div>
-        <div class="nav-link" onclick="switchView('quiz')">📝 Simulador MEP</div>
-        <div class="nav-link" onclick="switchView('tutor')">🤖 Tutor Virtual</div>
-        
-        <div style="margin-top: auto; background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 12px;">
-            <p style="font-size: 0.8rem; color: #94a3b8;">Nivel de Maestría</p>
-            <p style="font-weight: 600;">Docente Innovador</p>
-            <div style="height: 6px; background: #334155; border-radius: 10px; margin-top: 8px;">
-                <div style="width: 65%; height: 100%; background: var(--forest); border-radius: 10px;"></div>
+    <!-- ========== SIDEBAR (NAVEGACIÓN) ========== -->
+    <aside class="w-72 bg-white/90 backdrop-blur-md border-r border-gray-200/60 flex flex-col shadow-xl z-20">
+        <div class="p-6 border-b border-gray-100">
+            <div class="flex items-center gap-2">
+                <span class="text-3xl font-black text-blue-700">Idonet<span class="text-green-600">+</span></span>
+                <span class="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded-full font-semibold">BETA</span>
             </div>
-        </div>
-    </nav>
-
-    <main>
-        <div id="dash" class="view active">
-            <h1 style="margin-bottom: 1.5rem;">¡Hola, Docente! 👋</h1>
-            <div class="grid">
-                <div class="stat-box"><h3>IdoPoints Acumulados</h3><p id="point-display">1,450</p></div>
-                <div class="stat-box" style="border-left-color: var(--forest);"><h3>Racha de Estudio</h3><p>7 Días</p></div>
-                <div class="stat-box"><h3>Módulos PNFT 2026</h3><p>4 / 12</p></div>
-            </div>
-            <div class="card">
-                <h3>Tu Actividad Reciente</h3>
-                <p style="color: var(--light-slate); margin-top: 10px;">Has completado 2 sesiones de enfoque hoy. ¡Estás en el 5% superior!</p>
-            </div>
+            <p class="text-sm text-gray-500 mt-1 font-medium">Formación Tecnológica · PNFT 2026</p>
         </div>
 
-        <div id="focus" class="view">
-            <div class="card" style="text-align: center;">
-                <h2>Temporizador de Estado de Flow</h2>
-                <p style="color: var(--light-slate);">Utiliza la técnica Pomodoro (25 min) para optimizar tu neuroplasticidad.</p>
-                <div class="timer-display" id="timer">25:00</div>
-                <div class="controls">
-                    <button class="btn-start" id="startBtn" onclick="toggleTimer()">Iniciar Enfoque</button>
-                    <button class="btn-reset" onclick="resetTimer()">Reiniciar</button>
+        <!-- User Level Card -->
+        <div class="mx-4 mt-6 p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl border border-blue-100/50 shadow-sm">
+            <div class="flex justify-between items-center">
+                <span class="text-xs font-bold text-blue-700 uppercase tracking-wider">Nivel Experto</span>
+                <span class="bg-green-500 text-white text-xs px-2 py-0.5 rounded-full font-bold shadow-sm">🔥 5 días</span>
+            </div>
+            <div class="flex items-end justify-between mt-3">
+                <div>
+                    <p class="text-2xl font-black text-gray-800" id="pointsDisplay">2,450</p>
+                    <p class="text-xs text-gray-500">IdoPoints</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm font-semibold">Próxima meta</p>
+                    <p class="text-xs text-gray-600">Experto STEAM</p>
                 </div>
             </div>
-        </div>
-
-        <div id="quiz" class="view">
-            <div class="card" id="quiz-container">
-                <span style="color: var(--azure); font-weight: 700; text-transform: uppercase; font-size: 0.8rem;">Pregunta de Idoneidad</span>
-                <h2 id="question-text" style="margin: 1rem 0;">Cargando pregunta...</h2>
-                <div id="options-container"></div>
-                <div id="quiz-feedback" style="margin-top: 1.5rem; font-weight: 600; padding: 1rem; border-radius: 10px; display: none;"></div>
-                <button class="btn-start" style="margin-top: 1rem; display: none;" id="next-btn" onclick="loadNextQuestion()">Siguiente Pregunta</button>
+            <div class="w-full bg-gray-200/70 h-2 rounded-full mt-4 overflow-hidden">
+                <div class="bg-gradient-to-r from-blue-500 to-green-400 h-full rounded-full transition-all duration-700" id="levelProgressBar" style="width: 68%"></div>
             </div>
         </div>
 
-        <div id="tutor" class="view">
-            <div class="card">
-                <h2>Tutor IA: Consultas PNFT 2026</h2>
-                <p style="color: var(--light-slate); margin-bottom: 1.5rem;">Pregúntame sobre el DUA, metodologías STEAM o el sistema TecnoPresta.</p>
-                <div class="chat-container" id="chat-box">
-                    <div class="msg msg-bot">Hola. Soy tu asistente de Idonet+. ¿En qué lineamiento técnico del MEP te puedo ayudar hoy?</div>
+        <!-- Navigation Buttons -->
+        <nav class="flex-1 px-4 py-6 space-y-1.5">
+            <button onclick="showSection('dashboard', this)" class="nav-btn w-full flex items-center gap-4 p-3.5 rounded-xl hover:bg-blue-50 transition-all text-gray-700 font-medium group nav-active">
+                <i class="fas fa-chart-pie text-xl w-6 text-blue-600"></i> <span>Dashboard</span>
+            </button>
+            <button onclick="showSection('focus', this)" class="nav-btn w-full flex items-center gap-4 p-3.5 rounded-xl hover:bg-blue-50 transition-all text-gray-700 font-medium group">
+                <i class="fas fa-brain text-xl w-6 text-indigo-500"></i> <span>Modo Enfoque</span>
+            </button>
+            <button onclick="showSection('simulator', this)" class="nav-btn w-full flex items-center gap-4 p-3.5 rounded-xl hover:bg-blue-50 transition-all text-gray-700 font-medium group">
+                <i class="fas fa-clipboard-list text-xl w-6 text-amber-600"></i> <span>Simulador MEP</span>
+            </button>
+            <button onclick="showSection('tutor', this)" class="nav-btn w-full flex items-center gap-4 p-3.5 rounded-xl hover:bg-blue-50 transition-all text-gray-700 font-medium group">
+                <i class="fas fa-robot text-xl w-6 text-emerald-600"></i> <span>Tutor IA</span>
+            </button>
+            <button onclick="showSection('recursos', this)" class="nav-btn w-full flex items-center gap-4 p-3.5 rounded-xl hover:bg-blue-50 transition-all text-gray-700 font-medium group">
+                <i class="fas fa-book-open text-xl w-6 text-purple-600"></i> <span>Centro Recursos</span>
+            </button>
+        </nav>
+
+        <div class="p-4 border-t border-gray-100 text-xs text-gray-400 text-center">
+            v2.6.0 · Asesoría continua
+        </div>
+    </aside>
+
+    <!-- ========== CONTENIDO PRINCIPAL ========== -->
+    <main class="flex-1 overflow-y-auto bg-[#f5f7fb] relative">
+        <!-- Header Dinámico -->
+        <header class="sticky top-0 z-10 bg-white/70 backdrop-blur-xl border-b border-gray-200/60 px-8 py-4 flex justify-between items-center">
+            <h2 id="pageTitle" class="text-xl font-bold text-gray-800">Panel Principal</h2>
+            <div class="flex items-center gap-4">
+                <button class="p-2.5 hover:bg-gray-100 rounded-full transition">
+                    <i class="far fa-bell text-gray-600"></i>
+                </button>
+                <div class="h-10 w-10 rounded-full gradient-azure text-white flex items-center justify-center font-bold shadow-md">DR</div>
+            </div>
+        </header>
+
+        <!-- Contenedor de Secciones (cada sección se muestra/oculta) -->
+        <div class="p-6 md:p-8 max-w-6xl mx-auto pb-16">
+
+            <!-- ===== SECCIÓN DASHBOARD (con mapa de metas) ===== -->
+            <section id="dashboard" class="section fade-in">
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-600 mb-2">Bienvenido, Dr. Ramírez</h3>
+                    <p class="text-3xl font-black text-gray-800">Construyendo ciudadanía digital 🌱</p>
                 </div>
-                <input type="text" id="user-input" placeholder="Escribe tu duda aquí (ej. ¿Qué es el CBL?)" onkeypress="handleChat(event)">
-            </div>
+
+                <!-- Mapa de Metas Volantes (estilo Duolingo) -->
+                <div class="bg-white p-6 rounded-3xl shadow-md border border-gray-100 mb-10 overflow-x-auto">
+                    <div class="flex items-center gap-1 mb-6">
+                        <i class="fas fa-map-signs text-blue-500 mr-2"></i>
+                        <h4 class="font-bold text-gray-700">Camino a la Maestría · PNFT 2026</h4>
+                        <span class="ml-auto text-sm text-gray-400">9 metas restantes</span>
+                    </div>
+                    <div class="flex justify-between items-center min-w-[700px] py-2">
+                        <!-- Meta 1 (completada) -->
+                        <div class="flex flex-col items-center milestone">
+                            <div class="w-14 h-14 rounded-full bg-green-100 border-2 border-green-500 flex items-center justify-center text-2xl shadow-md cursor-pointer" onclick="claimReward(100, 'Fundamentos digitales')">
+                                <i class="fas fa-check-circle text-green-600"></i>
+                            </div>
+                            <span class="text-xs font-bold mt-2 text-gray-600">Fundamentos</span>
+                        </div>
+                        <div class="h-1 w-12 bg-green-300 rounded-full"></div>
+                        <!-- Meta 2 (activa) -->
+                        <div class="flex flex-col items-center milestone">
+                            <div class="w-16 h-16 rounded-full bg-blue-100 border-4 border-blue-500 flex items-center justify-center text-2xl shadow-lg cursor-pointer" onclick="claimReward(150, 'DUA en el aula')">
+                                <i class="fas fa-universal-access text-blue-600"></i>
+                            </div>
+                            <span class="text-xs font-bold mt-2 text-blue-700">DUA</span>
+                        </div>
+                        <div class="h-1 w-12 bg-gray-200 rounded-full"></div>
+                        <!-- Meta 3 (bloqueada) -->
+                        <div class="flex flex-col items-center milestone opacity-40">
+                            <div class="w-14 h-14 rounded-full bg-gray-100 border-2 border-gray-300 flex items-center justify-center text-2xl">
+                                <i class="fas fa-lock text-gray-400"></i>
+                            </div>
+                            <span class="text-xs font-bold mt-2 text-gray-400">STEAM</span>
+                        </div>
+                        <div class="h-1 w-12 bg-gray-200 rounded-full"></div>
+                        <!-- Meta 4 (bloqueada) -->
+                        <div class="flex flex-col items-center milestone opacity-40">
+                            <div class="w-14 h-14 rounded-full bg-gray-100 border-2 border-gray-300 flex items-center justify-center text-2xl">
+                                <i class="fas fa-lock text-gray-400"></i>
+                            </div>
+                            <span class="text-xs font-bold mt-2 text-gray-400">Evaluación</span>
+                        </div>
+                        <div class="h-1 w-12 bg-gray-200 rounded-full"></div>
+                        <!-- Meta 5 (premio) -->
+                        <div class="flex flex-col items-center milestone">
+                            <div class="w-16 h-16 rounded-full bg-amber-100 border-4 border-amber-400 flex items-center justify-center text-3xl shadow-lg cursor-pointer" onclick="claimReward(500, 'Bono Innovación + Certificado')">
+                                <i class="fas fa-crown text-amber-500"></i>
+                            </div>
+                            <span class="text-xs font-bold mt-2 text-amber-600">Premio</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KPIs rápidos -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-sm text-gray-500 font-medium">Retención</p>
+                                <h5 class="text-2xl font-black mt-1">85<span class="text-sm font-normal text-gray-400">%</span></h5>
+                            </div>
+                            <i class="fas fa-brain text-3xl text-indigo-300"></i>
+                        </div>
+                        <p class="text-xs text-green-600 font-semibold mt-2">+12% vs ayer</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-sm text-gray-500 font-medium">Fatiga percibida</p>
+                                <h5 class="text-2xl font-black mt-1">2.4</h5>
+                            </div>
+                            <i class="fas fa-heartbeat text-3xl text-rose-300"></i>
+                        </div>
+                        <p class="text-xs text-green-600 font-semibold mt-2">bajo</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-sm text-gray-500 font-medium">Enfoque profundo</p>
+                                <h5 class="text-2xl font-black mt-1">187 min</h5>
+                            </div>
+                            <i class="fas fa-clock text-3xl text-blue-300"></i>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2">Meta: 250 min</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-sm text-gray-500 font-medium">Racha</p>
+                                <h5 class="text-2xl font-black mt-1">5 días 🔥</h5>
+                            </div>
+                            <i class="fas fa-calendar-check text-3xl text-emerald-300"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Acción rápida -->
+                <div class="mt-8 gradient-azure p-0.5 rounded-3xl shadow-lg">
+                    <div class="bg-white/95 backdrop-blur-sm rounded-3xl p-6 flex flex-col md:flex-row items-center justify-between">
+                        <div>
+                            <h4 class="text-lg font-bold text-gray-800">¿Preparado para tu sesión?</h4>
+                            <p class="text-sm text-gray-500">Inicia un bloque de 25 min con aislamiento digital.</p>
+                        </div>
+                        <button onclick="showSection('focus', document.querySelector('.nav-btn[onclick*=\"focus\"]'))" class="mt-3 md:mt-0 gradient-azure text-white px-8 py-3.5 rounded-xl font-bold hover:shadow-xl transition flex items-center gap-2">
+                            <i class="fas fa-play"></i> Iniciar Enfoque
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== SECCIÓN MODO ENFOQUE ===== -->
+            <section id="focus" class="section hidden fade-in">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-black text-gray-800">Modo Flow</h2>
+                    <p class="text-gray-500 mt-1">Pomodoro flexible / Flowtime inteligente</p>
+                </div>
+                <div class="bg-white/80 backdrop-blur-lg p-10 rounded-[60px] shadow-2xl max-w-lg mx-auto border border-white/50">
+                    <div class="relative mb-10">
+                        <div class="w-48 h-48 mx-auto rounded-full border-8 border-gray-100 flex items-center justify-center shadow-inner">
+                            <span id="focusTimer" class="text-6xl font-black text-blue-700">25:00</span>
+                        </div>
+                        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-56 h-56 rounded-full border-4 border-blue-200/30"></div>
+                    </div>
+                    <div class="flex justify-center gap-4 mb-8">
+                        <button onclick="toggleTimer()" id="timerToggleBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl font-bold shadow-lg shadow-blue-200 transition flex items-center gap-3 text-lg">
+                            <i class="fas fa-play"></i> Comenzar
+                        </button>
+                        <button onclick="resetFocusTimer()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 p-4 rounded-2xl transition">
+                            <i class="fas fa-undo-alt"></i>
+                        </button>
+                    </div>
+                    <div class="flex justify-center gap-3">
+                        <span class="bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-1"><i class="fas fa-clock"></i> 25/5</span>
+                        <span class="bg-green-50 text-green-700 px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-1"><i class="fas fa-spa"></i> Flowtime</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== SECCIÓN SIMULADOR MEP ===== -->
+            <section id="simulator" class="section hidden fade-in">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Simulador de Idoneidad MEP</h2>
+                    <span class="bg-indigo-100 text-indigo-800 px-4 py-2 rounded-full font-bold text-sm">Transitorio 2026</span>
+                </div>
+                <!-- Estratos selector -->
+                <div class="flex gap-2 mb-8 overflow-auto pb-2">
+                    <button class="bg-blue-600 text-white px-5 py-2.5 rounded-full text-sm font-bold">I Ciclo</button>
+                    <button class="bg-gray-100 text-gray-700 px-5 py-2.5 rounded-full text-sm font-bold">II Ciclo</button>
+                    <button class="bg-gray-100 text-gray-700 px-5 py-2.5 rounded-full text-sm font-bold">III Ciclo</button>
+                    <button class="bg-gray-100 text-gray-700 px-5 py-2.5 rounded-full text-sm font-bold">Educación Diversificada</button>
+                </div>
+
+                <!-- Pregunta actual -->
+                <div class="bg-white p-8 rounded-3xl shadow-md border border-gray-100">
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="bg-purple-100 text-purple-800 px-4 py-1.5 rounded-full text-xs font-bold" id="simCategory">Metodologías Activas</span>
+                        <span class="text-gray-400 text-sm" id="simCounter">1 / 3</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-6" id="simQuestion">Pregunta cargando...</h3>
+                    <div id="simOptions" class="space-y-3"></div>
+
+                    <!-- Feedback panel -->
+                    <div id="simFeedback" class="mt-6 p-5 rounded-xl hidden border-l-8 transition-all">
+                        <p class="font-bold text-lg" id="simFeedbackTitle"></p>
+                        <p class="text-sm" id="simFeedbackText"></p>
+                    </div>
+                    <button id="simNextBtn" onclick="nextSimQuestion()" class="mt-6 w-full bg-gray-900 text-white py-4 rounded-xl font-bold hover:bg-gray-800 transition hidden">Siguiente →</button>
+                </div>
+            </section>
+
+            <!-- ===== SECCIÓN TUTOR IA (con carga de archivos) ===== -->
+            <section id="tutor" class="section hidden fade-in">
+                <div class="flex flex-col lg:flex-row gap-6 h-[calc(100vh-12rem)]">
+                    <!-- Panel de chat -->
+                    <div class="flex-1 bg-white rounded-3xl shadow-md border border-gray-100 flex flex-col overflow-hidden">
+                        <div class="p-4 border-b border-gray-100 flex items-center gap-3">
+                            <i class="fas fa-robot text-2xl text-emerald-600"></i>
+                            <span class="font-bold">Asesor PNFT · Gemini IA</span>
+                        </div>
+                        <div id="chatMessages" class="flex-1 p-5 overflow-y-auto space-y-4 bg-gray-50/50">
+                            <div class="flex items-start gap-3">
+                                <div class="w-9 h-9 rounded-full bg-emerald-600 flex items-center justify-center text-white shrink-0">🤖</div>
+                                <div class="chat-message-bot p-4 max-w-[80%] text-gray-700">
+                                    Hola, he cargado los lineamientos del MEP. Puedes preguntarme sobre DUA, planeamientos, o crear prompts.
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Input con adjuntar archivo -->
+                        <div class="p-4 bg-white border-t border-gray-100">
+                            <div class="flex items-center gap-2">
+                                <label for="fileUpload" class="cursor-pointer p-3 bg-gray-100 hover:bg-gray-200 rounded-2xl transition">
+                                    <i class="fas fa-paperclip text-gray-600"></i>
+                                    <input type="file" id="fileUpload" class="hidden" accept=".pdf,.docx,.xlsx,.txt" multiple onchange="handleFileUpload(this)">
+                                </label>
+                                <input type="text" id="chatInput" placeholder="Escribe tu consulta..." class="flex-1 p-4 bg-gray-100 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500" onkeypress="if(event.key==='Enter') sendChatMessage()">
+                                <button onclick="sendChatMessage()" class="p-4 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition shadow-md">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                            <div id="fileList" class="mt-2 flex flex-wrap gap-2"></div>
+                        </div>
+                    </div>
+                    <!-- Panel de ayuda rápida (documentos) -->
+                    <div class="lg:w-80 bg-white/70 backdrop-blur rounded-3xl p-5 border border-gray-100 shadow-sm">
+                        <h4 class="font-bold text-gray-700 mb-3">📁 Documentos cargados</h4>
+                        <ul class="space-y-2 text-sm" id="docList">
+                            <li class="p-2 bg-blue-50 rounded-lg text-blue-800 flex items-center gap-2"><i class="fas fa-file-pdf"></i> PNFT_marco_2026.pdf</li>
+                            <li class="p-2 bg-green-50 rounded-lg text-green-800 flex items-center gap-2"><i class="fas fa-file-word"></i> Lineamientos_evaluacion.docx</li>
+                        </ul>
+                        <p class="text-xs text-gray-400 mt-4">Sube más archivos para que el asistente aprenda de ellos.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== SECCIÓN CENTRO DE RECURSOS (planeamiento, evaluación) ===== -->
+            <section id="recursos" class="section hidden fade-in">
+                <h2 class="text-2xl font-bold mb-6">Centro de Innovación Docente</h2>
+                <div class="grid md:grid-cols-3 gap-5">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition">
+                        <i class="fas fa-pencil-ruler text-3xl text-blue-500 mb-4"></i>
+                        <h3 class="font-bold text-lg">Creador de planeamientos</h3>
+                        <p class="text-sm text-gray-500 mb-4">Genera planeaciones con DUA, ejes transversales y RdA.</p>
+                        <button class="text-blue-600 font-semibold flex items-center gap-1">Crear <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition">
+                        <i class="fas fa-magic text-3xl text-purple-500 mb-4"></i>
+                        <h3 class="font-bold text-lg">Prompts seguros</h3>
+                        <p class="text-sm text-gray-500 mb-4">Crea prompts contextualizados por área y nivel.</p>
+                        <button class="text-purple-600 font-semibold flex items-center gap-1">Diseñar</button>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition">
+                        <i class="fas fa-clipboard-check text-3xl text-green-500 mb-4"></i>
+                        <h3 class="font-bold text-lg">Instrumentos de evaluación</h3>
+                        <p class="text-sm text-gray-500 mb-4">Rúbricas, listas de cotejo basadas en Bloom.</p>
+                        <button class="text-green-600 font-semibold flex items-center gap-1">Ejemplos</button>
+                    </div>
+                </div>
+                <div class="mt-8 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h3 class="font-bold text-lg mb-2">Exportar / Importar</h3>
+                    <p class="text-sm text-gray-500 mb-4">Sube tu planeamiento en Word o Excel para análisis IA.</p>
+                    <div class="flex gap-3">
+                        <label class="cursor-pointer bg-gray-100 hover:bg-gray-200 px-5 py-3 rounded-xl font-medium text-sm flex items-center gap-2"><i class="fas fa-upload"></i> Subir archivo<input type="file" class="hidden"></label>
+                        <button class="bg-gray-800 text-white px-5 py-3 rounded-xl font-medium text-sm flex items-center gap-2"><i class="fas fa-download"></i> Exportar informe</button>
+                    </div>
+                </div>
+            </section>
         </div>
     </main>
 
     <script>
-        // --- LÓGICA DE NAVEGACIÓN ---
-        function switchView(viewId) {
-            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            document.getElementById(viewId).classList.add('active');
-            event.currentTarget.classList.add('active');
+        // ---- GESTIÓN DE SECCIONES ----
+        function showSection(id, btnElement) {
+            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('nav-active', 'bg-blue-50', 'text-blue-800');
+                btn.classList.add('text-gray-700');
+            });
+            if (btnElement) {
+                btnElement.classList.add('nav-active', 'bg-blue-50', 'text-blue-800');
+            }
+            const titles = {
+                'dashboard': 'Panel Principal',
+                'focus': 'Enfoque y Concentración',
+                'simulator': 'Simulador MEP',
+                'tutor': 'Tutor IA',
+                'recursos': 'Centro de Recursos'
+            };
+            document.getElementById('pageTitle').innerText = titles[id] || 'Idonet+';
         }
 
-        // --- LÓGICA DEL TEMPORIZADOR ---
-        let timeLeft = 25 * 60;
-        let timerId = null;
-        let points = 1450;
+        // ---- GAMIFICACIÓN: PUNTOS Y PREMIOS ----
+        let points = 2450;
+        function claimReward(pointsGain, metaName) {
+            points += pointsGain;
+            document.getElementById('pointsDisplay').innerText = points.toLocaleString();
+            // animar barra de nivel (simulada)
+            let progress = document.getElementById('levelProgressBar');
+            let newWidth = Math.min(points / 5000 * 100, 100);
+            progress.style.width = newWidth + '%';
+            alert(`¡Meta "${metaName}" completada! +${pointsGain} IdoPoints.`);
+        }
 
+        // ---- TEMPORIZADOR DE ENFOQUE ----
+        let focusTime = 25 * 60;
+        let focusInterval = null;
+        let focusRunning = false;
+        const focusTimerSpan = document.getElementById('focusTimer');
+        const toggleBtn = document.getElementById('timerToggleBtn');
+        function updateFocusDisplay() {
+            let mins = Math.floor(focusTime / 60);
+            let secs = focusTime % 60;
+            focusTimerSpan.innerText = `${mins}:${secs < 10 ? '0'+secs : secs}`;
+        }
         function toggleTimer() {
-            const btn = document.getElementById('startBtn');
-            if (timerId) {
-                clearInterval(timerId);
-                timerId = null;
-                btn.innerText = "Reanudar Enfoque";
+            if (focusRunning) {
+                clearInterval(focusInterval);
+                focusRunning = false;
+                toggleBtn.innerHTML = '<i class="fas fa-play"></i> Reanudar';
             } else {
-                btn.innerText = "Pausar";
-                timerId = setInterval(() => {
-                    timeLeft--;
-                    updateTimerDisplay();
-                    if (timeLeft <= 0) {
-                        clearInterval(timerId);
-                        alert("¡Sesión terminada! Ganaste 100 IdoPoints.");
-                        addPoints(100);
-                        resetTimer();
+                focusInterval = setInterval(() => {
+                    if (focusTime > 0) {
+                        focusTime--;
+                        updateFocusDisplay();
+                    } else {
+                        clearInterval(focusInterval);
+                        focusRunning = false;
+                        claimReward(100, 'Sesión completada');
+                        resetFocusTimer();
                     }
                 }, 1000);
+                focusRunning = true;
+                toggleBtn.innerHTML = '<i class="fas fa-pause"></i> Pausar';
             }
         }
-
-        function resetTimer() {
-            clearInterval(timerId);
-            timerId = null;
-            timeLeft = 25 * 60;
-            updateTimerDisplay();
-            document.getElementById('startBtn').innerText = "Iniciar Enfoque";
+        function resetFocusTimer() {
+            clearInterval(focusInterval);
+            focusRunning = false;
+            focusTime = 25 * 60;
+            updateFocusDisplay();
+            toggleBtn.innerHTML = '<i class="fas fa-play"></i> Comenzar';
         }
 
-        function updateTimerDisplay() {
-            const m = Math.floor(timeLeft / 60);
-            const s = timeLeft % 60;
-            document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
-        }
-
-        function addPoints(val) {
-            points += val;
-            document.getElementById('point-display').innerText = points;
-        }
-
-        // --- LÓGICA DEL SIMULADOR (BANCO DE PREGUNTAS MEP) ---
-        const questions = [
-            {
-                q: "¿Cuál es el enfoque principal del PNFT 2026 respecto a la tecnología?",
-                options: ["Uso instrumental de software comercial", "La tecnología como objeto para pensar, idear y crear", "Sustituir al docente por plataformas"],
-                correct: 1,
-                feedback: "Correcto. El PNFT busca que la tecnología sea un mediador para el desarrollo de habilidades del siglo XXI."
-            },
-            {
-                q: "Según la Circular DVM-009-05-2022, ¿qué sistema se usa para el préstamo de activos?",
-                options: ["Saber MEP", "TecnoPresta", "Mochila Digital"],
-                correct: 1,
-                feedback: "Exacto. TecnoPresta facilita la gestión y préstamo de dispositivos de forma remota."
-            },
-            {
-                q: "¿Qué metodología STEAM promueve resolver problemas mediante la empatía y prototipado?",
-                options: ["Design Thinking", "ABJ (Juegos)", "Clase Magistral"],
-                correct: 0,
-                feedback: "¡Bien! El Design Thinking (Empatizar, Definir, Idear, Prototipar, Evaluar) es clave en STEAM."
-            }
+        // ---- SIMULADOR MEP - PREGUNTAS (3 preguntas de ejemplo) ----
+        const simQuestions = [
+            { cat: 'PNFT', question: '¿Cuál es el propósito de la Política Curricular?', options: ['Definir contenidos rígidos', 'Promover adaptaciones según contexto', 'Estandarizar exámenes'], correct: 1, explanation: 'Busca flexibilidad y pertinencia cultural.' },
+            { cat: 'DUA', question: '¿Qué principio del DUA se relaciona con el "por qué" del aprendizaje?', options: ['Múltiples formas de representación', 'Múltiples formas de acción', 'Múltiples formas de motivación'], correct: 2, explanation: 'El compromiso (motivación) es el "por qué".' },
+            { cat: 'Evaluación', question: '¿Cuál instrumento evalúa desempeños con niveles de calidad?', options: ['Lista de cotejo', 'Rúbrica', 'Prueba escrita'], correct: 1, explanation: 'La rúbrica describe niveles de logro.' }
         ];
-
-        let currentQ = 0;
-
-        function loadQuestion() {
-            const quiz = questions[currentQ];
-            document.getElementById('question-text').innerText = quiz.q;
-            const container = document.getElementById('options-container');
-            container.innerHTML = "";
-            document.getElementById('quiz-feedback').style.display = "none";
-            document.getElementById('next-btn').style.display = "none";
-
-            quiz.options.forEach((opt, i) => {
-                const div = document.createElement('div');
-                div.className = "quiz-option";
-                div.innerText = opt;
-                div.onclick = () => checkAnswer(i);
-                container.appendChild(div);
+        let simIndex = 0;
+        function loadSimQuestion() {
+            let q = simQuestions[simIndex];
+            document.getElementById('simCategory').innerText = q.cat;
+            document.getElementById('simCounter').innerText = `${simIndex+1} / ${simQuestions.length}`;
+            document.getElementById('simQuestion').innerText = q.question;
+            let optsDiv = document.getElementById('simOptions');
+            optsDiv.innerHTML = '';
+            q.options.forEach((opt, idx) => {
+                let btn = document.createElement('button');
+                btn.className = 'w-full text-left p-4 border-2 border-gray-100 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition font-medium';
+                btn.innerText = opt;
+                btn.onclick = () => checkSimAnswer(idx, btn);
+                optsDiv.appendChild(btn);
             });
+            document.getElementById('simFeedback').classList.add('hidden');
+            document.getElementById('simNextBtn').classList.add('hidden');
         }
-
-        function checkAnswer(idx) {
-            const quiz = questions[currentQ];
-            const options = document.querySelectorAll('.quiz-option');
-            const feedback = document.getElementById('quiz-feedback');
-            
-            if (idx === quiz.correct) {
-                options[idx].classList.add('correct');
-                feedback.innerText = "✅ " + quiz.feedback;
-                feedback.style.background = "#dcfce7";
-                addPoints(50);
+        function checkSimAnswer(selected, btn) {
+            let q = simQuestions[simIndex];
+            let feedback = document.getElementById('simFeedback');
+            let title = document.getElementById('simFeedbackTitle');
+            let text = document.getElementById('simFeedbackText');
+            document.querySelectorAll('#simOptions button').forEach(b => b.disabled = true);
+            if (selected === q.correct) {
+                btn.classList.add('bg-green-100', 'border-green-600');
+                title.innerText = '✅ ¡Correcto!';
+                feedback.classList.add('bg-green-50', 'border-green-600', 'text-green-800');
+                feedback.classList.remove('bg-red-50', 'border-red-600');
+                claimReward(50, 'Respuesta acertada');
             } else {
-                options[idx].classList.add('incorrect');
-                feedback.innerText = "❌ No es correcto. " + quiz.feedback;
-                feedback.style.background = "#fee2e2";
+                btn.classList.add('bg-red-100', 'border-red-600');
+                title.innerText = '❌ No es correcto';
+                feedback.classList.add('bg-red-50', 'border-red-600', 'text-red-800');
+                feedback.classList.remove('bg-green-50', 'border-green-600');
             }
-            feedback.style.display = "block";
-            document.getElementById('next-btn').style.display = "inline-block";
+            text.innerText = q.explanation;
+            feedback.classList.remove('hidden');
+            document.getElementById('simNextBtn').classList.remove('hidden');
+        }
+        function nextSimQuestion() {
+            simIndex = (simIndex + 1) % simQuestions.length;
+            loadSimQuestion();
         }
 
-        function loadNextQuestion() {
-            currentQ = (currentQ + 1) % questions.length;
-            loadQuestion();
+        // ---- CHAT TUTOR CON CARGA DE ARCHIVOS ----
+        function handleFileUpload(input) {
+            let fileList = document.getElementById('fileList');
+            let docList = document.getElementById('docList');
+            fileList.innerHTML = '';
+            Array.from(input.files).forEach(file => {
+                let chip = document.createElement('span');
+                chip.className = 'bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs flex items-center gap-1';
+                chip.innerHTML = `<i class="fas fa-file"></i> ${file.name}`;
+                fileList.appendChild(chip);
+                // también agregar a documentos cargados
+                let li = document.createElement('li');
+                li.className = 'p-2 bg-blue-50 rounded-lg text-blue-800 flex items-center gap-2';
+                li.innerHTML = `<i class="fas fa-file-${file.type.includes('pdf') ? 'pdf' : 'word'}"></i> ${file.name}`;
+                docList.appendChild(li);
+            });
+            // Simular que el bot aprende del archivo
+            let chat = document.getElementById('chatMessages');
+            chat.innerHTML += `<div class="flex items-start gap-3"><div class="w-9 h-9 rounded-full bg-emerald-600 flex items-center justify-center text-white shrink-0">🤖</div><div class="chat-message-bot p-4 max-w-[80%] text-gray-700">He procesado ${input.files.length} archivo(s). Ahora tengo más contexto sobre normativa y planeamiento.</div></div>`;
+            chat.scrollTop = chat.scrollHeight;
+        }
+        function sendChatMessage() {
+            let input = document.getElementById('chatInput');
+            let msg = input.value.trim();
+            if (!msg) return;
+            let chat = document.getElementById('chatMessages');
+            // usuario
+            chat.innerHTML += `<div class="flex items-start gap-3 justify-end"><div class="chat-message-user p-4 max-w-[80%] text-white">${msg}</div><div class="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-white shrink-0">DR</div></div>`;
+            input.value = '';
+            chat.scrollTop = chat.scrollHeight;
+            // simular respuesta del bot con base en los documentos
+            setTimeout(() => {
+                let reply = '';
+                if (msg.toLowerCase().includes('planeamiento')) reply = 'Según los documentos cargados, el planeamiento debe incluir ejes transversales y adecuaciones curriculares. ¿Quieres un ejemplo?';
+                else if (msg.toLowerCase().includes('dua')) reply = 'El DUA sugiere múltiples formas de representación. En el archivo "Lineamientos_evaluacion.docx" se detalla su aplicación.';
+                else if (msg.toLowerCase().includes('taxonomía bloom')) reply = 'Te comparto un ejemplo: "El estudiante será capaz de diseñar un proyecto colaborativo". ¿Necesitas verbos para indicadores?';
+                else reply = 'De acuerdo a la documentación del PNFT, te recomiendo revisar el apartado de "Saberes procedimentales". ¿Te ayudo con algo más específico?';
+                chat.innerHTML += `<div class="flex items-start gap-3"><div class="w-9 h-9 rounded-full bg-emerald-600 flex items-center justify-center text-white shrink-0">🤖</div><div class="chat-message-bot p-4 max-w-[80%] text-gray-700">${reply}</div></div>`;
+                chat.scrollTop = chat.scrollHeight;
+            }, 800);
         }
 
-        // --- LÓGICA DEL TUTOR CHAT ---
-        function handleChat(e) {
-            if (e.key === 'Enter') {
-                const input = document.getElementById('user-input');
-                const chatBox = document.getElementById('chat-box');
-                if (input.value.trim() === "") return;
-
-                // Mensaje Usuario
-                chatBox.innerHTML += `<div class="msg msg-user">${input.value}</div>`;
-                
-                // Respuesta Simulada (Aquí se conectaría con Gemini)
-                const text = input.value.toLowerCase();
-                let reply = "Interesante pregunta. Según los lineamientos del PNFT 2026, eso se enfoca en el desarrollo de competencias digitales docentes.";
-                
-                if(text.includes("steam")) reply = "El enfoque STEAM en el MEP integra Ciencia, Tecnología, Ingeniería, Artes y Matemáticas para el aprendizaje basado en proyectos.";
-                if(text.includes("dua")) reply = "El Diseño Universal para el Aprendizaje (DUA) es obligatorio para garantizar la inclusión y flexibilidad curricular.";
-
-                setTimeout(() => {
-                    chatBox.innerHTML += `<div class="msg msg-bot">${reply}</div>`;
-                    chatBox.scrollTop = chatBox.scrollHeight;
-                }, 600);
-
-                input.value = "";
-            }
-        }
-
-        // Iniciar
-        loadQuestion();
+        // Inicialización
+        loadSimQuestion();
+        updateFocusDisplay();
     </script>
 </body>
 </html>
