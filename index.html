@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idonet+ | Tu Aliado PNFT 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --azure-blue: #007FFF;
+            --forest-green: #228B22;
+            --dark-slate: #2F4F4F;
+            --soft-white: #F8FAFC;
+            --glass: rgba(255, 255, 255, 0.9);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%);
+            color: var(--dark-slate);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.8rem;
+            color: var(--azure-blue);
+            letter-spacing: -1px;
+        }
+
+        .logo span { color: var(--forest-green); }
+
+        /* --- Hero Section --- */
+        .hero {
+            text-align: center;
+            padding: 4rem 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 { font-size: 3rem; margin-bottom: 1rem; color: #1e293b; }
+        p { font-size: 1.2rem; color: #64748b; margin-bottom: 2rem; }
+
+        /* --- Focus Card (The Engine) --- */
+        .focus-container {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        #timer {
+            font-size: 5rem;
+            font-weight: 800;
+            margin: 1rem 0;
+            font-variant-numeric: tabular-nums;
+            color: var(--dark-slate);
+        }
+
+        .btn-main {
+            background-color: var(--azure-blue);
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 15px -3px rgba(0, 127, 255, 0.3);
+        }
+
+        .btn-main:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 20px -3px rgba(0, 127, 255, 0.4);
+            background-color: #0066cc;
+        }
+
+        .btn-main.active {
+            background-color: var(--forest-green);
+            box-shadow: 0 10px 15px -3px rgba(34, 139, 34, 0.3);
+        }
+
+        /* --- Features --- */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, min-minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 4rem auto;
+            padding: 0 1rem;
+        }
+
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .card h3 { color: var(--azure-blue); margin-bottom: 0.5rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Idonet<span>+</span></div>
+        <nav>
+            <strong>PNFT 2026</strong>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Tu éxito docente empieza aquí.</h1>
+        <p>Gestiona tu tiempo, domina los lineamientos del MEP y prepárate para la idoneidad con inteligencia artificial empática.</p>
+        
+        <div class="focus-container">
+            <span style="text-transform: uppercase; font-weight: 600; color: #94a3b8;">Modo Enfoque</span>
+            <div id="timer">25:00</div>
+            <button class="btn-main" id="startBtn">Iniciar Enfoque</button>
+            <p id="statusMsg" style="margin-top: 1rem; font-size: 0.9rem;"></p>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="card">
+            <h3>📖 Tutor MEP</h3>
+            <p>Consultas instantáneas sobre el PNFT 2026 y metodologías STEAM/CBL.</p>
+        </div>
+        <div class="card">
+            <h3>🏆 IdoPoints</h3>
+            <p>Gana puntos por cada sesión de estudio y canjéalos por recursos.</p>
+        </div>
+        <div class="card">
+            <h3>🧠 Simulador</h3>
+            <p>Pruebas de idoneidad con feedback basado en neurociencia.</p>
+        </div>
+    </section>
+
+    <script>
+        let timeLeft = 25 * 60;
+        let timerId = null;
+        const timerDisplay = document.getElementById('timer');
+        const startBtn = document.getElementById('startBtn');
+        const statusMsg = document.getElementById('statusMsg');
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        startBtn.addEventListener('click', () => {
+            if (timerId) {
+                clearInterval(timerId);
+                timerId = null;
+                startBtn.textContent = 'Reanudar Enfoque';
+                startBtn.classList.remove('active');
+                statusMsg.textContent = "Sesión en pausa. ¡No pierdas el ritmo!";
+            } else {
+                startBtn.textContent = 'Pausar Sesión';
+                startBtn.classList.add('active');
+                statusMsg.textContent = "Estás en el 'Estado de Flow'. Idonet+ está optimizando tu atención.";
+                
+                timerId = setInterval(() => {
+                    timeLeft--;
+                    updateTimer();
+                    if (timeLeft <= 0) {
+                        clearInterval(timerId);
+                        alert("¡Excelente trabajo! Has ganado 50 IdoPoints.");
+                        timeLeft = 25 * 60;
+                        updateTimer();
+                        startBtn.textContent = 'Iniciar Enfoque';
+                    }
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
