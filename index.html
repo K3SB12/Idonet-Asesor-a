@@ -3,196 +3,292 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Idonet+ | Tu Aliado PNFT 2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>Idonet+ | Ecosistema Docente PNFT 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --azure-blue: #007FFF;
-            --forest-green: #228B22;
-            --dark-slate: #2F4F4F;
-            --soft-white: #F8FAFC;
-            --glass: rgba(255, 255, 255, 0.9);
+            --azure: #007FFF;
+            --forest: #228B22;
+            --slate: #1e293b;
+            --light-slate: #64748b;
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --danger: #ef4444;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: var(--bg); color: var(--slate); display: flex; min-height: 100vh; }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%);
-            color: var(--dark-slate);
-            min-height: 100vh;
-            line-height: 1.6;
+        /* --- NAVEGACIÓN LATERAL --- */
+        nav { 
+            width: 260px; background: var(--slate); color: white; padding: 2rem 1.5rem; 
+            display: flex; flex-direction: column; position: fixed; height: 100vh;
         }
-
-        /* --- Header & Navigation --- */
-        header {
-            padding: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
+        .logo { font-weight: 800; font-size: 1.6rem; margin-bottom: 2.5rem; letter-spacing: -1px; }
+        .logo span { color: var(--forest); }
+        .nav-link { 
+            padding: 12px 16px; border-radius: 12px; cursor: pointer; transition: 0.3s; 
+            margin-bottom: 0.5rem; color: #94a3b8; display: flex; align-items: center; gap: 10px;
         }
+        .nav-link:hover, .nav-link.active { background: var(--azure); color: white; }
 
-        .logo {
-            font-weight: 800;
-            font-size: 1.8rem;
-            color: var(--azure-blue);
-            letter-spacing: -1px;
+        /* --- ÁREA PRINCIPAL --- */
+        main { margin-left: 260px; flex: 1; padding: 2.5rem; max-width: 1200px; }
+        .view { display: none; animation: slideIn 0.4s ease-out; }
+        .view.active { display: block; }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- COMPONENTES --- */
+        .card { background: var(--white); border-radius: 20px; padding: 2rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+
+        /* --- DASHBOARD STATS --- */
+        .stat-box { background: var(--white); padding: 1.5rem; border-radius: 16px; border-left: 5px solid var(--azure); }
+        .stat-box h3 { font-size: 0.8rem; color: var(--light-slate); text-transform: uppercase; }
+        .stat-box p { font-size: 2rem; font-weight: 800; }
+
+        /* --- TIMER --- */
+        .timer-display { font-size: 7rem; font-weight: 800; margin: 2rem 0; color: var(--slate); letter-spacing: -3px; }
+        .controls button { 
+            padding: 1rem 2.5rem; border-radius: 50px; border: none; font-weight: 700; 
+            cursor: pointer; transition: 0.2s; font-size: 1rem;
         }
+        .btn-start { background: var(--azure); color: white; }
+        .btn-reset { background: #e2e8f0; color: var(--slate); margin-left: 10px; }
 
-        .logo span { color: var(--forest-green); }
-
-        /* --- Hero Section --- */
-        .hero {
-            text-align: center;
-            padding: 4rem 1rem;
-            max-width: 800px;
-            margin: 0 auto;
+        /* --- SIMULADOR --- */
+        .quiz-option { 
+            padding: 1.2rem; border: 2px solid #e2e8f0; border-radius: 14px; 
+            margin-bottom: 1rem; cursor: pointer; transition: 0.2s; font-weight: 500;
         }
+        .quiz-option:hover { border-color: var(--azure); background: #f0f7ff; }
+        .correct { background: #dcfce7 !important; border-color: var(--forest) !important; color: #166534; }
+        .incorrect { background: #fee2e2 !important; border-color: var(--danger) !important; color: #991b1b; }
 
-        h1 { font-size: 3rem; margin-bottom: 1rem; color: #1e293b; }
-        p { font-size: 1.2rem; color: #64748b; margin-bottom: 2rem; }
+        /* --- CHAT TUTOR --- */
+        .chat-container { height: 400px; overflow-y: auto; padding: 1rem; background: #f1f5f9; border-radius: 15px; margin-bottom: 1rem; }
+        .msg { margin-bottom: 1rem; padding: 1rem; border-radius: 12px; max-width: 80% ; font-size: 0.95rem; }
+        .msg-bot { background: var(--white); align-self: flex-start; border-bottom-left-radius: 2px; }
+        .msg-user { background: var(--azure); color: white; margin-left: auto; border-bottom-right-radius: 2px; }
 
-        /* --- Focus Card (The Engine) --- */
-        .focus-container {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            padding: 3rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
-            margin: 0 auto;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.5);
-        }
-
-        #timer {
-            font-size: 5rem;
-            font-weight: 800;
-            margin: 1rem 0;
-            font-variant-numeric: tabular-nums;
-            color: var(--dark-slate);
-        }
-
-        .btn-main {
-            background-color: var(--azure-blue);
-            color: white;
-            border: none;
-            padding: 1rem 2.5rem;
-            font-size: 1.2rem;
-            font-weight: 600;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 15px -3px rgba(0, 127, 255, 0.3);
-        }
-
-        .btn-main:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 20px -3px rgba(0, 127, 255, 0.4);
-            background-color: #0066cc;
-        }
-
-        .btn-main.active {
-            background-color: var(--forest-green);
-            box-shadow: 0 10px 15px -3px rgba(34, 139, 34, 0.3);
-        }
-
-        /* --- Features --- */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, min-minmax(250px, 1fr));
-            gap: 2rem;
-            max-width: 1000px;
-            margin: 4rem auto;
-            padding: 0 1rem;
-        }
-
-        .card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 16px;
-            text-align: center;
-        }
-
-        .card h3 { color: var(--azure-blue); margin-bottom: 0.5rem; }
+        input[type="text"] { width: 100%; padding: 1rem; border: 2px solid #e2e8f0; border-radius: 12px; outline: none; }
+        input[type="text"]:focus { border-color: var(--azure); }
     </style>
 </head>
 <body>
 
-    <header>
+    <nav>
         <div class="logo">Idonet<span>+</span></div>
-        <nav>
-            <strong>PNFT 2026</strong>
-        </nav>
-    </header>
-
-    <section class="hero">
-        <h1>Tu éxito docente empieza aquí.</h1>
-        <p>Gestiona tu tiempo, domina los lineamientos del MEP y prepárate para la idoneidad con inteligencia artificial empática.</p>
+        <div class="nav-link active" onclick="switchView('dash')">🏠 Dashboard</div>
+        <div class="nav-link" onclick="switchView('focus')">⏱️ Enfoque Flow</div>
+        <div class="nav-link" onclick="switchView('quiz')">📝 Simulador MEP</div>
+        <div class="nav-link" onclick="switchView('tutor')">🤖 Tutor Virtual</div>
         
-        <div class="focus-container">
-            <span style="text-transform: uppercase; font-weight: 600; color: #94a3b8;">Modo Enfoque</span>
-            <div id="timer">25:00</div>
-            <button class="btn-main" id="startBtn">Iniciar Enfoque</button>
-            <p id="statusMsg" style="margin-top: 1rem; font-size: 0.9rem;"></p>
+        <div style="margin-top: auto; background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 12px;">
+            <p style="font-size: 0.8rem; color: #94a3b8;">Nivel de Maestría</p>
+            <p style="font-weight: 600;">Docente Innovador</p>
+            <div style="height: 6px; background: #334155; border-radius: 10px; margin-top: 8px;">
+                <div style="width: 65%; height: 100%; background: var(--forest); border-radius: 10px;"></div>
+            </div>
         </div>
-    </section>
+    </nav>
 
-    <section class="features">
-        <div class="card">
-            <h3>📖 Tutor MEP</h3>
-            <p>Consultas instantáneas sobre el PNFT 2026 y metodologías STEAM/CBL.</p>
+    <main>
+        <div id="dash" class="view active">
+            <h1 style="margin-bottom: 1.5rem;">¡Hola, Docente! 👋</h1>
+            <div class="grid">
+                <div class="stat-box"><h3>IdoPoints Acumulados</h3><p id="point-display">1,450</p></div>
+                <div class="stat-box" style="border-left-color: var(--forest);"><h3>Racha de Estudio</h3><p>7 Días</p></div>
+                <div class="stat-box"><h3>Módulos PNFT 2026</h3><p>4 / 12</p></div>
+            </div>
+            <div class="card">
+                <h3>Tu Actividad Reciente</h3>
+                <p style="color: var(--light-slate); margin-top: 10px;">Has completado 2 sesiones de enfoque hoy. ¡Estás en el 5% superior!</p>
+            </div>
         </div>
-        <div class="card">
-            <h3>🏆 IdoPoints</h3>
-            <p>Gana puntos por cada sesión de estudio y canjéalos por recursos.</p>
+
+        <div id="focus" class="view">
+            <div class="card" style="text-align: center;">
+                <h2>Temporizador de Estado de Flow</h2>
+                <p style="color: var(--light-slate);">Utiliza la técnica Pomodoro (25 min) para optimizar tu neuroplasticidad.</p>
+                <div class="timer-display" id="timer">25:00</div>
+                <div class="controls">
+                    <button class="btn-start" id="startBtn" onclick="toggleTimer()">Iniciar Enfoque</button>
+                    <button class="btn-reset" onclick="resetTimer()">Reiniciar</button>
+                </div>
+            </div>
         </div>
-        <div class="card">
-            <h3>🧠 Simulador</h3>
-            <p>Pruebas de idoneidad con feedback basado en neurociencia.</p>
+
+        <div id="quiz" class="view">
+            <div class="card" id="quiz-container">
+                <span style="color: var(--azure); font-weight: 700; text-transform: uppercase; font-size: 0.8rem;">Pregunta de Idoneidad</span>
+                <h2 id="question-text" style="margin: 1rem 0;">Cargando pregunta...</h2>
+                <div id="options-container"></div>
+                <div id="quiz-feedback" style="margin-top: 1.5rem; font-weight: 600; padding: 1rem; border-radius: 10px; display: none;"></div>
+                <button class="btn-start" style="margin-top: 1rem; display: none;" id="next-btn" onclick="loadNextQuestion()">Siguiente Pregunta</button>
+            </div>
         </div>
-    </section>
+
+        <div id="tutor" class="view">
+            <div class="card">
+                <h2>Tutor IA: Consultas PNFT 2026</h2>
+                <p style="color: var(--light-slate); margin-bottom: 1.5rem;">Pregúntame sobre el DUA, metodologías STEAM o el sistema TecnoPresta.</p>
+                <div class="chat-container" id="chat-box">
+                    <div class="msg msg-bot">Hola. Soy tu asistente de Idonet+. ¿En qué lineamiento técnico del MEP te puedo ayudar hoy?</div>
+                </div>
+                <input type="text" id="user-input" placeholder="Escribe tu duda aquí (ej. ¿Qué es el CBL?)" onkeypress="handleChat(event)">
+            </div>
+        </div>
+    </main>
 
     <script>
-        let timeLeft = 25 * 60;
-        let timerId = null;
-        const timerDisplay = document.getElementById('timer');
-        const startBtn = document.getElementById('startBtn');
-        const statusMsg = document.getElementById('statusMsg');
-
-        function updateTimer() {
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        // --- LÓGICA DE NAVEGACIÓN ---
+        function switchView(viewId) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            event.currentTarget.classList.add('active');
         }
 
-        startBtn.addEventListener('click', () => {
+        // --- LÓGICA DEL TEMPORIZADOR ---
+        let timeLeft = 25 * 60;
+        let timerId = null;
+        let points = 1450;
+
+        function toggleTimer() {
+            const btn = document.getElementById('startBtn');
             if (timerId) {
                 clearInterval(timerId);
                 timerId = null;
-                startBtn.textContent = 'Reanudar Enfoque';
-                startBtn.classList.remove('active');
-                statusMsg.textContent = "Sesión en pausa. ¡No pierdas el ritmo!";
+                btn.innerText = "Reanudar Enfoque";
             } else {
-                startBtn.textContent = 'Pausar Sesión';
-                startBtn.classList.add('active');
-                statusMsg.textContent = "Estás en el 'Estado de Flow'. Idonet+ está optimizando tu atención.";
-                
+                btn.innerText = "Pausar";
                 timerId = setInterval(() => {
                     timeLeft--;
-                    updateTimer();
+                    updateTimerDisplay();
                     if (timeLeft <= 0) {
                         clearInterval(timerId);
-                        alert("¡Excelente trabajo! Has ganado 50 IdoPoints.");
-                        timeLeft = 25 * 60;
-                        updateTimer();
-                        startBtn.textContent = 'Iniciar Enfoque';
+                        alert("¡Sesión terminada! Ganaste 100 IdoPoints.");
+                        addPoints(100);
+                        resetTimer();
                     }
                 }, 1000);
             }
-        });
+        }
+
+        function resetTimer() {
+            clearInterval(timerId);
+            timerId = null;
+            timeLeft = 25 * 60;
+            updateTimerDisplay();
+            document.getElementById('startBtn').innerText = "Iniciar Enfoque";
+        }
+
+        function updateTimerDisplay() {
+            const m = Math.floor(timeLeft / 60);
+            const s = timeLeft % 60;
+            document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
+        }
+
+        function addPoints(val) {
+            points += val;
+            document.getElementById('point-display').innerText = points;
+        }
+
+        // --- LÓGICA DEL SIMULADOR (BANCO DE PREGUNTAS MEP) ---
+        const questions = [
+            {
+                q: "¿Cuál es el enfoque principal del PNFT 2026 respecto a la tecnología?",
+                options: ["Uso instrumental de software comercial", "La tecnología como objeto para pensar, idear y crear", "Sustituir al docente por plataformas"],
+                correct: 1,
+                feedback: "Correcto. El PNFT busca que la tecnología sea un mediador para el desarrollo de habilidades del siglo XXI."
+            },
+            {
+                q: "Según la Circular DVM-009-05-2022, ¿qué sistema se usa para el préstamo de activos?",
+                options: ["Saber MEP", "TecnoPresta", "Mochila Digital"],
+                correct: 1,
+                feedback: "Exacto. TecnoPresta facilita la gestión y préstamo de dispositivos de forma remota."
+            },
+            {
+                q: "¿Qué metodología STEAM promueve resolver problemas mediante la empatía y prototipado?",
+                options: ["Design Thinking", "ABJ (Juegos)", "Clase Magistral"],
+                correct: 0,
+                feedback: "¡Bien! El Design Thinking (Empatizar, Definir, Idear, Prototipar, Evaluar) es clave en STEAM."
+            }
+        ];
+
+        let currentQ = 0;
+
+        function loadQuestion() {
+            const quiz = questions[currentQ];
+            document.getElementById('question-text').innerText = quiz.q;
+            const container = document.getElementById('options-container');
+            container.innerHTML = "";
+            document.getElementById('quiz-feedback').style.display = "none";
+            document.getElementById('next-btn').style.display = "none";
+
+            quiz.options.forEach((opt, i) => {
+                const div = document.createElement('div');
+                div.className = "quiz-option";
+                div.innerText = opt;
+                div.onclick = () => checkAnswer(i);
+                container.appendChild(div);
+            });
+        }
+
+        function checkAnswer(idx) {
+            const quiz = questions[currentQ];
+            const options = document.querySelectorAll('.quiz-option');
+            const feedback = document.getElementById('quiz-feedback');
+            
+            if (idx === quiz.correct) {
+                options[idx].classList.add('correct');
+                feedback.innerText = "✅ " + quiz.feedback;
+                feedback.style.background = "#dcfce7";
+                addPoints(50);
+            } else {
+                options[idx].classList.add('incorrect');
+                feedback.innerText = "❌ No es correcto. " + quiz.feedback;
+                feedback.style.background = "#fee2e2";
+            }
+            feedback.style.display = "block";
+            document.getElementById('next-btn').style.display = "inline-block";
+        }
+
+        function loadNextQuestion() {
+            currentQ = (currentQ + 1) % questions.length;
+            loadQuestion();
+        }
+
+        // --- LÓGICA DEL TUTOR CHAT ---
+        function handleChat(e) {
+            if (e.key === 'Enter') {
+                const input = document.getElementById('user-input');
+                const chatBox = document.getElementById('chat-box');
+                if (input.value.trim() === "") return;
+
+                // Mensaje Usuario
+                chatBox.innerHTML += `<div class="msg msg-user">${input.value}</div>`;
+                
+                // Respuesta Simulada (Aquí se conectaría con Gemini)
+                const text = input.value.toLowerCase();
+                let reply = "Interesante pregunta. Según los lineamientos del PNFT 2026, eso se enfoca en el desarrollo de competencias digitales docentes.";
+                
+                if(text.includes("steam")) reply = "El enfoque STEAM en el MEP integra Ciencia, Tecnología, Ingeniería, Artes y Matemáticas para el aprendizaje basado en proyectos.";
+                if(text.includes("dua")) reply = "El Diseño Universal para el Aprendizaje (DUA) es obligatorio para garantizar la inclusión y flexibilidad curricular.";
+
+                setTimeout(() => {
+                    chatBox.innerHTML += `<div class="msg msg-bot">${reply}</div>`;
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }, 600);
+
+                input.value = "";
+            }
+        }
+
+        // Iniciar
+        loadQuestion();
     </script>
 </body>
 </html>
