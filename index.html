@@ -2,1292 +2,2228 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registronet - Sistema de Gestión Docente</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0d7377">
+    <title>RegistraTe - Sistema de Gestión Educativa</title>
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
-        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .glass-effect { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
-        .card-hover { transition: all 0.3s ease; }
-        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
-        .animate-fade-in { animation: fadeIn 0.5s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .status-badge { transition: all 0.2s; cursor: pointer; }
-        .status-badge:hover { transform: scale(1.1); }
-        .hidden-section { display: none; }
-        .active-nav { border-bottom: 3px solid #667eea; color: #667eea; }
-        .periodo-tab.active { background-color: #667eea; color: white; }
-        input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #0d7377;
+            --primary-dark: #095c5f;
+            --secondary: #14919b;
+            --accent: #3fbac2;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --info: #17a2b8;
+            --purple: #6f42c1;
+            --pink: #e83e8c;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-300: #dee2e6;
+            --gray-400: #ced4da;
+            --gray-500: #adb5bd;
+            --gray-600: #6c757d;
+            --gray-700: #495057;
+            --gray-800: #343a40;
+            --gray-900: #212529;
+        }
+        
+        body {
+            background: #f0f2f5;
+            color: var(--gray-800);
+            line-height: 1.5;
+        }
+        
+        /* Login Screen */
+        .login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 20px;
+        }
+        
+        .login-box {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo-icon {
+            width: 90px;
+            height: 90px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .logo h1 {
+            font-size: 32px;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .logo p {
+            color: var(--gray-600);
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: var(--gray-700);
+            font-size: 14px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--gray-300);
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(13, 115, 119, 0.4);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            margin-top: 10px;
+        }
+        
+        /* Header */
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .header-brand .icon {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .header-brand h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .header-user {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .header-user span {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .btn-logout {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        
+        .btn-logout:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        /* Navigation */
+        .nav {
+            background: var(--primary);
+            padding: 0 24px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .nav-content {
+            display: flex;
+            gap: 4px;
+            min-width: max-content;
+        }
+        
+        .nav-item {
+            padding: 14px 20px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            color: white;
+            border-bottom-color: #fff;
+        }
+        
+        /* Main Content */
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .page-header {
+            margin-bottom: 24px;
+        }
+        
+        .page-header h2 {
+            font-size: 28px;
+            color: var(--gray-800);
+            font-weight: 700;
+        }
+        
+        .page-header p {
+            color: var(--gray-600);
+            margin-top: 4px;
+        }
+        
+        /* Secciones Grid - Estilo RegistraProfe */
+        .secciones-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 24px;
+        }
+        
+        .seccion-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .seccion-card h3 {
+            font-size: 22px;
+            color: var(--gray-800);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+        
+        .seccion-info {
+            color: var(--gray-600);
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+        
+        .seccion-info strong {
+            color: var(--gray-700);
+        }
+        
+        .btn-ver-est {
+            display: inline-block;
+            margin: 16px 0;
+            padding: 10px 20px;
+            background: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-ver-est:hover {
+            background: #357abd;
+            transform: translateY(-1px);
+        }
+        
+        .periodos-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin: 16px 0 12px 0;
+        }
+        
+        .periodo-item {
+            margin-bottom: 16px;
+        }
+        
+        .periodo-nombre {
+            font-size: 14px;
+            color: var(--gray-600);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .periodo-nombre::before {
+            content: "•";
+            color: var(--primary);
+            font-size: 20px;
+        }
+        
+        .botones-evaluacion {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .btn-eval {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-eval:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        .btn-trabajo { background: #6f42c1; color: white; }
+        .btn-tareas { background: #20c997; color: white; }
+        .btn-pruebas { background: #28a745; color: white; }
+        .btn-asistencia { background: #ffc107; color: #212529; }
+        .btn-reporte { background: #dc3545; color: white; }
+        .btn-proyecto { background: #17a2b8; color: white; }
+        
+        /* Indicadores de Logro - NUEVO */
+        .indicadores-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .indicadores-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .indicadores-header h3 {
+            font-size: 20px;
+            color: var(--gray-800);
+        }
+        
+        .btn-agregar-ind {
+            padding: 10px 20px;
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .indicador-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .indicador-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+        
+        .indicador-titulo {
+            font-weight: 600;
+            color: var(--gray-800);
+            font-size: 16px;
+            flex: 1;
+        }
+        
+        .indicador-porcentaje {
+            background: var(--primary);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        
+        .indicador-descripcion {
+            color: var(--gray-600);
+            font-size: 14px;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+        
+        .indicador-config {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+        }
+        
+        .config-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .config-item label {
+            font-size: 12px;
+            color: var(--gray-600);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .config-item input, .config-item select {
+            padding: 10px;
+            border: 2px solid var(--gray-300);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .indicador-acciones {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        
+        .btn-small {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-edit { background: #ffc107; color: #212529; }
+        .btn-delete { background: #dc3545; color: white; }
+        .btn-save { background: #28a745; color: white; }
+        
+        /* Tabla de estudiantes con indicadores */
+        .tabla-indicadores {
+            width: 100%;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .tabla-indicadores table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .tabla-indicadores th {
+            background: var(--gray-100);
+            padding: 16px 12px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--gray-300);
+        }
+        
+        .tabla-indicadores td {
+            padding: 16px 12px;
+            border-bottom: 1px solid var(--gray-200);
+            font-size: 14px;
+        }
+        
+        .tabla-indicadores tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .nota-input {
+            width: 70px;
+            padding: 10px;
+            border: 2px solid var(--gray-300);
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 15px;
+        }
+        
+        .nota-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .porcentaje-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #e3f2fd;
+            color: #1976d2;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        /* Horario - Estilo grilla */
+        .horario-container {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            overflow-x: auto;
+        }
+        
+        .horario-grid {
+            display: grid;
+            grid-template-columns: 80px repeat(5, 1fr);
+            gap: 8px;
+            min-width: 800px;
+        }
+        
+        .horario-header {
+            background: var(--gray-100);
+            padding: 16px;
+            text-align: center;
+            font-weight: 700;
+            color: var(--gray-700);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .horario-leccion {
+            background: var(--gray-100);
+            padding: 16px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--gray-600);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .horario-celda {
+            padding: 12px;
+            border-radius: 8px;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        
+        .horario-celda:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .horario-celda.vacio {
+            background: #f8f9fa;
+            border: 2px dashed var(--gray-300);
+        }
+        
+        .horario-celda.matematicas { background: #ffebee; color: #c62828; border-color: #ef9a9a; }
+        .horario-celda.ciencias { background: #e8f5e9; color: #2e7d32; border-color: #a5d6a7; }
+        .horario-celda.espanol { background: #e3f2fd; color: #1565c0; border-color: #90caf9; }
+        .horario-celda.sociales { background: #fff3e0; color: #ef6c00; border-color: #ffcc80; }
+        .horario-celda.ingles { background: #f3e5f5; color: #6a1b9a; border-color: #ce93d8; }
+        
+        .horario-materia {
+            font-weight: 700;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+        
+        .horario-seccion {
+            font-size: 11px;
+            opacity: 0.9;
+        }
+        
+        /* Asistencia - Calendario de lecciones */
+        .asistencia-lecciones {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 24px;
+        }
+        
+        .leccion-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .leccion-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .leccion-card.completada {
+            background: #e8f5e9;
+            border-color: #4caf50;
+        }
+        
+        .leccion-numero {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 12px;
+        }
+        
+        .leccion-info {
+            color: var(--gray-600);
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+        
+        .leccion-acciones {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        
+        /* Bitácoras */
+        .bitacora-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 4px solid var(--info);
+        }
+        
+        .bitacora-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+        
+        .bitacora-titulo {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+        
+        .bitacora-fecha {
+            color: var(--gray-500);
+            font-size: 13px;
+        }
+        
+        .bitacora-contenido {
+            color: var(--gray-600);
+            line-height: 1.8;
+            font-size: 14px;
+        }
+        
+        .bitacora-meta {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--gray-200);
+        }
+        
+        .bitacora-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+        
+        /* Reporte oficial MEP */
+        .reporte-oficial {
+            background: white;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .reporte-membrete {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .reporte-logo-mep {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .reporte-logo-mep .escudo {
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 30px;
+        }
+        
+        .reporte-logo-mep h4 {
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.4;
+        }
+        
+        .reporte-inst {
+            text-align: right;
+        }
+        
+        .reporte-inst h4 {
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        
+        .reporte-titulo {
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .reporte-titulo h2 {
+            font-size: 20px;
+            color: var(--gray-800);
+            margin-bottom: 10px;
+        }
+        
+        .reporte-titulo p {
+            color: var(--gray-600);
+            font-size: 14px;
+        }
+        
+        .reporte-tabla {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .reporte-tabla th, .reporte-tabla td {
+            border: 1px solid var(--gray-400);
+            padding: 12px;
+            text-align: left;
+            font-size: 14px;
+        }
+        
+        .reporte-tabla th {
+            background: var(--gray-100);
+            font-weight: 700;
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal {
+            background: white;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow: hidden;
+            animation: modalSlide 0.3s ease;
+        }
+        
+        @keyframes modalSlide {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .modal-header h3 {
+            font-size: 20px;
+            color: var(--gray-800);
+        }
+        
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: var(--gray-100);
+            color: var(--gray-500);
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.2s;
+        }
+        
+        .modal-close:hover {
+            background: var(--gray-200);
+        }
+        
+        .modal-body {
+            padding: 24px;
+            overflow-y: auto;
+            max-height: 60vh;
+        }
+        
+        .modal-footer {
+            padding: 20px 24px;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+        
+        /* Formularios */
+        .form-row {
+            margin-bottom: 20px;
+        }
+        
+        .form-row label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--gray-700);
+            font-size: 14px;
+        }
+        
+        .form-row input,
+        .form-row select,
+        .form-row textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--gray-300);
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+        
+        .form-row input:focus,
+        .form-row select:focus,
+        .form-row textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .form-row textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+        
+        .form-check input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary);
+        }
+        
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 300;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .toast {
+            background: white;
+            border-radius: 10px;
+            padding: 16px 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideInRight 0.3s ease;
+            min-width: 300px;
+            border-left: 4px solid;
+        }
+        
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .toast.success { border-left-color: var(--success); }
+        .toast.error { border-left-color: var(--danger); }
+        .toast.info { border-left-color: var(--info); }
+        
+        /* Utilidades */
+        .text-center { text-align: center; }
+        .mb-4 { margin-bottom: 16px; }
+        .mt-4 { margin-top: 16px; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .secciones-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-top {
+                padding: 12px 16px;
+            }
+            
+            .header-brand h1 {
+                font-size: 18px;
+            }
+            
+            .nav {
+                padding: 0 16px;
+            }
+            
+            .main {
+                padding: 16px;
+            }
+            
+            .horario-grid {
+                grid-template-columns: 60px repeat(5, 150px);
+            }
+            
+            .indicador-config {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            background: var(--gray-100);
+            padding: 6px;
+            border-radius: 10px;
+            margin-bottom: 24px;
+        }
+        
+        .tab {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            background: transparent;
+        }
+        
+        .tab.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        /* Filtros */
+        .filtros-bar {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        
+        .filtro-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .filtro-item label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-600);
+            text-transform: uppercase;
+        }
+        
+        .filtro-item select,
+        .filtro-item input {
+            padding: 10px 14px;
+            border: 2px solid var(--gray-300);
+            border-radius: 8px;
+            font-size: 14px;
+            min-width: 200px;
+        }
     </style>
 </head>
-<body class="text-gray-800">
-
+<body>
     <!-- Login Screen -->
-    <div id="loginScreen" class="fixed inset-0 gradient-bg flex items-center justify-center z-50">
-        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md animate-fade-in">
-            <div class="text-center mb-8">
-                <div class="w-20 h-20 bg-gradient-to-br from-blue-400 to-purple-600 rounded-2xl mx-auto flex items-center justify-center mb-4 shadow-lg">
-                    <i class="fas fa-graduation-cap text-4xl text-white"></i>
-                </div>
-                <h1 class="text-3xl font-bold text-gray-800">Registronet</h1>
-                <p class="text-gray-500 mt-2">Sistema de Gestión Docente</p>
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
+            <div class="logo">
+                <div class="logo-icon">📚</div>
+                <h1>RegistraTe</h1>
+                <p>Sistema de Gestión Educativa</p>
             </div>
-            <form id="loginForm" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
-                    <input type="email" id="loginEmail" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition" placeholder="profesor@escuela.edu" value="profesor@registronet.com">
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Correo electrónico</label>
+                    <input type="email" id="loginEmail" placeholder="profesor@escuela.edu" value="demo@registrate.com" required>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
-                    <input type="password" id="loginPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition" placeholder="••••••••" value="password">
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" value="123456" required>
                 </div>
-                <button type="submit" class="w-full gradient-bg text-white py-3 rounded-lg font-semibold hover:opacity-90 transition transform hover:scale-[1.02]">
-                    Iniciar Sesión
+                <button type="submit" class="btn btn-primary">
+                    <span>🚀</span> Iniciar Sesión
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="app.register()">
+                    <span>✨</span> Crear cuenta gratis
                 </button>
             </form>
-            <div class="mt-6 text-center text-sm text-gray-500">
-                <p>Demo: cualquier correo/contraseña funciona</p>
-            </div>
+            <p style="text-align: center; margin-top: 20px; color: var(--gray-500); font-size: 13px;">
+                Demo: usa cualquier email/contraseña
+            </p>
         </div>
     </div>
 
-    <!-- Main Application -->
-    <div id="mainApp" class="hidden">
-        <!-- Navigation -->
-        <nav class="glass-effect fixed w-full top-0 z-40 shadow-sm">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between h-16">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer" onclick="showSection('dashboard')">
-                            <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-600 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-graduation-cap text-white text-xl"></i>
-                            </div>
-                            <span class="font-bold text-xl text-gray-800">Registronet</span>
-                        </div>
-                        <div class="hidden md:ml-10 md:flex md:space-x-8">
-                            <button onclick="showSection('dashboard')" id="nav-dashboard" class="active-nav px-3 py-2 text-sm font-medium text-gray-900 inline-flex items-center gap-2">
-                                <i class="fas fa-home"></i> Inicio
-                            </button>
-                            <button onclick="showSection('secciones')" id="nav-secciones" class="px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-900 inline-flex items-center gap-2">
-                                <i class="fas fa-chalkboard"></i> Secciones
-                            </button>
-                            <button onclick="showSection('horario')" id="nav-horario" class="px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-900 inline-flex items-center gap-2">
-                                <i class="fas fa-clock"></i> Horario
-                            </button>
-                            <button onclick="showSection('reportes')" id="nav-reportes" class="px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-900 inline-flex items-center gap-2">
-                                <i class="fas fa-file-alt"></i> Reportes
-                            </button>
-                        </div>
+    <!-- Main App -->
+    <div class="app" id="app" style="display: none;">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-top">
+                <div class="header-brand" onclick="app.navigate('inicio')">
+                    <div class="icon">📚</div>
+                    <h1>RegistraTe</h1>
+                </div>
+                <div class="header-user">
+                    <span id="userName">María Sequeira</span>
+                    <button class="btn-logout" onclick="app.logout()">Cerrar sesión</button>
+                </div>
+            </div>
+            <nav class="nav">
+                <div class="nav-content">
+                    <a class="nav-item active" data-page="inicio" onclick="app.navigate('inicio')">Inicio</a>
+                    <a class="nav-item" data-page="secciones" onclick="app.navigate('secciones')">Secciones</a>
+                    <a class="nav-item" data-page="asignaturas" onclick="app.navigate('asignaturas')">Asignaturas</a>
+                    <a class="nav-item" data-page="horario" onclick="app.navigate('horario')">Horario</a>
+                    <a class="nav-item" data-page="trabajo" onclick="app.navigate('trabajo')">Trabajo Cotidiano</a>
+                    <a class="nav-item" data-page="tareas" onclick="app.navigate('tareas')">Tareas</a>
+                    <a class="nav-item" data-page="pruebas" onclick="app.navigate('pruebas')">Pruebas</a>
+                    <a class="nav-item" data-page="asistencia" onclick="app.navigate('asistencia')">Asistencia</a>
+                    <a class="nav-item" data-page="reporte" onclick="app.navigate('reporte')">Reporte Final</a>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Inicio / Dashboard -->
+            <div class="page active" id="page-inicio">
+                <div class="page-header">
+                    <h2>Bienvenido a RegistraTe</h2>
+                    <p>Sistema integral de gestión educativa</p>
+                </div>
+                
+                <div class="secciones-grid" id="dashboardSecciones">
+                    <!-- Secciones se cargan aquí -->
+                </div>
+            </div>
+
+            <!-- Secciones -->
+            <div class="page" id="page-secciones">
+                <div class="page-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h2>Mis Secciones</h2>
+                        <p>Gestiona tus grupos y asignaturas</p>
                     </div>
-                    <div class="flex items-center gap-4">
-                        <button onclick="showSection('bitacoras')" class="text-gray-500 hover:text-gray-700 relative">
-                            <i class="fas fa-book"></i>
-                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center" id="bitacoraCount">0</span>
-                        </button>
-                        <div class="flex items-center gap-2">
-                            <img src="https://ui-avatars.com/api/?name=Profesor&background=667eea&color=fff" class="w-8 h-8 rounded-full">
-                            <span class="hidden md:block text-sm font-medium text-gray-700" id="userName">Profesor</span>
-                            <button onclick="logout()" class="text-gray-400 hover:text-red-500 ml-2">
-                                <i class="fas fa-sign-out-alt"></i>
-                            </button>
-                        </div>
+                    <button class="btn btn-primary" onclick="app.openModal('nuevaSeccion')" style="width: auto; padding: 12px 24px;">
+                        <span>➕</span> Nueva Sección
+                    </button>
+                </div>
+                
+                <div class="secciones-grid" id="listaSecciones">
+                    <!-- Secciones se cargan aquí -->
+                </div>
+            </div>
+
+            <!-- Asignaturas -->
+            <div class="page" id="page-asignaturas">
+                <div class="page-header">
+                    <h2>Asignaturas</h2>
+                    <p>Configuración de asignaturas por sección</p>
+                </div>
+                <div class="card" style="background: white; padding: 40px; text-align: center; color: var(--gray-500);">
+                    <div style="font-size: 60px; margin-bottom: 20px;">📚</div>
+                    <h3>Gestión de Asignaturas</h3>
+                    <p>Las asignaturas se administran desde cada sección</p>
+                </div>
+            </div>
+
+            <!-- Horario -->
+            <div class="page" id="page-horario">
+                <div class="page-header">
+                    <h2>Horario de Clases</h2>
+                    <p>Vista semanal de tus lecciones</p>
+                </div>
+                
+                <div class="horario-container">
+                    <div class="horario-grid" id="horarioGrid">
+                        <!-- Horario se genera dinámicamente -->
                     </div>
                 </div>
             </div>
-        </nav>
 
-        <!-- Main Content -->
-        <main class="pt-20 pb-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-            
-            <!-- Dashboard -->
-            <section id="dashboard" class="animate-fade-in">
-                <div class="mb-8">
-                    <h2 class="text-3xl font-bold text-gray-900">Panel de Control</h2>
-                    <p class="text-gray-600 mt-1">Bienvenido de vuelta, <span id="welcomeName">Profesor</span></p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 card-hover">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm text-gray-500">Total Secciones</p>
-                                <p class="text-2xl font-bold text-gray-900" id="totalSecciones">0</p>
-                            </div>
-                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
-                                <i class="fas fa-chalkboard text-xl"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 card-hover">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm text-gray-500">Total Estudiantes</p>
-                                <p class="text-2xl font-bold text-gray-900" id="totalEstudiantes">0</p>
-                            </div>
-                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-green-600">
-                                <i class="fas fa-users text-xl"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 card-hover">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm text-gray-500">Evaluaciones Hoy</p>
-                                <p class="text-2xl font-bold text-gray-900" id="evaluacionesHoy">0</p>
-                            </div>
-                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600">
-                                <i class="fas fa-clipboard-check text-xl"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 card-hover">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm text-gray-500">Asistencia Promedio</p>
-                                <p class="text-2xl font-bold text-gray-900" id="asistenciaPromedio">0%</p>
-                            </div>
-                            <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600">
-                                <i class="fas fa-chart-line text-xl"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Acceso Rápido</h3>
-                        <div class="grid grid-cols-2 gap-4">
-                            <button onclick="showSection('secciones'); openModal('nuevaSeccionModal')" class="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition text-center group">
-                                <i class="fas fa-plus-circle text-3xl text-gray-400 group-hover:text-purple-500 mb-2"></i>
-                                <p class="text-sm font-medium text-gray-700">Nueva Sección</p>
-                            </button>
-                            <button onclick="showSection('horario')" class="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition text-center group">
-                                <i class="fas fa-clock text-3xl text-gray-400 group-hover:text-blue-500 mb-2"></i>
-                                <p class="text-sm font-medium text-gray-700">Ver Horario</p>
-                            </button>
-                            <button onclick="showSection('reportes')" class="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition text-center group">
-                                <i class="fas fa-file-export text-3xl text-gray-400 group-hover:text-green-500 mb-2"></i>
-                                <p class="text-sm font-medium text-gray-700">Exportar Reportes</p>
-                            </button>
-                            <button onclick="showSection('bitacoras')" class="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-orange-500 hover:bg-orange-50 transition text-center group">
-                                <i class="fas fa-book-open text-3xl text-gray-400 group-hover:text-orange-500 mb-2"></i>
-                                <p class="text-sm font-medium text-gray-700">Nueva Bitácora</p>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Próximas Clases</h3>
-                        <div id="proximasClases" class="space-y-3">
-                            <!-- Dynamic content -->
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Secciones -->
-            <section id="secciones" class="hidden-section animate-fade-in">
-                <div class="flex justify-between items-center mb-6">
-                    <div>
-                        <h2 class="text-3xl font-bold text-gray-900">Mis Secciones</h2>
-                        <p class="text-gray-600">Gestiona tus grupos y estudiantes</p>
-                    </div>
-                    <button onclick="openModal('nuevaSeccionModal')" class="gradient-bg text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition flex items-center gap-2">
-                        <i class="fas fa-plus"></i> Nueva Sección
-                    </button>
-                </div>
-
-                <div id="seccionesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Dynamic secciones -->
-                </div>
-            </section>
-
-            <!-- Detalle Sección -->
-            <section id="detalleSeccion" class="hidden-section animate-fade-in">
-                <button onclick="showSection('secciones')" class="mb-4 text-gray-600 hover:text-gray-900 flex items-center gap-2">
-                    <i class="fas fa-arrow-left"></i> Volver a Secciones
-                </button>
-                
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h2 class="text-3xl font-bold text-gray-900" id="detalleTitulo">Matemáticas</h2>
-                            <p class="text-gray-600 mt-1" id="detalleSubtitulo">Sección 6-2 • Escuela República de Francia</p>
-                            <div class="flex gap-2 mt-3">
-                                <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium" id="detallePeriodo">I Periodo</span>
-                                <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm font-medium" id="detalleCantidad">0 estudiantes</span>
-                            </div>
-                        </div>
-                        <div class="flex gap-2">
-                            <button onclick="openModal('nuevoEstudianteModal')" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center gap-2">
-                                <i class="fas fa-user-plus"></i> Agregar Estudiante
-                            </button>
-                            <button onclick="eliminarSeccionActual()" class="px-4 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tabs -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 mb-6">
-                    <div class="border-b border-gray-200">
-                        <nav class="flex -mb-px">
-                            <button onclick="cambiarTab('estudiantes')" id="tab-estudiantes" class="tab-btn active-nav px-6 py-4 text-sm font-medium border-b-2 border-purple-500 text-purple-600">
-                                <i class="fas fa-users mr-2"></i>Estudiantes
-                            </button>
-                            <button onclick="cambiarTab('asistencia')" id="tab-asistencia" class="tab-btn px-6 py-4 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700">
-                                <i class="fas fa-check-circle mr-2"></i>Asistencia
-                            </button>
-                            <button onclick="cambiarTab('evaluaciones')" id="tab-evaluaciones" class="tab-btn px-6 py-4 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700">
-                                <i class="fas fa-clipboard-list mr-2"></i>Evaluaciones
-                            </button>
-                            <button onclick="cambiarTab('reporte')" id="tab-reporte" class="tab-btn px-6 py-4 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700">
-                                <i class="fas fa-chart-bar mr-2"></i>Reporte Final
-                            </button>
-                        </nav>
-                    </div>
-
-                    <div class="p-6">
-                        <!-- Estudiantes Tab -->
-                        <div id="content-estudiantes" class="tab-content">
-                            <div class="overflow-x-auto">
-                                <table class="min-w-full divide-y divide-gray-200">
-                                    <thead class="bg-gray-50">
-                                        <tr>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estudiante</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ACS</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Promedio</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tablaEstudiantes" class="bg-white divide-y divide-gray-200">
-                                        <!-- Dynamic -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <!-- Asistencia Tab -->
-                        <div id="content-asistencia" class="tab-content hidden">
-                            <div class="mb-4 flex justify-between items-center">
-                                <div class="flex gap-2">
-                                    <button onclick="cambiarPeriodoAsistencia('I')" class="periodo-tab active px-4 py-2 rounded-lg text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300">I Periodo</button>
-                                    <button onclick="cambiarPeriodoAsistencia('II')" class="periodo-tab px-4 py-2 rounded-lg text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300">II Periodo</button>
-                                    <button onclick="cambiarPeriodoAsistencia('III')" class="periodo-tab px-4 py-2 rounded-lg text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300">III Periodo</button>
-                                </div>
-                                <button onclick="registrarAsistenciaHoy()" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
-                                    <i class="fas fa-calendar-check mr-2"></i>Registrar Hoy
-                                </button>
-                            </div>
-                            <div class="overflow-x-auto">
-                                <table class="min-w-full divide-y divide-gray-200" id="tablaAsistencia">
-                                    <thead class="bg-gray-50">
-                                        <tr>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estudiante</th>
-                                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">L</th>
-                                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">M</th>
-                                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">X</th>
-                                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">J</th>
-                                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">V</th>
-                                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="bodyAsistencia" class="bg-white divide-y divide-gray-200">
-                                        <!-- Dynamic -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <!-- Evaluaciones Tab -->
-                        <div id="content-evaluaciones" class="tab-content hidden">
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                                <div onclick="abrirEvaluacion('trabajo')" class="cursor-pointer bg-blue-50 border-2 border-blue-200 rounded-xl p-6 hover:border-blue-400 hover:bg-blue-100 transition text-center">
-                                    <i class="fas fa-briefcase text-4xl text-blue-600 mb-3"></i>
-                                    <h4 class="font-semibold text-gray-900">Trabajo Cotidiano</h4>
-                                    <p class="text-sm text-gray-600 mt-1" id="countTrabajo">0 registros</p>
-                                </div>
-                                <div onclick="abrirEvaluacion('tareas')" class="cursor-pointer bg-green-50 border-2 border-green-200 rounded-xl p-6 hover:border-green-400 hover:bg-green-100 transition text-center">
-                                    <i class="fas fa-home text-4xl text-green-600 mb-3"></i>
-                                    <h4 class="font-semibold text-gray-900">Tareas</h4>
-                                    <p class="text-sm text-gray-600 mt-1" id="countTareas">0 registros</p>
-                                </div>
-                                <div onclick="abrirEvaluacion('pruebas')" class="cursor-pointer bg-purple-50 border-2 border-purple-200 rounded-xl p-6 hover:border-purple-400 hover:bg-purple-100 transition text-center">
-                                    <i class="fas fa-file-alt text-4xl text-purple-600 mb-3"></i>
-                                    <h4 class="font-semibold text-gray-900">Pruebas</h4>
-                                    <p class="text-sm text-gray-600 mt-1" id="countPruebas">0 registros</p>
-                                </div>
-                            </div>
-                            
-                            <div id="formularioEvaluacion" class="hidden bg-gray-50 rounded-xl p-6 border border-gray-200">
-                                <h4 class="font-semibold text-lg mb-4" id="tituloEvalForm">Nueva Evaluación</h4>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                                    <input type="text" id="nombreEvaluacion" placeholder="Nombre de la evaluación" class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none">
-                                    <input type="date" id="fechaEvaluacion" class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none">
-                                    <input type="number" id="porcentajeEvaluacion" placeholder="%" class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none" min="0" max="100">
-                                </div>
-                                <div id="listaNotasEstudiantes" class="space-y-2 max-h-96 overflow-y-auto">
-                                    <!-- Dynamic inputs for grades -->
-                                </div>
-                                <div class="mt-4 flex justify-end gap-2">
-                                    <button onclick="cancelarEvaluacion()" class="px-4 py-2 text-gray-600 hover:text-gray-800">Cancelar</button>
-                                    <button onclick="guardarEvaluacion()" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Guardar Notas</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Reporte Tab -->
-                        <div id="content-reporte" class="tab-content hidden">
-                            <div class="flex justify-between items-center mb-6">
-                                <h3 class="text-lg font-semibold">Reporte Final del Periodo</h3>
-                                <div class="flex gap-2">
-                                    <button onclick="generarReportePDF()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center gap-2">
-                                        <i class="fas fa-file-pdf"></i> PDF
-                                    </button>
-                                    <button onclick="generarReporteExcel()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2">
-                                        <i class="fas fa-file-excel"></i> Excel
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="overflow-x-auto">
-                                <table class="min-w-full divide-y divide-gray-200" id="tablaReporteFinal">
-                                    <thead class="bg-gray-50">
-                                        <tr>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">#</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estudiante</th>
-                                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">T.Cotidiano</th>
-                                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Tareas</th>
-                                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Pruebas</th>
-                                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Promedio</th>
-                                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Asistencia</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="bodyReporteFinal" class="bg-white divide-y divide-gray-200">
-                                        <!-- Dynamic -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Horario -->
-            <section id="horario" class="hidden-section animate-fade-in">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-3xl font-bold text-gray-900">Horario de Clases</h2>
-                    <button onclick="openModal('nuevaClaseModal')" class="gradient-bg text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition">
-                        <i class="fas fa-plus mr-2"></i>Agregar Clase
-                    </button>
+            <!-- Trabajo Cotidiano con Indicadores de Logro -->
+            <div class="page" id="page-trabajo">
+                <div class="page-header">
+                    <h2>Trabajo Cotidiano</h2>
+                    <p>Gestión de indicadores de logro</p>
                 </div>
                 
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="grid grid-cols-6 border-b border-gray-200 bg-gray-50 font-medium text-gray-700">
-                        <div class="p-4 border-r border-gray-200">Hora</div>
-                        <div class="p-4 border-r border-gray-200">Lunes</div>
-                        <div class="p-4 border-r border-gray-200">Martes</div>
-                        <div class="p-4 border-r border-gray-200">Miércoles</div>
-                        <div class="p-4 border-r border-gray-200">Jueves</div>
-                        <div class="p-4">Viernes</div>
-                    </div>
-                    <div id="horarioGrid" class="divide-y divide-gray-200">
-                        <!-- Dynamic horario -->
-                    </div>
-                </div>
-            </section>
-
-            <!-- Reportes -->
-            <section id="reportes" class="hidden-section animate-fade-in">
-                <h2 class="text-3xl font-bold text-gray-900 mb-6">Generar Reportes</h2>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 card-hover">
-                        <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center text-red-600 mb-4">
-                            <i class="fas fa-file-pdf text-2xl"></i>
-                        </div>
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Reporte Individual PDF</h3>
-                        <p class="text-gray-600 text-sm mb-4">Genera reportes detallados por estudiante en formato PDF.</p>
-                        <select id="selectReporteEstudiante" class="w-full mb-3 px-3 py-2 border rounded-lg">
-                            <option value="">Seleccionar estudiante...</option>
-                        </select>
-                        <button onclick="generarReporteIndividualPDF()" class="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
-                            Descargar PDF
-                        </button>
-                    </div>
-
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 card-hover">
-                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-green-600 mb-4">
-                            <i class="fas fa-file-excel text-2xl"></i>
-                        </div>
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Exportar a Excel</h3>
-                        <p class="text-gray-600 text-sm mb-4">Exporta todas las notas y asistencias a Excel.</p>
-                        <select id="selectReporteSeccion" class="w-full mb-3 px-3 py-2 border rounded-lg">
+                <div class="filtros-bar">
+                    <div class="filtro-item">
+                        <label>Sección</label>
+                        <select id="trabajoSeccion" onchange="app.cargarIndicadores()">
                             <option value="">Seleccionar sección...</option>
                         </select>
-                        <button onclick="exportarExcel()" class="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
-                            Descargar Excel
-                        </button>
                     </div>
-
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 card-hover">
-                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 mb-4">
-                            <i class="fas fa-file-csv text-2xl"></i>
-                        </div>
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Formato SEA</h3>
-                        <p class="text-gray-600 text-sm mb-4">Genera archivo CSV compatible con el sistema SEA.</p>
-                        <button onclick="generarCSV()" class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                            Descargar CSV
-                        </button>
+                    <div class="filtro-item">
+                        <label>Periodo</label>
+                        <select id="trabajoPeriodo" onchange="app.cargarIndicadores()">
+                            <option value="I">I Periodo</option>
+                            <option value="II">II Periodo</option>
+                            <option value="III">III Periodo</option>
+                        </select>
                     </div>
                 </div>
-            </section>
-
-            <!-- Bitácoras -->
-            <section id="bitacoras" class="hidden-section animate-fade-in">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-3xl font-bold text-gray-900">Bitácoras y Recordatorios</h2>
-                    <button onclick="openModal('nuevaBitacoraModal')" class="gradient-bg text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition">
-                        <i class="fas fa-plus mr-2"></i>Nueva Entrada
-                    </button>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="lg:col-span-2 space-y-4" id="listaBitacoras">
-                        <!-- Dynamic bitacoras -->
+                
+                <!-- Indicadores de Logro -->
+                <div class="indicadores-section">
+                    <div class="indicadores-header">
+                        <h3>📋 Indicadores de Logro</h3>
+                        <button class="btn-agregar-ind" onclick="app.openModal('nuevoIndicador')">
+                            <span>➕</span> Agregar Indicador
+                        </button>
                     </div>
                     
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 h-fit">
-                        <h3 class="font-semibold text-gray-900 mb-4">Recordatorios</h3>
-                        <div id="listaRecordatorios" class="space-y-3">
-                            <p class="text-gray-500 text-sm italic">No hay recordatorios pendientes</p>
-                        </div>
+                    <div id="listaIndicadores">
+                        <!-- Indicadores se cargan aquí -->
                     </div>
                 </div>
-            </section>
+                
+                <!-- Tabla de estudiantes con notas por indicador -->
+                <div class="indicadores-section" id="tablaIndicadoresSection" style="display: none;">
+                    <h3 class="mb-4">📝 Registro de Notas por Indicador</h3>
+                    <div class="tabla-indicadores">
+                        <table id="tablaNotasIndicadores">
+                            <thead>
+                                <tr>
+                                    <th>Estudiante</th>
+                                    <!-- Indicadores dinámicos -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Notas dinámicas -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tareas -->
+            <div class="page" id="page-tareas">
+                <div class="page-header">
+                    <h2>Tareas</h2>
+                    <p>Registro y evaluación de tareas</p>
+                </div>
+                
+                <div class="filtros-bar">
+                    <div class="filtro-item">
+                        <label>Sección</label>
+                        <select id="tareasSeccion" onchange="app.cargarTareas()">
+                            <option value="">Seleccionar sección...</option>
+                        </select>
+                    </div>
+                    <div class="filtro-item">
+                        <label>Periodo</label>
+                        <select id="tareasPeriodo">
+                            <option value="I">I Periodo</option>
+                            <option value="II">II Periodo</option>
+                            <option value="III">III Periodo</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <button class="btn btn-primary" onclick="app.openModal('nuevaTarea')" style="width: auto;">
+                        <span>➕</span> Nueva Tarea
+                    </button>
+                </div>
+                
+                <div id="listaTareas">
+                    <!-- Tareas se cargan aquí -->
+                </div>
+            </div>
+
+            <!-- Pruebas -->
+            <div class="page" id="page-pruebas">
+                <div class="page-header">
+                    <h2>Pruebas</h2>
+                    <p>Evaluaciones y exámenes</p>
+                </div>
+                
+                <div class="filtros-bar">
+                    <div class="filtro-item">
+                        <label>Sección</label>
+                        <select id="pruebasSeccion">
+                            <option value="">Seleccionar sección...</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <button class="btn btn-primary" onclick="app.openModal('nuevaPrueba')" style="width: auto;">
+                        <span>➕</span> Nueva Prueba
+                    </button>
+                </div>
+                
+                <div class="card" style="background: white; padding: 40px; text-align: center; color: var(--gray-500);">
+                    <div style="font-size: 60px; margin-bottom: 20px;">📝</div>
+                    <h3>Sistema de Pruebas</h3>
+                    <p>Configure sus pruebas y exámenes</p>
+                </div>
+            </div>
+
+            <!-- Asistencia -->
+            <div class="page" id="page-asistencia">
+                <div class="page-header">
+                    <h2>Control de Asistencia</h2>
+                    <p>Registro por lecciones y fechas</p>
+                </div>
+                
+                <div class="card" style="background: white; padding: 24px; margin-bottom: 24px;">
+                    <div class="filtros-bar" style="margin-bottom: 0;">
+                        <div class="filtro-item">
+                            <label>Fecha</label>
+                            <input type="date" id="asistenciaFecha" value="2024-12-27">
+                        </div>
+                        <div class="filtro-item">
+                            <label>Sección</label>
+                            <select id="asistenciaSeccion" onchange="app.cargarLecciones()">
+                                <option value="6-2">6-2</option>
+                                <option value="6-3">6-3</option>
+                            </select>
+                        </div>
+                        <div class="filtro-item">
+                            <label>Asignatura</label>
+                            <select id="asistenciaAsignatura">
+                                <option value="ciencias">Ciencias</option>
+                                <option value="matematicas">Matemáticas</option>
+                            </select>
+                        </div>
+                        <div class="filtro-item">
+                            <label>Lección</label>
+                            <select id="asistenciaLeccion">
+                                <option value="todas">Todas</option>
+                                <option value="1">Lección 1</option>
+                                <option value="2">Lección 2</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <label class="form-check" style="margin-bottom: 16px;">
+                            <input type="checkbox" id="mostrarCentro">
+                            <span>Mostrar centro educativo</span>
+                        </label>
+                        
+                        <button class="btn btn-primary" onclick="app.registrarAsistencia()" style="width: auto;">
+                            ✅ Registrar Asistencia
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="asistencia-lecciones" id="listaLecciones">
+                    <!-- Lecciones se cargan aquí -->
+                </div>
+            </div>
+
+            <!-- Reporte Final -->
+            <div class="page" id="page-reporte">
+                <div class="page-header">
+                    <h2>Reporte Final</h2>
+                    <p>Generación de reportes oficiales</p>
+                </div>
+                
+                <div class="reporte-oficial" id="reporteOficial">
+                    <div class="reporte-membrete">
+                        <div class="reporte-logo-mep">
+                            <div class="escudo">🏛️</div>
+                            <div>
+                                <h4><strong>MINISTERIO DE<br>EDUCACIÓN PÚBLICA</strong></h4>
+                                <h4>GOBIERNO DE COSTA RICA</h4>
+                            </div>
+                        </div>
+                        <div class="reporte-inst">
+                            <h4><strong>Dirección Regional de Educación de Limón</strong></h4>
+                            <h4>Circuito Escolar 10 Liceo Rural Las Moras</h4>
+                        </div>
+                    </div>
+                    
+                    <div class="reporte-titulo">
+                        <p>Este reporte presenta un resumen de las ausencias y tardanzas registradas durante el periodo evaluado</p>
+                    </div>
+                    
+                    <table class="reporte-tabla">
+                        <tr>
+                            <td><strong>Estudiante:</strong></td>
+                            <td>Amalia Gil Longoria</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sección:</strong></td>
+                            <td>9-1</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Asignatura:</strong></td>
+                            <td>Estudios Sociales</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Curso lectivo:</strong></td>
+                            <td>2025</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Docente:</strong></td>
+                            <td>Lic. María Duarte</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fecha del reporte:</strong></td>
+                            <td>7 de mayo de 2025</td>
+                        </tr>
+                    </table>
+                    
+                    <div class="reporte-titulo">
+                        <h2>I Periodo</h2>
+                        <h3>Reporte de ausencias y tardanzas</h3>
+                    </div>
+                    
+                    <table class="reporte-tabla">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Lección</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>26 de marzo de 2025</td>
+                                <td>5</td>
+                                <td>Tarde</td>
+                            </tr>
+                            <tr>
+                                <td>29 de abril de 2025</td>
+                                <td>1</td>
+                                <td>Ausencia Injustificada</td>
+                            </tr>
+                            <tr>
+                                <td>11 de marzo de 2025</td>
+                                <td>1</td>
+                                <td>Ausencia Injustificada</td>
+                            </tr>
+                            <tr>
+                                <td>11 de marzo de 2025</td>
+                                <td>2</td>
+                                <td>Ausencia Injustificada</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div style="text-align: center; margin-top: 24px;">
+                    <button class="btn btn-primary" onclick="app.descargarPDF()" style="width: auto; margin-right: 10px;">
+                        📄 Descargar PDF
+                    </button>
+                    <button class="btn btn-secondary" onclick="app.descargarWord()" style="width: auto;">
+                        📝 Descargar Word
+                    </button>
+                </div>
+            </div>
         </main>
     </div>
 
-    <!-- Modals -->
-    
-    <!-- Nueva Sección -->
-    <div id="nuevaSeccionModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
-        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4 animate-fade-in">
-            <h3 class="text-2xl font-bold text-gray-900 mb-4">Nueva Sección</h3>
-            <form id="formNuevaSeccion" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Asignatura</label>
-                    <input type="text" id="seccionAsignatura" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none" placeholder="Ej: Matemáticas">
+    <!-- Modal Nueva Sección -->
+    <div class="modal-overlay" id="modalNuevaSeccion">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>➕ Nueva Sección</h3>
+                <button class="modal-close" onclick="app.closeModal('nuevaSeccion')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <label>Asignatura</label>
+                    <input type="text" id="secAsignatura" placeholder="Ej: Matemáticas" required>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Sección/Grupo</label>
-                    <input type="text" id="seccionGrupo" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none" placeholder="Ej: 6-2">
+                <div class="form-row">
+                    <label>Sección/Grupo</label>
+                    <input type="text" id="secCodigo" placeholder="Ej: 6-2" required>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Institución</label>
-                    <input type="text" id="seccionInstitucion" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none" placeholder="Ej: Escuela República de Francia">
+                <div class="form-row">
+                    <label>Institución</label>
+                    <input type="text" id="secInstitucion" placeholder="Ej: Escuela República de Francia" value="Escuela República de Francia">
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Año Lectivo</label>
-                    <input type="number" id="seccionAnio" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none" value="2025">
+                <div class="form-row">
+                    <label>Año Lectivo</label>
+                    <input type="number" id="secAnio" value="2024">
                 </div>
-                <div class="flex justify-end gap-3 mt-6">
-                    <button type="button" onclick="closeModal('nuevaSeccionModal')" class="px-4 py-2 text-gray-600 hover:text-gray-800">Cancelar</button>
-                    <button type="submit" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Crear Sección</button>
-                </div>
-            </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-small btn-delete" onclick="app.closeModal('nuevaSeccion')">Cancelar</button>
+                <button class="btn-small btn-save" onclick="app.guardarSeccion()">Guardar Sección</button>
+            </div>
         </div>
     </div>
 
-    <!-- Nuevo Estudiante -->
-    <div id="nuevoEstudianteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
-        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4 animate-fade-in">
-            <h3 class="text-2xl font-bold text-gray-900 mb-4">Agregar Estudiante</h3>
-            <form id="formNuevoEstudiante" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo</label>
-                    <input type="text" id="estNombre" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none">
+    <!-- Modal Nuevo Indicador de Logro -->
+    <div class="modal-overlay" id="modalNuevoIndicador">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>📋 Nuevo Indicador de Logro</h3>
+                <button class="modal-close" onclick="app.closeModal('nuevoIndicador')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <label>Nombre del Indicador</label>
+                    <input type="text" id="indNombre" placeholder="Ej: Resuelve problemas de multiplicación" required>
                 </div>
-                <div class="flex items-center gap-2">
-                    <input type="checkbox" id="estACS" class="w-4 h-4 text-purple-600 rounded">
-                    <label for="estACS" class="text-sm text-gray-700">¿Adecuación Curricular Significativa (ACS)?</label>
+                <div class="form-row">
+                    <label>Descripción</label>
+                    <textarea id="indDescripcion" placeholder="Describa el indicador de logro..."></textarea>
                 </div>
-                <div class="flex justify-end gap-3 mt-6">
-                    <button type="button" onclick="closeModal('nuevoEstudianteModal')" class="px-4 py-2 text-gray-600 hover:text-gray-800">Cancelar</button>
-                    <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Agregar</button>
+                <div class="form-row">
+                    <label>Porcentaje del Total (%)</label>
+                    <input type="number" id="indPorcentaje" placeholder="Ej: 25" min="1" max="100" value="25">
                 </div>
-            </form>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-row">
+                        <label>Puntos Máximos</label>
+                        <input type="number" id="indPuntos" placeholder="Ej: 20" value="20">
+                    </div>
+                    <div class="form-row">
+                        <label>Tipo de Evaluación</label>
+                        <select id="indTipo">
+                            <option value="trabajo_cotidiano">Trabajo Cotidiano</option>
+                            <option value="tarea">Tarea</option>
+                            <option value="prueba">Prueba</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-small btn-delete" onclick="app.closeModal('nuevoIndicador')">Cancelar</button>
+                <button class="btn-small btn-save" onclick="app.guardarIndicador()">Guardar Indicador</button>
+            </div>
         </div>
     </div>
 
-    <!-- Nueva Bitácora -->
-    <div id="nuevaBitacoraModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
-        <div class="bg-white rounded-xl p-8 max-w-lg w-full mx-4 animate-fade-in">
-            <h3 class="text-2xl font-bold text-gray-900 mb-4">Nueva Bitácora</h3>
-            <form id="formBitacora" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Título</label>
-                    <input type="text" id="bitacoraTitulo" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none">
+    <!-- Modal Nueva Tarea -->
+    <div class="modal-overlay" id="modalNuevaTarea">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>📚 Nueva Tarea</h3>
+                <button class="modal-close" onclick="app.closeModal('nuevaTarea')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <label>Título de la Tarea</label>
+                    <input type="text" id="tareaTitulo" placeholder="Ej: Tarea 1 - Fracciones" required>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Sección</label>
-                    <select id="bitacoraSeccion" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none">
-                        <!-- Dynamic -->
-                    </select>
+                <div class="form-row">
+                    <label>Descripción</label>
+                    <textarea id="tareaDescripcion" placeholder="Instrucciones de la tarea..."></textarea>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Contenido</label>
-                    <textarea id="bitacoraContenido" rows="4" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"></textarea>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-row">
+                        <label>Valor (%)</label>
+                        <input type="number" id="tareaValor" placeholder="Ej: 5" value="5">
+                    </div>
+                    <div class="form-row">
+                        <label>Fecha de Entrega</label>
+                        <input type="date" id="tareaFecha">
+                    </div>
                 </div>
-                <div class="flex items-center gap-2">
-                    <input type="checkbox" id="bitacoraRecordatorio" class="w-4 h-4 text-purple-600 rounded">
-                    <label for="bitacoraRecordatorio" class="text-sm text-gray-700">¿Establecer recordatorio?</label>
-                </div>
-                <div class="flex justify-end gap-3 mt-6">
-                    <button type="button" onclick="closeModal('nuevaBitacoraModal')" class="px-4 py-2 text-gray-600 hover:text-gray-800">Cancelar</button>
-                    <button type="submit" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Guardar</button>
-                </div>
-            </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-small btn-delete" onclick="app.closeModal('nuevaTarea')">Cancelar</button>
+                <button class="btn-small btn-save" onclick="app.guardarTarea()">Guardar Tarea</button>
+            </div>
         </div>
     </div>
 
-    <!-- Nueva Clase (Horario) -->
-    <div id="nuevaClaseModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
-        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4 animate-fade-in">
-            <h3 class="text-2xl font-bold text-gray-900 mb-4">Agregar Clase al Horario</h3>
-            <form id="formNuevaClase" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Sección</label>
-                    <select id="claseSeccion" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none">
-                        <!-- Dynamic -->
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Día</label>
-                    <select id="claseDia" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none">
-                        <option value="1">Lunes</option>
-                        <option value="2">Martes</option>
-                        <option value="3">Miércoles</option>
-                        <option value="4">Jueves</option>
-                        <option value="5">Viernes</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Hora Inicio</label>
-                    <input type="time" id="claseHoraInicio" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Hora Fin</label>
-                    <input type="time" id="claseHoraFin" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none">
-                </div>
-                <div class="flex justify-end gap-3 mt-6">
-                    <button type="button" onclick="closeModal('nuevaClaseModal')" class="px-4 py-2 text-gray-600 hover:text-gray-800">Cancelar</button>
-                    <button type="submit" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Agregar</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
 
     <script>
-        // Data Store
-        let data = {
-            user: { name: 'Profesor', email: '' },
-            secciones: [],
-            horario: [],
-            bitacoras: [],
-            currentSeccion: null,
-            currentTab: 'estudiantes',
-            currentPeriodo: 'I',
-            currentEvalType: null
-        };
+        // ==========================================
+        // REGISTRATE - Sistema Completo
+        // ==========================================
+        
+        const app = {
+            data: {
+                user: null,
+                secciones: [],
+                indicadores: [],
+                tareas: [],
+                asistencias: [],
+                currentSeccion: null,
+                currentPeriodo: 'I'
+            },
 
-        // Initialize with sample data
-        function initSampleData() {
-            data.secciones = [
-                {
-                    id: 1,
-                    asignatura: 'Matemáticas',
-                    seccion: '6-2',
-                    institucion: 'Escuela República de Francia',
-                    anio: 2025,
-                    estudiantes: [
-                        { id: 1, nombre: 'María González', acs: false, notas: { trabajo: [85, 90], tareas: [100, 95], pruebas: [88] }, asistencia: { 'I': { '2025-02-10': 'P', '2025-02-11': 'P', '2025-02-12': 'T' } } },
-                        { id: 2, nombre: 'Juan Pérez', acs: false, notas: { trabajo: [78, 82], tareas: [90, 85], pruebas: [75] }, asistencia: { 'I': { '2025-02-10': 'P', '2025-02-11': 'A' } } },
-                        { id: 3, nombre: 'Ana Martínez', acs: true, notas: { trabajo: [95], tareas: [100], pruebas: [92] }, asistencia: { 'I': { '2025-02-10': 'P', '2025-02-11': 'P' } } }
-                    ],
-                    evaluaciones: []
-                },
-                {
-                    id: 2,
-                    asignatura: 'Ciencias',
-                    seccion: '6-2',
-                    institucion: 'Escuela República de Francia',
-                    anio: 2025,
-                    estudiantes: [
-                        { id: 4, nombre: 'Carlos Ruiz', acs: false, notas: { trabajo: [88], tareas: [90], pruebas: [85] }, asistencia: { 'I': {} } }
-                    ],
-                    evaluaciones: []
-                }
-            ];
-            
-            data.horario = [
-                { id: 1, seccionId: 1, dia: 1, horaInicio: '07:00', horaFin: '08:30', asignatura: 'Matemáticas', seccion: '6-2' },
-                { id: 2, seccionId: 1, dia: 3, horaInicio: '09:00', horaFin: '10:30', asignatura: 'Matemáticas', seccion: '6-2' },
-                { id: 3, seccionId: 2, dia: 2, horaInicio: '07:00', horaFin: '08:30', asignatura: 'Ciencias', seccion: '6-2' }
-            ];
-
-            updateDashboard();
-            renderSecciones();
-            renderHorario();
-            updateSelects();
-        }
-
-        // Auth
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            data.user.email = email;
-            data.user.name = email.split('@')[0];
-            document.getElementById('userName').textContent = data.user.name;
-            document.getElementById('welcomeName').textContent = data.user.name;
-            
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('mainApp').classList.remove('hidden');
-            initSampleData();
-        });
-
-        function logout() {
-            location.reload();
-        }
-
-        // Navigation
-        function showSection(sectionId) {
-            // Hide all sections
-            document.querySelectorAll('main > section').forEach(sec => {
-                sec.classList.add('hidden-section');
-            });
-            
-            // Show target
-            document.getElementById(sectionId).classList.remove('hidden-section');
-            
-            // Update nav
-            document.querySelectorAll('nav button[id^="nav-"]').forEach(btn => {
-                btn.classList.remove('active-nav', 'text-gray-900');
-                btn.classList.add('text-gray-500');
-            });
-            
-            const navBtn = document.getElementById('nav-' + sectionId);
-            if (navBtn) {
-                navBtn.classList.add('active-nav', 'text-gray-900');
-                navBtn.classList.remove('text-gray-500');
-            }
-
-            if (sectionId === 'dashboard') updateDashboard();
-            if (sectionId === 'reportes') updateReportesSelects();
-        }
-
-        // Modals
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.remove('hidden');
-            if (modalId === 'nuevaBitacoraModal' || modalId === 'nuevaClaseModal') updateSelects();
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.add('hidden');
-        }
-
-        // Dashboard
-        function updateDashboard() {
-            document.getElementById('totalSecciones').textContent = data.secciones.length;
-            const totalEst = data.secciones.reduce((acc, s) => acc + s.estudiantes.length, 0);
-            document.getElementById('totalEstudiantes').textContent = totalEst;
-            
-            // Calculate asistencia promedio
-            let totalAsist = 0, totalRegistros = 0;
-            data.secciones.forEach(sec => {
-                sec.estudiantes.forEach(est => {
-                    const asist = est.asistencia[data.currentPeriodo] || {};
-                    Object.values(asist).forEach(a => {
-                        if (a === 'P') totalAsist++;
-                        totalRegistros++;
+            init() {
+                // Cargar datos de ejemplo idénticos a RegistraProfe
+                this.cargarDatosEjemplo();
+                
+                // Event listeners
+                document.getElementById('loginForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.login();
+                });
+                
+                // Cerrar modales al hacer click fuera
+                document.querySelectorAll('.modal-overlay').forEach(modal => {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            modal.classList.remove('active');
+                        }
                     });
                 });
-            });
-            const prom = totalRegistros > 0 ? Math.round((totalAsist / totalRegistros) * 100) : 0;
-            document.getElementById('asistenciaPromedio').textContent = prom + '%';
+            },
 
-            // Próximas clases
-            const hoy = new Date().getDay();
-            const clasesHoy = data.horario.filter(h => h.dia === hoy).sort((a, b) => a.horaInicio.localeCompare(b.horaInicio));
-            const container = document.getElementById('proximasClases');
-            if (clasesHoy.length === 0) {
-                container.innerHTML = '<p class="text-gray-500 italic">No hay clases programadas para hoy</p>';
-            } else {
-                container.innerHTML = clasesHoy.map(c => `
-                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200">
-                        <div>
-                            <p class="font-medium text-gray-900">${c.asignatura} - ${c.seccion}</p>
-                            <p class="text-sm text-gray-500">${c.horaInicio} - ${c.horaFin}</p>
-                        </div>
-                        <button onclick="irAAsistencia(${c.seccionId})" class="text-purple-600 hover:text-purple-800">
-                            <i class="fas fa-check-circle text-xl"></i>
-                        </button>
-                    </div>
-                `).join('');
-            }
-        }
-
-        // Secciones
-        function renderSecciones() {
-            const grid = document.getElementById('seccionesGrid');
-            if (data.secciones.length === 0) {
-                grid.innerHTML = '<div class="col-span-full text-center py-12 text-gray-500">No hay secciones creadas. ¡Crea tu primera sección!</div>';
-                return;
-            }
-            
-            grid.innerHTML = data.secciones.map(sec => `
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 card-hover cursor-pointer" onclick="verDetalleSeccion(${sec.id})">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">
-                            ${sec.asignatura.charAt(0)}
-                        </div>
-                        <span class="text-sm text-gray-500">Año ${sec.anio}</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-1">${sec.asignatura}</h3>
-                    <p class="text-gray-600 mb-3">Sección: ${sec.seccion}</p>
-                    <p class="text-sm text-gray-500 mb-4">${sec.institucion}</p>
-                    
-                    <div class="flex gap-2 flex-wrap">
-                        <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">I Periodo</span>
-                        <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">${sec.estudiantes.length} estudiantes</span>
-                    </div>
-                    
-                    <div class="mt-4 pt-4 border-t border-gray-100 flex gap-2">
-                        <button class="flex-1 px-3 py-2 bg-blue-50 text-blue-600 rounded-lg text-sm hover:bg-blue-100 transition" onclick="event.stopPropagation(); verDetalleSeccion(${sec.id}); cambiarTab('asistencia')">
-                            Asistencia
-                        </button>
-                        <button class="flex-1 px-3 py-2 bg-purple-50 text-purple-600 rounded-lg text-sm hover:bg-purple-100 transition" onclick="event.stopPropagation(); verDetalleSeccion(${sec.id}); cambiarTab('evaluaciones')">
-                            Notas
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        document.getElementById('formNuevaSeccion').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const nueva = {
-                id: Date.now(),
-                asignatura: document.getElementById('seccionAsignatura').value,
-                seccion: document.getElementById('seccionGrupo').value,
-                institucion: document.getElementById('seccionInstitucion').value,
-                anio: parseInt(document.getElementById('seccionAnio').value),
-                estudiantes: [],
-                evaluaciones: []
-            };
-            data.secciones.push(nueva);
-            closeModal('nuevaSeccionModal');
-            this.reset();
-            renderSecciones();
-            updateDashboard();
-            updateSelects();
-        });
-
-        // Detalle Sección
-        function verDetalleSeccion(id) {
-            data.currentSeccion = data.secciones.find(s => s.id === id);
-            if (!data.currentSeccion) return;
-            
-            document.getElementById('detalleTitulo').textContent = data.currentSeccion.asignatura;
-            document.getElementById('detalleSubtitulo').textContent = `Sección ${data.currentSeccion.seccion} • ${data.currentSeccion.institucion}`;
-            document.getElementById('detalleCantidad').textContent = `${data.currentSeccion.estudiantes.length} estudiantes`;
-            
-            showSection('detalleSeccion');
-            cambiarTab('estudiantes');
-            renderEstudiantes();
-        }
-
-        function cambiarTab(tab) {
-            data.currentTab = tab;
-            
-            // Update buttons
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active-nav', 'border-purple-500', 'text-purple-600');
-                btn.classList.add('border-transparent', 'text-gray-500');
-            });
-            document.getElementById('tab-' + tab).classList.add('active-nav', 'border-purple-500', 'text-purple-600');
-            document.getElementById('tab-' + tab).classList.remove('border-transparent', 'text-gray-500');
-            
-            // Update content
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
-            document.getElementById('content-' + tab).classList.remove('hidden');
-            
-            if (tab === 'estudiantes') renderEstudiantes();
-            if (tab === 'asistencia') renderAsistencia();
-            if (tab === 'evaluaciones') renderEvaluaciones();
-            if (tab === 'reporte') renderReporteFinal();
-        }
-
-        function renderEstudiantes() {
-            const tbody = document.getElementById('tablaEstudiantes');
-            if (data.currentSeccion.estudiantes.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-4 text-center text-gray-500">No hay estudiantes registrados</td></tr>';
-                return;
-            }
-            
-            tbody.innerHTML = data.currentSeccion.estudiantes.map((est, idx) => {
-                const prom = calcularPromedio(est);
-                return `
-                <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${idx + 1}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0 h-10 w-10">
-                                <div class="h-10 w-10 rounded-full bg-gradient-to-br from-purple-400 to-blue-500 flex items-center justify-center text-white font-bold">
-                                    ${est.nombre.charAt(0)}
-                                </div>
-                            </div>
-                            <div class="ml-4">
-                                <div class="text-sm font-medium text-gray-900">${est.nombre}</div>
-                                ${est.acs ? '<span class="text-xs text-orange-600 font-medium">ACS</span>' : ''}
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        ${est.acs ? '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">Sí</span>' : '<span class="text-gray-400">-</span>'}
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-semibold">${prom.toFixed(1)}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <button onclick="eliminarEstudiante(${est.id})" class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
-                    </td>
-                </tr>
-            `}).join('');
-        }
-
-        document.getElementById('formNuevoEstudiante').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const nuevo = {
-                id: Date.now(),
-                nombre: document.getElementById('estNombre').value,
-                acs: document.getElementById('estACS').checked,
-                notas: { trabajo: [], tareas: [], pruebas: [] },
-                asistencia: { 'I': {}, 'II': {}, 'III': {} }
-            };
-            data.currentSeccion.estudiantes.push(nuevo);
-            closeModal('nuevoEstudianteModal');
-            this.reset();
-            renderEstudiantes();
-            document.getElementById('detalleCantidad').textContent = `${data.currentSeccion.estudiantes.length} estudiantes`;
-        });
-
-        function eliminarEstudiante(id) {
-            if (!confirm('¿Eliminar este estudiante?')) return;
-            data.currentSeccion.estudiantes = data.currentSeccion.estudiantes.filter(e => e.id !== id);
-            renderEstudiantes();
-        }
-
-        function eliminarSeccionActual() {
-            if (!confirm('¿Eliminar esta sección permanentemente?')) return;
-            data.secciones = data.secciones.filter(s => s.id !== data.currentSeccion.id);
-            showSection('secciones');
-            renderSecciones();
-        }
-
-        // Asistencia
-        function cambiarPeriodoAsistencia(per) {
-            data.currentPeriodo = per;
-            document.querySelectorAll('.periodo-tab').forEach(btn => {
-                btn.classList.remove('active', 'bg-purple-600', 'text-white');
-                btn.classList.add('bg-gray-200', 'text-gray-700');
-            });
-            event.target.classList.add('active', 'bg-purple-600', 'text-white');
-            event.target.classList.remove('bg-gray-200', 'text-gray-700');
-            renderAsistencia();
-        }
-
-        function renderAsistencia() {
-            const tbody = document.getElementById('bodyAsistencia');
-            const dias = ['L', 'M', 'X', 'J', 'V'];
-            
-            tbody.innerHTML = data.currentSeccion.estudiantes.map(est => {
-                const asistPeriodo = est.asistencia[data.currentPeriodo] || {};
-                const totalAsist = Object.values(asistPeriodo).filter(a => a === 'P').length;
-                const total = Object.keys(asistPeriodo).length;
-                const porc = total > 0 ? Math.round((totalAsist/total)*100) : 0;
+            cargarDatosEjemplo() {
+                // Datos exactos como en las imágenes de RegistraProfe
+                this.data.secciones = [
+                    {
+                        id: '1',
+                        asignatura: 'Matemáticas',
+                        codigo: '6-2',
+                        institucion: 'Escuela República de Francia',
+                        anioLectivo: 2024,
+                        estudiantes: [
+                            { id: '1', nombre: 'María González', tieneACS: false },
+                            { id: '2', nombre: 'Juan Pérez', tieneACS: false },
+                            { id: '3', nombre: 'Ana Martínez', tieneACS: true, detalleACS: 'Dislexia' },
+                            { id: '4', nombre: 'Carlos Rodríguez', tieneACS: false },
+                            { id: '5', nombre: 'Laura Sánchez', tieneACS: false }
+                        ]
+                    },
+                    {
+                        id: '2',
+                        asignatura: 'Ciencias',
+                        codigo: '6-2',
+                        institucion: 'Escuela República de Francia',
+                        anioLectivo: 2024,
+                        estudiantes: [
+                            { id: '6', nombre: 'Pedro Gómez', tieneACS: false },
+                            { id: '7', nombre: 'Sofía Hernández', tieneACS: false },
+                            { id: '8', nombre: 'Diego López', tieneACS: false }
+                        ]
+                    },
+                    {
+                        id: '3',
+                        asignatura: 'Matemáticas',
+                        codigo: '6-3',
+                        institucion: 'Escuela República de Francia',
+                        anioLectivo: 2024,
+                        estudiantes: [
+                            { id: '9', nombre: 'Lucía Torres', tieneACS: false },
+                            { id: '10', nombre: 'Mateo Ramírez', tieneACS: false },
+                            { id: '11', nombre: 'Valentina Cruz', tieneACS: true, detalleACS: 'TDAH' }
+                        ]
+                    }
+                ];
                 
-                return `
-                <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${est.nombre}</td>
-                    ${dias.map((d, i) => {
-                        const estado = asistPeriodo[d] || '';
-                        const color = estado === 'P' ? 'bg-green-500' : estado === 'A' ? 'bg-red-500' : estado === 'T' ? 'bg-yellow-500' : 'bg-gray-200';
-                        return `<td class="px-6 py-4 whitespace-nowrap text-center">
-                            <button onclick="cambiarEstadoAsistencia(${est.id}, '${d}')" class="w-8 h-8 rounded-full ${color} text-white text-xs font-bold status-badge">
-                                ${estado || '-'}
-                            </button>
-                        </td>`;
-                    }).join('')}
-                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold ${porc >= 80 ? 'text-green-600' : porc >= 60 ? 'text-yellow-600' : 'text-red-600'}">
-                        ${porc}%
-                    </td>
-                </tr>
-            `}).join('');
-        }
-
-        function cambiarEstadoAsistencia(estId, dia) {
-            const est = data.currentSeccion.estudiantes.find(e => e.id === estId);
-            if (!est.asistencia[data.currentPeriodo]) est.asistencia[data.currentPeriodo] = {};
-            
-            const estados = ['', 'P', 'A', 'T'];
-            const actual = est.asistencia[data.currentPeriodo][dia] || '';
-            const nextIndex = (estados.indexOf(actual) + 1) % estados.length;
-            est.asistencia[data.currentPeriodo][dia] = estados[nextIndex];
-            
-            renderAsistencia();
-        }
-
-        function registrarAsistenciaHoy() {
-            const hoy = new Date().toISOString().split('T')[0];
-            data.currentSeccion.estudiantes.forEach(est => {
-                if (!est.asistencia[data.currentPeriodo]) est.asistencia[data.currentPeriodo] = {};
-                if (!est.asistencia[data.currentPeriodo][hoy]) {
-                    est.asistencia[data.currentPeriodo][hoy] = 'P';
-                }
-            });
-            alert('Asistencia registrada para hoy. Puedes modificarla en la tabla.');
-            renderAsistencia();
-        }
-
-        // Evaluaciones
-        function renderEvaluaciones() {
-            const counts = { trabajo: 0, tareas: 0, pruebas: 0 };
-            data.currentSeccion.evaluaciones.forEach(ev => counts[ev.tipo]++);
-            
-            document.getElementById('countTrabajo').textContent = `${counts.trabajo} registros`;
-            document.getElementById('countTareas').textContent = `${counts.tareas} registros`;
-            document.getElementById('countPruebas').textContent = `${counts.pruebas} registros`;
-        }
-
-        function abrirEvaluacion(tipo) {
-            data.currentEvalType = tipo;
-            const nombres = { trabajo: 'Trabajo Cotidiano', tareas: 'Tareas', pruebas: 'Pruebas' };
-            document.getElementById('tituloEvalForm').textContent = `Nueva ${nombres[tipo]}`;
-            document.getElementById('formularioEvaluacion').classList.remove('hidden');
-            
-            const lista = document.getElementById('listaNotasEstudiantes');
-            lista.innerHTML = data.currentSeccion.estudiantes.map(est => `
-                <div class="flex items-center justify-between bg-white p-3 rounded border">
-                    <span class="font-medium ${est.acs ? 'text-orange-600' : ''}">${est.nombre} ${est.acs ? '(ACS)' : ''}</span>
-                    <input type="number" min="0" max="100" class="nota-input w-20 px-2 py-1 border rounded text-center" 
-                           data-est-id="${est.id}" placeholder="Nota">
-                </div>
-            `).join('');
-        }
-
-        function cancelarEvaluacion() {
-            document.getElementById('formularioEvaluacion').classList.add('hidden');
-        }
-
-        function guardarEvaluacion() {
-            const nombre = document.getElementById('nombreEvaluacion').value;
-            const fecha = document.getElementById('fechaEvaluacion').value;
-            const porcentaje = document.getElementById('porcentajeEvaluacion').value;
-            
-            if (!nombre || !fecha) {
-                alert('Complete nombre y fecha');
-                return;
-            }
-            
-            const notas = [];
-            document.querySelectorAll('.nota-input').forEach(input => {
-                const val = parseFloat(input.value);
-                if (!isNaN(val)) {
-                    notas.push({ estId: parseInt(input.dataset.estId), nota: val });
-                }
-            });
-            
-            data.currentSeccion.evaluaciones.push({
-                id: Date.now(),
-                tipo: data.currentEvalType,
-                nombre,
-                fecha,
-                porcentaje: parseFloat(porcentaje) || 0,
-                notas
-            });
-            
-            // Update student records
-            notas.forEach(n => {
-                const est = data.currentSeccion.estudiantes.find(e => e.id === n.estId);
-                if (est) {
-                    est.notas[data.currentEvalType].push(n.nota);
-                }
-            });
-            
-            cancelarEvaluacion();
-            renderEvaluaciones();
-            alert('Evaluación guardada correctamente');
-        }
-
-        function calcularPromedio(est) {
-            const pesos = { trabajo: 0.3, tareas: 0.2, pruebas: 0.5 };
-            let total = 0, pesoTotal = 0;
-            
-            for (let tipo in pesos) {
-                const notas = est.notas[tipo];
-                if (notas.length > 0) {
-                    const prom = notas.reduce((a, b) => a + b, 0) / notas.length;
-                    total += prom * pesos[tipo];
-                    pesoTotal += pesos[tipo];
-                }
-            }
-            
-            return pesoTotal > 0 ? (total / pesoTotal) * (pesoTotal > 0 ? 1 : 0) : 0;
-        }
-
-        // Reporte Final
-        function renderReporteFinal() {
-            const tbody = document.getElementById('bodyReporteFinal');
-            tbody.innerHTML = data.currentSeccion.estudiantes.map((est, idx) => {
-                const prom = calcularPromedio(est);
-                const asist = est.asistencia[data.currentPeriodo] || {};
-                const totalAsist = Object.values(asist).filter(a => a === 'P').length;
-                const total = Object.keys(asist).length;
-                const porcAsist = total > 0 ? Math.round((totalAsist/total)*100) : 0;
+                // Indicadores de logro de ejemplo
+                this.data.indicadores = [
+                    {
+                        id: '1',
+                        seccionId: '1',
+                        periodo: 'I',
+                        nombre: 'Resuelve problemas de multiplicación y división',
+                        descripcion: 'El estudiante aplica algoritmos de multiplicación y división en la resolución de problemas matemáticos contextualizados.',
+                        porcentaje: 30,
+                        puntos: 30,
+                        tipo: 'trabajo_cotidiano'
+                    },
+                    {
+                        id: '2',
+                        seccionId: '1',
+                        periodo: 'I',
+                        nombre: 'Identifica fracciones en contextos cotidianos',
+                        descripcion: 'Reconoce y representa fracciones a partir de situaciones reales y concretas.',
+                        porcentaje: 25,
+                        puntos: 25,
+                        tipo: 'trabajo_cotidiano'
+                    },
+                    {
+                        id: '3',
+                        seccionId: '1',
+                        periodo: 'I',
+                        nombre: 'Calcula perímetro y área de figuras geométricas',
+                        descripcion: 'Aplica fórmulas para calcular perímetro y área en figuras básicas.',
+                        porcentaje: 25,
+                        puntos: 25,
+                        tipo: 'trabajo_cotidiano'
+                    },
+                    {
+                        id: '4',
+                        seccionId: '1',
+                        periodo: 'I',
+                        nombre: 'Interpreta gráficos estadísticos simples',
+                        descripcion: 'Lee e interpreta información presentada en gráficos de barras y pictogramas.',
+                        porcentaje: 20,
+                        puntos: 20,
+                        tipo: 'trabajo_cotidiano'
+                    }
+                ];
                 
-                const promTrabajo = est.notas.trabajo.length ? (est.notas.trabajo.reduce((a,b)=>a+b,0)/est.notas.trabajo.length).toFixed(1) : '-';
-                const promTareas = est.notas.tareas.length ? (est.notas.tareas.reduce((a,b)=>a+b,0)/est.notas.tareas.length).toFixed(1) : '-';
-                const promPruebas = est.notas.pruebas.length ? (est.notas.pruebas.reduce((a,b)=>a+b,0)/est.notas.pruebas.length).toFixed(1) : '-';
-                
-                return `
-                <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${idx + 1}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${est.nombre}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-600">${promTrabajo}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-600">${promTareas}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-600">${promPruebas}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center font-bold ${prom >= 70 ? 'text-green-600' : 'text-red-600'}">${prom.toFixed(1)}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center ${porcAsist >= 80 ? 'text-green-600' : 'text-yellow-600'}">${porcAsist}%</td>
-                </tr>
-            `}).join('');
-        }
+                // Tareas de ejemplo
+                this.data.tareas = [
+                    {
+                        id: '1',
+                        seccionId: '1',
+                        titulo: 'Tarea 1 - Fracciones equivalentes',
+                        descripcion: 'Resolver ejercicios 1-10 del libro, página 45',
+                        valor: 5,
+                        fecha: '2025-01-20',
+                        periodo: 'I'
+                    },
+                    {
+                        id: '2',
+                        seccionId: '1',
+                        titulo: 'Tarea 2 - Problemas de multiplicación',
+                        descripcion: 'Resolver problemas contextualizados de multiplicación',
+                        valor: 5,
+                        fecha: '2025-01-27',
+                        periodo: 'I'
+                    }
+                ];
+            },
 
-        // Horario
-        function renderHorario() {
-            const horas = ['07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00'];
-            const container = document.getElementById('horarioGrid');
-            
-            container.innerHTML = horas.map(hora => {
-                const clasesHora = data.horario.filter(h => {
-                    const inicio = parseInt(h.horaInicio.split(':')[0]);
-                    const fin = parseInt(h.horaFin.split(':')[0]);
-                    const current = parseInt(hora.split(':')[0]);
-                    return current >= inicio && current < fin;
+            login() {
+                const email = document.getElementById('loginEmail').value;
+                
+                this.data.user = {
+                    email: email,
+                    nombre: 'María Sequeira',
+                    id: 'user_' + Date.now()
+                };
+                
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('app').style.display = 'block';
+                
+                this.renderDashboard();
+                this.renderSecciones();
+                this.generarHorario();
+                this.cargarSelects();
+                this.cargarLecciones();
+                
+                this.showToast('Bienvenido a RegistraTe', 'success');
+            },
+
+            register() {
+                this.showToast('Cuenta creada. Ahora puede iniciar sesión.', 'success');
+            },
+
+            logout() {
+                this.data.user = null;
+                document.getElementById('app').style.display = 'none';
+                document.getElementById('loginScreen').style.display = 'flex';
+                this.navigate('inicio');
+            },
+
+            navigate(page) {
+                // Actualizar nav
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.remove('active');
+                    if (item.dataset.page === page) {
+                        item.classList.add('active');
+                    }
                 });
                 
+                // Mostrar página
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                document.getElementById('page-' + page).classList.add('active');
+                
+                // Acciones específicas
+                if (page === 'trabajo') {
+                    this.cargarIndicadores();
+                }
+            },
+
+            // ==========================================
+            // DASHBOARD - Vista de tarjetas como RegistraProfe
+            // ==========================================
+            renderDashboard() {
+                const container = document.getElementById('dashboardSecciones');
+                container.innerHTML = this.data.secciones.map(sec => this.crearCardSeccion(sec)).join('');
+            },
+
+            crearCardSeccion(sec) {
                 return `
-                <div class="grid grid-cols-6 border-b border-gray-100">
-                    <div class="p-4 border-r border-gray-200 bg-gray-50 font-medium text-gray-700">${hora}</div>
-                    ${[1,2,3,4,5].map(dia => {
-                        const clase = data.horario.find(h => {
-                            const inicio = parseInt(h.horaInicio.split(':')[0]);
-                            const fin = parseInt(h.horaFin.split(':')[0]);
-                            const current = parseInt(hora.split(':')[0]);
-                            return h.dia === dia && current >= inicio && current < fin;
-                        });
+                    <div class="seccion-card">
+                        <h3>${sec.asignatura}</h3>
+                        <div class="seccion-info"><strong>Sección:</strong> ${sec.codigo}</div>
+                        <div class="seccion-info"><strong>Institución:</strong> ${sec.institucion}</div>
+                        <div class="seccion-info"><strong>Año:</strong> ${sec.anioLectivo}</div>
                         
-                        if (clase && parseInt(clase.horaInicio.split(':')[0]) === parseInt(hora.split(':')[0])) {
-                            const duracion = parseInt(clase.horaFin.split(':')[0]) - parseInt(clase.horaInicio.split(':')[0]);
-                            return `
-                                <div class="p-2 border-r border-gray-200 bg-purple-50 border-l-4 border-purple-500 row-span-${duracion}">
-                                    <div class="text-sm font-semibold text-purple-900">${clase.asignatura}</div>
-                                    <div class="text-xs text-purple-700">${clase.seccion}</div>
-                                    <div class="text-xs text-purple-600">${clase.horaInicio}-${clase.horaFin}</div>
+                        <button class="btn-ver-est" onclick="app.verEstudiantes('${sec.id}')">
+                            Ver Estudiantes
+                        </button>
+                        
+                        <div class="periodos-title">Periodos:</div>
+                        
+                        <div class="periodo-item">
+                            <div class="periodo-nombre">I Periodo</div>
+                            <div class="botones-evaluacion">
+                                <button class="btn-eval btn-trabajo" onclick="app.irTrabajoCotidiano('${sec.id}')">Trabajo Cotidiano</button>
+                                <button class="btn-eval btn-tareas" onclick="app.irTareas('${sec.id}')">Tareas</button>
+                                <button class="btn-eval btn-pruebas" onclick="app.irPruebas('${sec.id}')">Pruebas</button>
+                                <button class="btn-eval btn-asistencia" onclick="app.irAsistencia('${sec.id}')">Asistencia</button>
+                                <button class="btn-eval btn-reporte" onclick="app.irReporte('${sec.id}')">Reporte Final</button>
+                            </div>
+                        </div>
+                        
+                        <div class="periodo-item">
+                            <div class="periodo-nombre">II Periodo</div>
+                            <div class="botones-evaluacion">
+                                <button class="btn-eval btn-trabajo" onclick="app.irTrabajoCotidiano('${sec.id}')">Trabajo Cotidiano</button>
+                                <button class="btn-eval btn-tareas" onclick="app.irTareas('${sec.id}')">Tareas</button>
+                                <button class="btn-eval btn-pruebas" onclick="app.irPruebas('${sec.id}')">Pruebas</button>
+                                <button class="btn-eval btn-asistencia" onclick="app.irAsistencia('${sec.id}')">Asistencia</button>
+                                <button class="btn-eval btn-reporte" onclick="app.irReporte('${sec.id}')">Reporte Final</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            },
+
+            // ==========================================
+            // SECCIONES
+            // ==========================================
+            renderSecciones() {
+                const container = document.getElementById('listaSecciones');
+                container.innerHTML = this.data.secciones.map(sec => this.crearCardSeccion(sec)).join('');
+            },
+
+            // ==========================================
+            // INDICADORES DE LOGRO - FUNCIÓN NUEVA
+            // ==========================================
+            cargarIndicadores() {
+                const seccionId = document.getElementById('trabajoSeccion').value;
+                const periodo = document.getElementById('trabajoPeriodo').value;
+                
+                const container = document.getElementById('listaIndicadores');
+                const indicadores = this.data.indicadores.filter(i => 
+                    (!seccionId || i.seccionId === seccionId) && i.periodo === periodo
+                );
+                
+                if (indicadores.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--gray-500);">
+                            <div style="font-size: 48px; margin-bottom: 16px;">📋</div>
+                            <h4>No hay indicadores de logro</h4>
+                            <p>Agregue indicadores para comenzar a evaluar</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = indicadores.map((ind, idx) => `
+                    <div class="indicador-card">
+                        <div class="indicador-header">
+                            <div class="indicador-titulo">${idx + 1}. ${ind.nombre}</div>
+                            <div class="indicador-porcentaje">${ind.porcentaje}%</div>
+                        </div>
+                        <div class="indicador-descripcion">${ind.descripcion}</div>
+                        <div class="indicador-config">
+                            <div class="config-item">
+                                <label>Puntos Máximos</label>
+                                <input type="number" value="${ind.puntos}" readonly>
+                            </div>
+                            <div class="config-item">
+                                <label>Tipo</label>
+                                <input type="text" value="${ind.tipo === 'trabajo_cotidiano' ? 'Trabajo Cotidiano' : ind.tipo}" readonly>
+                            </div>
+                            <div class="config-item">
+                                <label>Periodo</label>
+                                <input type="text" value="${ind.periodo} Periodo" readonly>
+                            </div>
+                        </div>
+                        <div class="indicador-acciones">
+                            <button class="btn-small btn-edit" onclick="app.editarIndicador('${ind.id}')">✏️ Editar</button>
+                            <button class="btn-small btn-delete" onclick="app.eliminarIndicador('${ind.id}')">🗑️ Eliminar</button>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Mostrar tabla de notas si hay indicadores
+                if (indicadores.length > 0 && seccionId) {
+                    document.getElementById('tablaIndicadoresSection').style.display = 'block';
+                    this.renderTablaIndicadores(indicadores, seccionId);
+                }
+            },
+
+            renderTablaIndicadores(indicadores, seccionId) {
+                const seccion = this.data.secciones.find(s => s.id === seccionId);
+                if (!seccion) return;
+                
+                const thead = document.querySelector('#tablaNotasIndicadores thead tr');
+                const tbody = document.querySelector('#tablaNotasIndicadores tbody');
+                
+                // Headers
+                thead.innerHTML = `
+                    <th>Estudiante</th>
+                    ${indicadores.map(i => `
+                        <th>
+                            ${i.nombre.substring(0, 30)}...
+                            <div class="porcentaje-tag">${i.porcentaje}%</div>
+                        </th>
+                    `).join('')}
+                    <th>Promedio</th>
+                `;
+                
+                // Body
+                tbody.innerHTML = seccion.estudiantes.map(est => {
+                    const notas = indicadores.map(() => Math.floor(Math.random() * 30) + 70); // Simulación
+                    const promedio = Math.round(notas.reduce((a,b) => a+b, 0) / notas.length);
+                    
+                    return `
+                        <tr>
+                            <td>
+                                <strong>${est.nombre}</strong>
+                                ${est.tieneACS ? '<span style="color: #ea580c; font-size: 12px;"> (ACS)</span>' : ''}
+                            </td>
+                            ${notas.map((nota, idx) => `
+                                <td>
+                                    <input type="number" class="nota-input" value="${nota}" 
+                                           max="${indicadores[idx].puntos}"
+                                           onchange="app.guardarNotaIndicador('${est.id}', '${indicadores[idx].id}', this.value)">
+                                    <div class="porcentaje-tag">${((nota/indicadores[idx].puntos)*100).toFixed(1)}%</div>
+                                </td>
+                            `).join('')}
+                            <td>
+                                <strong style="color: ${promedio >= 70 ? '#28a745' : '#dc3545'}; font-size: 18px;">
+                                    ${promedio}
+                                </strong>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            },
+
+            guardarIndicador() {
+                const nombre = document.getElementById('indNombre').value;
+                const descripcion = document.getElementById('indDescripcion').value;
+                const porcentaje = parseInt(document.getElementById('indPorcentaje').value);
+                const puntos = parseInt(document.getElementById('indPuntos').value);
+                const tipo = document.getElementById('indTipo').value;
+                
+                if (!nombre || !porcentaje) {
+                    this.showToast('Complete los campos obligatorios', 'error');
+                    return;
+                }
+                
+                const nuevo = {
+                    id: Date.now().toString(),
+                    seccionId: document.getElementById('trabajoSeccion').value || '1',
+                    periodo: document.getElementById('trabajoPeriodo').value,
+                    nombre,
+                    descripcion,
+                    porcentaje,
+                    puntos,
+                    tipo
+                };
+                
+                this.data.indicadores.push(nuevo);
+                this.closeModal('nuevoIndicador');
+                this.cargarIndicadores();
+                this.showToast('Indicador de logro guardado', 'success');
+                
+                // Limpiar form
+                document.getElementById('indNombre').value = '';
+                document.getElementById('indDescripcion').value = '';
+                document.getElementById('indPorcentaje').value = '25';
+            },
+
+            // ==========================================
+            // TAREAS
+            // ==========================================
+            cargarTareas() {
+                const seccionId = document.getElementById('tareasSeccion').value;
+                const container = document.getElementById('listaTareas');
+                
+                let tareas = this.data.tareas;
+                if (seccionId) {
+                    tareas = tareas.filter(t => t.seccionId === seccionId);
+                }
+                
+                if (tareas.length === 0) {
+                    container.innerHTML = `
+                        <div class="card" style="padding: 40px; text-align: center; color: var(--gray-500);">
+                            <div style="font-size: 48px; margin-bottom: 16px;">📚</div>
+                            <h4>No hay tareas registradas</h4>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = tareas.map(t => `
+                    <div class="indicador-card" style="border-left-color: #20c997;">
+                        <div class="indicador-header">
+                            <div class="indicador-titulo">${t.titulo}</div>
+                            <div class="indicador-porcentaje" style="background: #20c997;">${t.valor}%</div>
+                        </div>
+                        <div class="indicador-descripcion">${t.descripcion}</div>
+                        <div class="bitacora-meta">
+                            <div class="bitacora-meta-item">📅 Fecha: ${t.fecha}</div>
+                            <div class="bitacora-meta-item">📊 Valor: ${t.valor}%</div>
+                        </div>
+                    </div>
+                `).join('');
+            },
+
+            guardarTarea() {
+                const titulo = document.getElementById('tareaTitulo').value;
+                const descripcion = document.getElementById('tareaDescripcion').value;
+                const valor = parseInt(document.getElementById('tareaValor').value);
+                
+                if (!titulo) {
+                    this.showToast('Ingrese el título de la tarea', 'error');
+                    return;
+                }
+                
+                this.data.tareas.push({
+                    id: Date.now().toString(),
+                    seccionId: document.getElementById('tareasSeccion').value || '1',
+                    titulo,
+                    descripcion,
+                    valor,
+                    fecha: document.getElementById('tareaFecha').value || new Date().toISOString().split('T')[0],
+                    periodo: document.getElementById('tareasPeriodo').value
+                });
+                
+                this.closeModal('nuevaTarea');
+                this.cargarTareas();
+                this.showToast('Tarea guardada exitosamente', 'success');
+            },
+
+            // ==========================================
+            // HORARIO - Vista grilla como imagen
+            // ==========================================
+            generarHorario() {
+                const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+                const lecciones = [1, 2, 3, 4, 5, 6, 7];
+                
+                const grid = document.getElementById('horarioGrid');
+                
+                // Header
+                grid.innerHTML = '<div class="horario-header">Lección</div>';
+                dias.forEach(dia => {
+                    grid.innerHTML += `<div class="horario-header">${dia}</div>`;
+                });
+                
+                // Datos del horario como en la imagen
+                const horarioData = {
+                    1: { 0: { materia: 'Ciencias 6-2', tipo: 'ciencias' }, 1: { materia: 'Matemáticas 6-3', tipo: 'matematicas' }, 4: { materia: 'Ciencias 6-3', tipo: 'ciencias' } },
+                    2: { 0: { materia: 'Ciencias 6-2', tipo: 'ciencias' }, 1: { materia: 'Ciencias 6-2', tipo: 'ciencias' }, 4: { materia: 'Ciencias 6-3', tipo: 'ciencias' } },
+                    3: { 1: { materia: 'Ciencias 6-2', tipo: 'ciencias' }, 2: { materia: 'Matemáticas 6-2', tipo: 'matematicas' }, 4: { materia: 'Ciencias 6-2', tipo: 'ciencias' } },
+                    4: { 1: { materia: 'Matemáticas 6-2', tipo: 'matematicas' }, 4: { materia: 'Ciencias 6-2', tipo: 'ciencias' } },
+                    5: { 0: { materia: 'Matemáticas 6-2', tipo: 'matematicas' }, 1: { materia: 'Matemáticas 6-2', tipo: 'matematicas' }, 2: { materia: 'Matemáticas 6-3', tipo: 'matematicas' }, 3: { materia: 'Matemáticas 6-2', tipo: 'matematicas' }, 4: { materia: 'Matemáticas 6-3', tipo: 'matematicas' } },
+                    6: { 0: { materia: 'Ciencias 6-3', tipo: 'ciencias' }, 1: { materia: 'Ciencias 6-3', tipo: 'ciencias' }, 2: { materia: 'Matemáticas 6-3', tipo: 'matematicas' }, 3: { materia: 'Matemáticas 6-2', tipo: 'matematicas' }, 4: { materia: 'Matemáticas 6-3', tipo: 'matematicas' } },
+                    7: { 0: { materia: 'Ciencias 6-3', tipo: 'ciencias' }, 1: { materia: 'Ciencias 6-3', tipo: 'ciencias' }, 2: { materia: 'Matemáticas 6-3', tipo: 'matematicas' }, 3: { materia: 'Matemáticas 6-2', tipo: 'matematicas' }, 4: { materia: 'Matemáticas 6-3', tipo: 'matematicas' } }
+                };
+                
+                lecciones.forEach(lec => {
+                    grid.innerHTML += `<div class="horario-leccion">${lec}</div>`;
+                    
+                    for (let dia = 0; dia < 5; dia++) {
+                        const clase = horarioData[lec] && horarioData[lec][dia];
+                        
+                        if (clase) {
+                            grid.innerHTML += `
+                                <div class="horario-celda ${clase.tipo}" onclick="app.seleccionarClase('${clase.materia}')">
+                                    <div class="horario-materia">${clase.materia.split(' ')[0]}</div>
+                                    <div class="horario-seccion">${clase.materia.split(' ')[1]}</div>
                                 </div>
                             `;
-                        } else if (clase && parseInt(clase.horaInicio.split(':')[0]) < parseInt(hora.split(':')[0]) && parseInt(hora.split(':')[0]) < parseInt(clase.horaFin.split(':')[0])) {
-                            return `<div class="border-r border-gray-200 bg-purple-50"></div>`;
                         } else {
-                            return `<div class="p-4 border-r border-gray-200 hover:bg-gray-50 cursor-pointer" onclick="openModal('nuevaClaseModal')"></div>`;
+                            grid.innerHTML += `<div class="horario-celda vacio" onclick="app.agregarClase(${lec}, ${dia})">-</div>`;
                         }
-                    }).join('')}
-                </div>
-            `}).join('');
-        }
+                    }
+                });
+            },
 
-        document.getElementById('formNuevaClase').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const seccion = data.secciones.find(s => s.id === parseInt(document.getElementById('claseSeccion').value));
-            const nuevaClase = {
-                id: Date.now(),
-                seccionId: seccion.id,
-                dia: parseInt(document.getElementById('claseDia').value),
-                horaInicio: document.getElementById('claseHoraInicio').value,
-                horaFin: document.getElementById('claseHoraFin').value,
-                asignatura: seccion.asignatura,
-                seccion: seccion.seccion
-            };
-            data.horario.push(nuevaClase);
-            closeModal('nuevaClaseModal');
-            this.reset();
-            renderHorario();
-        });
-
-        // Bitácoras
-        function renderBitacoras() {
-            const container = document.getElementById('listaBitacoras');
-            if (data.bitacoras.length === 0) {
-                container.innerHTML = '<div class="text-center py-12 text-gray-500 bg-white rounded-xl">No hay bitácoras registradas</div>';
-                return;
-            }
-            
-            container.innerHTML = data.bitacoras.map(b => `
-                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                    <div class="flex justify-between items-start mb-2">
-                        <h4 class="font-semibold text-lg text-gray-900">${b.titulo}</h4>
-                        <span class="text-sm text-gray-500">${new Date(b.fecha).toLocaleDateString()}</span>
-                    </div>
-                    <p class="text-sm text-purple-600 mb-3">${b.seccionNombre}</p>
-                    <p class="text-gray-700 mb-3">${b.contenido}</p>
-                    ${b.recordatorio ? '<span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-orange-100 text-orange-800"><i class="fas fa-bell mr-1"></i> Recordatorio activo</span>' : ''}
-                </div>
-            `).join('');
-            
-            document.getElementById('bitacoraCount').textContent = data.bitacoras.filter(b => b.recordatorio).length;
-        }
-
-        document.getElementById('formBitacora').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const seccion = data.secciones.find(s => s.id === parseInt(document.getElementById('bitacoraSeccion').value));
-            const nueva = {
-                id: Date.now(),
-                titulo: document.getElementById('bitacoraTitulo').value,
-                seccionId: seccion.id,
-                seccionNombre: `${seccion.asignatura} - ${seccion.seccion}`,
-                contenido: document.getElementById('bitacoraContenido').value,
-                fecha: new Date().toISOString(),
-                recordatorio: document.getElementById('bitacoraRecordatorio').checked
-            };
-            data.bitacoras.unshift(nueva);
-            closeModal('nuevaBitacoraModal');
-            this.reset();
-            renderBitacoras();
-        });
-
-        // Reportes y Exportación
-        function updateSelects() {
-            const opts = data.secciones.map(s => `<option value="${s.id}">${s.asignatura} - ${s.seccion}</option>`).join('');
-            document.getElementById('bitacoraSeccion').innerHTML = opts;
-            document.getElementById('claseSeccion').innerHTML = opts;
-        }
-
-        function updateReportesSelects() {
-            const estudiantesOpts = data.secciones.flatMap(s => 
-                s.estudiantes.map(e => `<option value="${e.id}" data-seccion="${s.id}">${e.nombre} (${s.asignatura})</option>`)
-            ).join('');
-            document.getElementById('selectReporteEstudiante').innerHTML = '<option value="">Seleccionar estudiante...</option>' + estudiantesOpts;
-            
-            const seccionOpts = data.secciones.map(s => `<option value="${s.id}">${s.asignatura} - ${s.seccion}</option>`).join('');
-            document.getElementById('selectReporteSeccion').innerHTML = '<option value="">Seleccionar sección...</option>' + seccionOpts;
-        }
-
-        function generarReportePDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            
-            doc.setFontSize(18);
-            doc.text(`Reporte Final - ${data.currentSeccion.asignatura}`, 14, 20);
-            doc.setFontSize(12);
-            doc.text(`Sección: ${data.currentSeccion.seccion} | Periodo: ${data.currentPeriodo}`, 14, 30);
-            
-            const rows = data.currentSeccion.estudiantes.map((est, idx) => {
-                const prom = calcularPromedio(est);
-                return [idx + 1, est.nombre, prom.toFixed(1), prom >= 70 ? 'Aprobado' : 'Reprobado'];
-            });
-            
-            doc.autoTable({
-                head: [['#', 'Estudiante', 'Promedio', 'Estado']],
-                body: rows,
-                startY: 40
-            });
-            
-            doc.save(`Reporte_${data.currentSeccion.asignatura}_${data.currentPeriodo}.pdf`);
-        }
-
-        function generarReporteIndividualPDF() {
-            const select = document.getElementById('selectReporteEstudiante');
-            const estId = parseInt(select.value);
-            if (!estId) return alert('Seleccione un estudiante');
-            
-            const seccion = data.secciones.find(s => s.estudiantes.some(e => e.id === estId));
-            const est = seccion.estudiantes.find(e => e.id === estId);
-            
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            
-            doc.setFontSize(18);
-            doc.text('Reporte Individual del Estudiante', 14, 20);
-            doc.setFontSize(12);
-            doc.text(`Estudiante: ${est.nombre}`, 14, 35);
-            doc.text(`Sección: ${seccion.asignatura} - ${seccion.seccion}`, 14, 45);
-            doc.text(`Periodo: ${data.currentPeriodo}`, 14, 55);
-            
-            const prom = calcularPromedio(est);
-            const asist = est.asistencia[data.currentPeriodo] || {};
-            const totalAsist = Object.values(asist).filter(a => a === 'P').length;
-            const total = Object.keys(asist).length;
-            const porcAsist = total > 0 ? Math.round((totalAsist/total)*100) : 0;
-            
-            doc.text(`Promedio Académico: ${prom.toFixed(1)}`, 14, 70);
-            doc.text(`Asistencia: ${porcAsist}%`, 14, 80);
-            
-            doc.save(`Reporte_${est.nombre}.pdf`);
-        }
-
-        function exportarExcel() {
-            const seccionId = document.getElementById('selectReporteSeccion').value;
-            if (!seccionId) return alert('Seleccione una sección');
-            
-            const seccion = data.secciones.find(s => s.id === parseInt(seccionId));
-            let csv = 'Nombre,Trabajo Cotidiano,Tareas,Pruebas,Promedio,Asistencia\n';
-            
-            seccion.estudiantes.forEach(est => {
-                const prom = calcularPromedio(est);
-                const promT = est.notas.trabajo.length ? (est.notas.trabajo.reduce((a,b)=>a+b,0)/est.notas.trabajo.length).toFixed(1) : '0';
-                const promTa = est.notas.tareas.length ? (est.notas.tareas.reduce((a,b)=>a+b,0)/est.notas.tareas.length).toFixed(1) : '0';
-                const promP = est.notas.pruebas.length ? (est.notas.pruebas.reduce((a,b)=>a+b,0)/est.notas.pruebas.length).toFixed(1) : '0';
+            // ==========================================
+            // ASISTENCIA - Por lecciones
+            // ==========================================
+            cargarLecciones() {
+                const container = document.getElementById('listaLecciones');
                 
-                csv += `"${est.nombre}",${promT},${promTa},${promP},${prom.toFixed(1)},${prom >= 70 ? 'Aprobado' : 'Reprobado'}\n`;
-            });
+                const lecciones = [
+                    { num: 1, asignatura: 'Ciencias', seccion: '6-3', completada: true },
+                    { num: 2, asignatura: 'Ciencias', seccion: '6-3', completada: true },
+                    { num: 3, asignatura: 'Ciencias', seccion: '6-2', completada: false },
+                    { num: 4, asignatura: 'Ciencias', seccion: '6-2', completada: false },
+                    { num: 5, asignatura: 'Matemáticas', seccion: '6-3', completada: false },
+                    { num: 6, asignatura: 'Matemáticas', seccion: '6-3', completada: false },
+                    { num: 7, asignatura: 'Matemáticas', seccion: '6-3', completada: false }
+                ];
+                
+                container.innerHTML = lecciones.map(l => `
+                    <div class="leccion-card ${l.completada ? 'completada' : ''}">
+                        <div class="leccion-numero">Lección ${l.num}</div>
+                        <div class="leccion-info"><strong>Asignatura:</strong> ${l.asignatura}</div>
+                        <div class="leccion-info"><strong>Sección:</strong> ${l.seccion}</div>
+                        <div class="leccion-acciones">
+                            <button class="btn-small btn-edit" onclick="app.editarLeccion(${l.num})">✏️ Editar</button>
+                            <button class="btn-small btn-delete" onclick="app.eliminarLeccion(${l.num})">🗑️ Eliminar</button>
+                        </div>
+                    </div>
+                `).join('');
+            },
+
+            // ==========================================
+            // UTILIDADES
+            // ==========================================
+            openModal(modal) {
+                document.getElementById('modal' + modal.charAt(0).toUpperCase() + modal.slice(1)).classList.add('active');
+            },
+
+            closeModal(modal) {
+                document.getElementById('modal' + modal.charAt(0).toUpperCase() + modal.slice(1)).classList.remove('active');
+            },
+
+            guardarSeccion() {
+                const asignatura = document.getElementById('secAsignatura').value;
+                const codigo = document.getElementById('secCodigo').value;
+                
+                if (!asignatura || !codigo) {
+                    this.showToast('Complete los campos obligatorios', 'error');
+                    return;
+                }
+                
+                this.data.secciones.push({
+                    id: Date.now().toString(),
+                    asignatura,
+                    codigo,
+                    institucion: document.getElementById('secInstitucion').value || 'Sin institución',
+                    anioLectivo: parseInt(document.getElementById('secAnio').value) || 2024,
+                    estudiantes: []
+                });
+                
+                this.closeModal('nuevaSeccion');
+                this.renderDashboard();
+                this.renderSecciones();
+                this.showToast('Sección creada exitosamente', 'success');
+            },
+
+            cargarSelects() {
+                // Llenar selects de secciones
+                const options = this.data.secciones.map(s => 
+                    `<option value="${s.id}">${s.asignatura} - ${s.codigo}</option>`
+                ).join('');
+                
+                ['trabajoSeccion', 'tareasSeccion', 'pruebasSeccion'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.innerHTML = '<option value="">Seleccionar sección...</option>' + options;
+                });
+            },
+
+            showToast(message, type = 'info') {
+                const container = document.getElementById('toastContainer');
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                
+                const icons = { success: '✓', error: '✕', info: 'ℹ' };
+                
+                toast.innerHTML = `
+                    <span style="font-size: 20px;">${icons[type]}</span>
+                    <span>${message}</span>
+                `;
+                
+                container.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateX(100%)';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            },
+
+            // Navegación rápida desde tarjetas
+            verEstudiantes(id) { this.showToast('Ver estudiantes de sección ' + id, 'info'); },
+            irTrabajoCotidiano(id) { 
+                document.getElementById('trabajoSeccion').value = id;
+                this.navigate('trabajo'); 
+                this.cargarIndicadores();
+            },
+            irTareas(id) { 
+                document.getElementById('tareasSeccion').value = id;
+                this.navigate('tareas'); 
+                this.cargarTareas();
+            },
+            irPruebas(id) { this.navigate('pruebas'); },
+            irAsistencia(id) { this.navigate('asistencia'); },
+            irReporte(id) { this.navigate('reporte'); },
             
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Notas_${seccion.asignatura}.csv`;
-            a.click();
-        }
-
-        function generarCSV() {
-            exportarExcel(); // Same format for demo
-        }
-
-        function irAAsistencia(seccionId) {
-            verDetalleSeccion(seccionId);
-            cambiarTab('asistencia');
-        }
-
-        // Close modals on outside click
-        window.onclick = function(event) {
-            if (event.target.classList.contains('fixed')) {
-                event.target.classList.add('hidden');
+            seleccionarClase(materia) { this.showToast('Clase seleccionada: ' + materia, 'info'); },
+            agregarClase(lec, dia) { this.showToast(`Agregar clase en lección ${lec}, día ${dia}`, 'info'); },
+            editarLeccion(num) { this.showToast('Editar lección ' + num, 'info'); },
+            eliminarLeccion(num) { this.showToast('Lección ' + num + ' eliminada', 'success'); },
+            registrarAsistencia() { this.showToast('Asistencia registrada', 'success'); },
+            descargarPDF() { this.showToast('Descargando PDF...', 'info'); },
+            descargarWord() { this.showToast('Descargando Word...', 'info'); },
+            editarIndicador(id) { this.showToast('Editar indicador ' + id, 'info'); },
+            eliminarIndicador(id) { 
+                this.data.indicadores = this.data.indicadores.filter(i => i.id !== id);
+                this.cargarIndicadores();
+                this.showToast('Indicador eliminado', 'success'); 
+            },
+            guardarNotaIndicador(estId, indId, valor) { 
+                this.showToast('Nota guardada: ' + valor, 'success'); 
             }
-        }
+        };
+
+        // Iniciar
+        app.init();
     </script>
 </body>
 </html>
