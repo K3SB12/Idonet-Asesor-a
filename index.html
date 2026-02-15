@@ -3,802 +3,1291 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Idonet+ | Sistema de Formación Tecnológica con Memoria Documental</title>
-    <!-- Tailwind CSS -->
+    <title>Registronet - Sistema de Gestión Docente</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Librerías para procesar documentos -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background: #f0f4f8;
-            overflow: hidden;
-            height: 100vh;
-        }
-        /* Scroll personalizado */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #e9eef2; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: #b5c5d4; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #8fa3b9; }
-
-        /* Animaciones */
-        .fade-in { animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-
-        .pulse { animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 0.8; } 50% { opacity: 1; } 100% { opacity: 0.8; } }
-
-        /* Tarjetas y elementos visuales */
-        .card-dashboard {
-            background: rgba(255,255,255,0.9);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 28px;
-            box-shadow: 0 20px 40px -15px rgba(0,60,130,0.15);
-        }
-        .nav-btn-active {
-            background: #1e3a5f;
-            color: white;
-            box-shadow: 0 10px 15px -5px rgba(0,119,190,0.3);
-        }
-        .milestone {
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .milestone:hover:not(.opacity-40) {
-            transform: scale(1.1);
-            filter: drop-shadow(0 10px 15px rgba(0,110,200,0.3));
-        }
-        .chat-bubble-bot {
-            background: #f0f4fa;
-            border-radius: 22px 22px 22px 8px;
-        }
-        .chat-bubble-user {
-            background: #0077BE;
-            color: white;
-            border-radius: 22px 22px 8px 22px;
-        }
-        .progress-ring {
-            transition: stroke-dashoffset 0.5s;
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
-        }
-        /* Upload area */
-        .upload-area {
-            border: 2px dashed #bdd3e8;
-            background: #f8fcff;
-            transition: all 0.2s;
-        }
-        .upload-area:hover {
-            border-color: #0077BE;
-            background: #e6f2fa;
-        }
-        .hidden { display: none !important; }
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .glass-effect { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .animate-fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .status-badge { transition: all 0.2s; cursor: pointer; }
+        .status-badge:hover { transform: scale(1.1); }
+        .hidden-section { display: none; }
+        .active-nav { border-bottom: 3px solid #667eea; color: #667eea; }
+        .periodo-tab.active { background-color: #667eea; color: white; }
+        input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
     </style>
 </head>
-<body class="flex h-screen">
+<body class="text-gray-800">
 
-    <!-- ========== SIDEBAR ========== -->
-    <aside class="w-72 bg-white/90 backdrop-blur-xl border-r border-slate-200/60 flex flex-col shadow-2xl z-20">
-        <div class="px-6 py-8 border-b border-slate-100">
-            <div class="flex items-center gap-2.5">
-                <span class="text-4xl font-black bg-gradient-to-r from-blue-700 to-green-600 bg-clip-text text-transparent">Idonet+</span>
-                <span class="bg-blue-100 text-blue-800 text-xs px-2.5 py-1 rounded-full font-bold tracking-wide">PNFT</span>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="fixed inset-0 gradient-bg flex items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md animate-fade-in">
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-gradient-to-br from-blue-400 to-purple-600 rounded-2xl mx-auto flex items-center justify-center mb-4 shadow-lg">
+                    <i class="fas fa-graduation-cap text-4xl text-white"></i>
+                </div>
+                <h1 class="text-3xl font-bold text-gray-800">Registronet</h1>
+                <p class="text-gray-500 mt-2">Sistema de Gestión Docente</p>
             </div>
-            <p class="text-sm text-slate-500 mt-2 font-medium flex items-center gap-1">
-                <i class="fas fa-brain text-blue-400"></i> Arquitectura de soporte cognitivo
-            </p>
-        </div>
-
-        <!-- Perfil y progreso -->
-        <div class="mx-4 mt-6 p-5 bg-gradient-to-br from-blue-50 to-indigo-50/50 rounded-3xl border border-blue-100/50">
-            <div class="flex justify-between items-center">
-                <span class="text-xs font-bold text-blue-800 uppercase tracking-wider flex items-center gap-1"><i class="fas fa-crown text-amber-500"></i> Nivel Ciudadano</span>
-                <span class="bg-green-500 text-white text-[10px] px-2 py-1 rounded-full font-bold shadow-sm">🔥 racha 7d</span>
-            </div>
-            <div class="flex items-end justify-between mt-3">
+            <form id="loginForm" class="space-y-4">
                 <div>
-                    <p class="text-3xl font-black text-slate-800" id="globalPoints">2,860</p>
-                    <p class="text-xs text-slate-500">IdoPoints · <span id="globalLevel">Explorador</span></p>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
+                    <input type="email" id="loginEmail" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition" placeholder="profesor@escuela.edu" value="profesor@registronet.com">
                 </div>
-                <div class="text-right">
-                    <p class="text-sm font-semibold text-slate-700">Maestría</p>
-                    <p class="text-xs text-slate-500">68%</p>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+                    <input type="password" id="loginPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition" placeholder="••••••••" value="password">
                 </div>
-            </div>
-            <div class="w-full h-2.5 bg-slate-200/70 rounded-full mt-4 overflow-hidden">
-                <div id="globalProgress" class="h-full bg-gradient-to-r from-blue-600 to-green-500 rounded-full transition-all duration-700" style="width: 68%"></div>
+                <button type="submit" class="w-full gradient-bg text-white py-3 rounded-lg font-semibold hover:opacity-90 transition transform hover:scale-[1.02]">
+                    Iniciar Sesión
+                </button>
+            </form>
+            <div class="mt-6 text-center text-sm text-gray-500">
+                <p>Demo: cualquier correo/contraseña funciona</p>
             </div>
         </div>
+    </div>
 
-        <!-- Navegación -->
-        <nav class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
-            <button onclick="showSection('dashboard', this)" class="nav-btn w-full flex items-center gap-4 p-3.5 rounded-2xl hover:bg-blue-50 transition-all text-slate-700 font-medium nav-btn-active">
-                <i class="fas fa-chart-pie text-xl w-6 text-blue-600"></i> <span>Dashboard</span>
-            </button>
-            <button onclick="showSection('focus', this)" class="nav-btn w-full flex items-center gap-4 p-3.5 rounded-2xl hover:bg-blue-50 transition-all text-slate-700 font-medium">
-                <i class="fas fa-clock text-xl w-6 text-indigo-500"></i> <span>Enfoque Flow</span>
-            </button>
-            <button onclick="showSection('simulator', this)" class="nav-btn w-full flex items-center gap-4 p-3.5 rounded-2xl hover:bg-blue-50 transition-all text-slate-700 font-medium">
-                <i class="fas fa-clipboard-check text-xl w-6 text-amber-600"></i> <span>Simulador MEP</span>
-            </button>
-            <button onclick="showSection('tutor', this)" class="nav-btn w-full flex items-center gap-4 p-3.5 rounded-2xl hover:bg-blue-50 transition-all text-slate-700 font-medium">
-                <i class="fas fa-robot text-xl w-6 text-emerald-600"></i> <span>Tutor IA con Memoria</span>
-            </button>
-            <button onclick="showSection('resources', this)" class="nav-btn w-full flex items-center gap-4 p-3.5 rounded-2xl hover:bg-blue-50 transition-all text-slate-700 font-medium">
-                <i class="fas fa-book-open text-xl w-6 text-purple-600"></i> <span>Centro de Recursos</span>
-            </button>
+    <!-- Main Application -->
+    <div id="mainApp" class="hidden">
+        <!-- Navigation -->
+        <nav class="glass-effect fixed w-full top-0 z-40 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer" onclick="showSection('dashboard')">
+                            <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-600 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-graduation-cap text-white text-xl"></i>
+                            </div>
+                            <span class="font-bold text-xl text-gray-800">Registronet</span>
+                        </div>
+                        <div class="hidden md:ml-10 md:flex md:space-x-8">
+                            <button onclick="showSection('dashboard')" id="nav-dashboard" class="active-nav px-3 py-2 text-sm font-medium text-gray-900 inline-flex items-center gap-2">
+                                <i class="fas fa-home"></i> Inicio
+                            </button>
+                            <button onclick="showSection('secciones')" id="nav-secciones" class="px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-900 inline-flex items-center gap-2">
+                                <i class="fas fa-chalkboard"></i> Secciones
+                            </button>
+                            <button onclick="showSection('horario')" id="nav-horario" class="px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-900 inline-flex items-center gap-2">
+                                <i class="fas fa-clock"></i> Horario
+                            </button>
+                            <button onclick="showSection('reportes')" id="nav-reportes" class="px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-900 inline-flex items-center gap-2">
+                                <i class="fas fa-file-alt"></i> Reportes
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <button onclick="showSection('bitacoras')" class="text-gray-500 hover:text-gray-700 relative">
+                            <i class="fas fa-book"></i>
+                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center" id="bitacoraCount">0</span>
+                        </button>
+                        <div class="flex items-center gap-2">
+                            <img src="https://ui-avatars.com/api/?name=Profesor&background=667eea&color=fff" class="w-8 h-8 rounded-full">
+                            <span class="hidden md:block text-sm font-medium text-gray-700" id="userName">Profesor</span>
+                            <button onclick="logout()" class="text-gray-400 hover:text-red-500 ml-2">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </nav>
 
-        <div class="p-5 border-t border-slate-100 text-xs text-slate-400 text-center">
-            <i class="far fa-clock mr-1"></i> memoria documental activa · <span id="docCount">0</span> docs
-        </div>
-    </aside>
-
-    <!-- ========== CONTENIDO PRINCIPAL ========== -->
-    <main class="flex-1 overflow-y-auto bg-[#f5f9ff] relative">
-        <!-- Header -->
-        <header class="sticky top-0 z-10 bg-white/70 backdrop-blur-xl border-b border-slate-200/60 px-8 py-4 flex justify-between items-center">
-            <h2 id="pageTitle" class="text-xl font-bold text-slate-800">Panel del Ciudadano Planetario</h2>
-            <div class="flex items-center gap-5">
-                <button class="p-2.5 hover:bg-slate-100 rounded-full transition relative">
-                    <i class="far fa-bell text-slate-600 text-xl"></i>
-                    <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
-                </button>
-                <div class="h-11 w-11 rounded-full bg-gradient-to-br from-blue-600 to-green-500 text-white flex items-center justify-center font-bold text-lg shadow-md">DR</div>
-            </div>
-        </header>
-
-        <!-- Contenedor de secciones dinámicas -->
-        <div class="p-6 md:p-8 max-w-6xl mx-auto pb-20" id="sectionContainer">
-
-            <!-- ===== DASHBOARD (con mapa de metas real) ===== -->
-            <section id="dashboard" class="section fade-in">
-                <div class="mb-6">
-                    <p class="text-sm text-blue-600 font-semibold mb-1">Bienvenido de vuelta, Dr. Ramírez</p>
-                    <h1 class="text-3xl font-black text-slate-800">Tu progreso en la Nueva Ciudadanía</h1>
+        <!-- Main Content -->
+        <main class="pt-20 pb-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            
+            <!-- Dashboard -->
+            <section id="dashboard" class="animate-fade-in">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-gray-900">Panel de Control</h2>
+                    <p class="text-gray-600 mt-1">Bienvenido de vuelta, <span id="welcomeName">Profesor</span></p>
                 </div>
 
-                <!-- KPIs según el informe -->
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                    <div class="card-dashboard p-5">
-                        <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Tasa finalización</p>
-                        <p class="text-2xl font-black">87%</p>
-                        <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2"><div class="bg-blue-600 h-full rounded-full" style="width:87%"></div></div>
-                    </div>
-                    <div class="card-dashboard p-5">
-                        <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Fatiga percibida</p>
-                        <p class="text-2xl font-black">2.2/4</p>
-                        <p class="text-xs text-green-600 mt-1">↓ 0.3 respecto a ayer</p>
-                    </div>
-                    <div class="card-dashboard p-5">
-                        <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Deep Work</p>
-                        <p class="text-2xl font-black">213 min</p>
-                        <p class="text-xs text-slate-400">meta 240 min</p>
-                    </div>
-                    <div class="card-dashboard p-5">
-                        <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Retención</p>
-                        <p class="text-2xl font-black">81%</p>
-                        <p class="text-xs text-green-600">+4% vs promedio</p>
-                    </div>
-                </div>
-
-                <!-- Mapa de metas volantes con premios (interactivo) -->
-                <div class="card-dashboard p-6 mb-8 overflow-x-auto">
-                    <div class="flex items-center gap-2 mb-6">
-                        <i class="fas fa-map-signs text-blue-500 text-xl"></i>
-                        <h3 class="font-bold text-lg text-slate-800">Camino a la Idoneidad · Metas volantes</h3>
-                        <span class="ml-auto text-sm bg-amber-100 text-amber-800 px-3 py-1 rounded-full">8 metas activas</span>
-                    </div>
-                    <div class="flex justify-between items-center min-w-[800px] py-3">
-                        <!-- meta 1 completada -->
-                        <div class="flex flex-col items-center milestone">
-                            <div class="w-14 h-14 rounded-full bg-green-100 border-4 border-green-500 flex items-center justify-center text-2xl shadow-md cursor-pointer" onclick="claimReward(120, 'Módulo: Fundamentos PNFT')">
-                                <i class="fas fa-check text-green-600"></i>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 card-hover">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">Total Secciones</p>
+                                <p class="text-2xl font-bold text-gray-900" id="totalSecciones">0</p>
                             </div>
-                            <span class="text-xs font-bold mt-2 text-slate-600">Fundamentos</span>
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+                                <i class="fas fa-chalkboard text-xl"></i>
+                            </div>
                         </div>
-                        <div class="h-1 w-12 bg-green-300 rounded-full"></div>
-                        <!-- meta 2 activa -->
-                        <div class="flex flex-col items-center milestone">
-                            <div class="w-16 h-16 rounded-full bg-blue-100 border-4 border-blue-600 flex items-center justify-center text-2xl shadow-lg cursor-pointer" onclick="claimReward(150, 'DUA y adaptaciones')">
-                                <i class="fas fa-universal-access text-blue-600"></i>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 card-hover">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">Total Estudiantes</p>
+                                <p class="text-2xl font-bold text-gray-900" id="totalEstudiantes">0</p>
                             </div>
-                            <span class="text-xs font-bold mt-2 text-blue-700">DUA</span>
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-green-600">
+                                <i class="fas fa-users text-xl"></i>
+                            </div>
                         </div>
-                        <div class="h-1 w-12 bg-slate-200 rounded-full"></div>
-                        <!-- meta 3 bloqueada (depende de documentos cargados) -->
-                        <div class="flex flex-col items-center milestone opacity-40" id="metaSteam">
-                            <div class="w-14 h-14 rounded-full bg-slate-100 border-2 border-slate-300 flex items-center justify-center text-2xl">
-                                <i class="fas fa-lock text-slate-400"></i>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 card-hover">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">Evaluaciones Hoy</p>
+                                <p class="text-2xl font-bold text-gray-900" id="evaluacionesHoy">0</p>
                             </div>
-                            <span class="text-xs font-bold mt-2 text-slate-400">STEAM</span>
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600">
+                                <i class="fas fa-clipboard-check text-xl"></i>
+                            </div>
                         </div>
-                        <div class="h-1 w-12 bg-slate-200 rounded-full"></div>
-                        <!-- meta 4 premio (desbloqueable) -->
-                        <div class="flex flex-col items-center milestone" id="metaPremio">
-                            <div class="w-20 h-20 rounded-full bg-amber-100 border-4 border-amber-400 flex items-center justify-center text-3xl shadow-lg cursor-pointer" onclick="claimReward(500, 'Certificación en Innovación Docente')">
-                                <i class="fas fa-crown text-amber-500"></i>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 card-hover">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">Asistencia Promedio</p>
+                                <p class="text-2xl font-bold text-gray-900" id="asistenciaPromedio">0%</p>
                             </div>
-                            <span class="text-xs font-bold mt-2 text-amber-600">Premio final</span>
+                            <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600">
+                                <i class="fas fa-chart-line text-xl"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Botón de acción rápida (FAB según informe) -->
-                <div class="grid md:grid-cols-2 gap-5">
-                    <div class="card-dashboard p-6 flex items-center gap-4">
-                        <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-2xl"><i class="fas fa-play"></i></div>
-                        <div>
-                            <h4 class="font-bold">Iniciar sesión de enfoque</h4>
-                            <p class="text-sm text-slate-500">Modo Pomodoro / Flowtime</p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Acceso Rápido</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button onclick="showSection('secciones'); openModal('nuevaSeccionModal')" class="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition text-center group">
+                                <i class="fas fa-plus-circle text-3xl text-gray-400 group-hover:text-purple-500 mb-2"></i>
+                                <p class="text-sm font-medium text-gray-700">Nueva Sección</p>
+                            </button>
+                            <button onclick="showSection('horario')" class="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition text-center group">
+                                <i class="fas fa-clock text-3xl text-gray-400 group-hover:text-blue-500 mb-2"></i>
+                                <p class="text-sm font-medium text-gray-700">Ver Horario</p>
+                            </button>
+                            <button onclick="showSection('reportes')" class="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition text-center group">
+                                <i class="fas fa-file-export text-3xl text-gray-400 group-hover:text-green-500 mb-2"></i>
+                                <p class="text-sm font-medium text-gray-700">Exportar Reportes</p>
+                            </button>
+                            <button onclick="showSection('bitacoras')" class="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-orange-500 hover:bg-orange-50 transition text-center group">
+                                <i class="fas fa-book-open text-3xl text-gray-400 group-hover:text-orange-500 mb-2"></i>
+                                <p class="text-sm font-medium text-gray-700">Nueva Bitácora</p>
+                            </button>
                         </div>
-                        <button onclick="showSection('focus', document.querySelectorAll('.nav-btn')[1])" class="ml-auto bg-blue-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-700 transition">One-Tap</button>
                     </div>
-                    <div class="card-dashboard p-6 flex items-center gap-4">
-                        <div class="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-2xl"><i class="fas fa-file-upload"></i></div>
-                        <div>
-                            <h4 class="font-bold">Alimentar memoria IA</h4>
-                            <p class="text-sm text-slate-500">Sube documentos (PDF, DOCX, etc.)</p>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Próximas Clases</h3>
+                        <div id="proximasClases" class="space-y-3">
+                            <!-- Dynamic content -->
                         </div>
-                        <label class="ml-auto bg-slate-200 hover:bg-slate-300 text-slate-700 px-5 py-2.5 rounded-xl text-sm font-bold cursor-pointer transition">
-                            <i class="fas fa-upload"></i>
-                            <input type="file" id="quickUpload" class="hidden" accept=".pdf,.docx,.xlsx,.txt" multiple onchange="handleGlobalUpload(this)">
-                        </label>
                     </div>
                 </div>
             </section>
 
-            <!-- ===== SESIÓN DE FOCO (Pomodoro / Flowtime) ===== -->
-            <section id="focus" class="section hidden fade-in">
-                <div class="text-center mb-10">
-                    <h2 class="text-3xl font-black text-slate-800">Modo Híbrido Pomodoro/Flowtime</h2>
-                    <p class="text-slate-500 mt-1">Elige tu técnica, sin rigidez que acelere fatiga</p>
-                </div>
-                <div class="max-w-lg mx-auto card-dashboard p-10">
-                    <div class="relative mb-12">
-                        <svg class="w-56 h-56 mx-auto" viewBox="0 0 100 100">
-                            <circle cx="50" cy="50" r="45" fill="none" stroke="#e2e8f0" stroke-width="6"/>
-                            <circle id="timerCircle" cx="50" cy="50" r="45" fill="none" stroke="#0077BE" stroke-width="6" stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="0" class="progress-ring"/>
-                        </svg>
-                        <div class="absolute inset-0 flex items-center justify-center flex-col">
-                            <span id="focusTimerDisplay" class="text-6xl font-black text-blue-700">25:00</span>
-                            <span class="text-sm text-slate-400 mt-1" id="timerModeLabel">Pomodoro</span>
-                        </div>
-                    </div>
-                    <div class="flex justify-center gap-3 mb-6">
-                        <button onclick="setPomodoro()" class="px-5 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-sm shadow-md hover:bg-blue-700 transition">Pomodoro 25'</button>
-                        <button onclick="setFlowtime()" class="px-5 py-2.5 rounded-xl bg-green-600 text-white font-bold text-sm shadow-md hover:bg-green-700 transition">Flowtime libre</button>
-                    </div>
-                    <div class="flex justify-center gap-3">
-                        <button onclick="toggleFocusTimer()" id="focusToggleBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl font-bold shadow-lg transition flex items-center gap-2 text-lg"><i class="fas fa-play"></i> Iniciar</button>
-                        <button onclick="resetFocusTimer()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 p-4 rounded-2xl transition"><i class="fas fa-undo-alt"></i></button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ===== SIMULADOR MEP (60 preguntas dinámicas) ===== -->
-            <section id="simulator" class="section hidden fade-in">
+            <!-- Secciones -->
+            <section id="secciones" class="hidden-section animate-fade-in">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-slate-800">Simulador de Idoneidad · MEP</h2>
-                    <div class="flex gap-2">
-                        <select id="estratoSelect" class="bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm font-medium">
-                            <option>I Ciclo</option>
-                            <option>II Ciclo</option>
-                            <option>III Ciclo</option>
-                            <option>Diversificada</option>
-                        </select>
+                    <div>
+                        <h2 class="text-3xl font-bold text-gray-900">Mis Secciones</h2>
+                        <p class="text-gray-600">Gestiona tus grupos y estudiantes</p>
                     </div>
+                    <button onclick="openModal('nuevaSeccionModal')" class="gradient-bg text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition flex items-center gap-2">
+                        <i class="fas fa-plus"></i> Nueva Sección
+                    </button>
                 </div>
-                <div class="card-dashboard p-8">
-                    <div class="flex justify-between items-start mb-6">
-                        <span class="bg-purple-100 text-purple-800 px-4 py-1.5 rounded-full text-xs font-bold" id="simCategoryDisplay">Competencias Transitorio</span>
-                        <span class="text-slate-400 text-sm" id="simCounterDisplay">1 / 60</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-6" id="simQuestionDisplay">Cargando preguntas desde los documentos...</h3>
-                    <div id="simOptionsContainer" class="space-y-3"></div>
-                    <div id="simFeedbackPanel" class="mt-6 p-5 rounded-2xl hidden border-l-8"></div>
-                    <button id="simNextBtnAction" onclick="nextSimQuestion()" class="mt-6 w-full bg-slate-900 text-white py-4 rounded-xl font-bold hover:bg-slate-800 transition hidden">Siguiente pregunta</button>
+
+                <div id="seccionesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Dynamic secciones -->
                 </div>
-                <div class="mt-4 text-sm text-slate-500 text-center">* Las preguntas se generan basadas en los documentos que hayas subido.</div>
             </section>
 
-            <!-- ===== TUTOR IA CON MEMORIA (carga real de archivos) ===== -->
-            <section id="tutor" class="section hidden fade-in">
-                <div class="flex flex-col lg:flex-row gap-6 h-[calc(100vh-12rem)]">
-                    <div class="flex-1 bg-white rounded-3xl shadow-xl border border-slate-200 flex flex-col overflow-hidden">
-                        <div class="p-4 border-b border-slate-100 flex items-center gap-3 bg-slate-50">
-                            <i class="fas fa-robot text-2xl text-emerald-600"></i>
-                            <span class="font-bold">Asesor Nacional de Formación Tecnológica</span>
-                            <span class="ml-auto text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full"><i class="fas fa-database mr-1"></i> memoria: <span id="memoryDocCount">0</span></span>
+            <!-- Detalle Sección -->
+            <section id="detalleSeccion" class="hidden-section animate-fade-in">
+                <button onclick="showSection('secciones')" class="mb-4 text-gray-600 hover:text-gray-900 flex items-center gap-2">
+                    <i class="fas fa-arrow-left"></i> Volver a Secciones
+                </button>
+                
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900" id="detalleTitulo">Matemáticas</h2>
+                            <p class="text-gray-600 mt-1" id="detalleSubtitulo">Sección 6-2 • Escuela República de Francia</p>
+                            <div class="flex gap-2 mt-3">
+                                <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium" id="detallePeriodo">I Periodo</span>
+                                <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm font-medium" id="detalleCantidad">0 estudiantes</span>
+                            </div>
                         </div>
-                        <div id="chatMessages" class="flex-1 p-5 overflow-y-auto space-y-4 bg-slate-50/80">
-                            <div class="flex items-start gap-3">
-                                <div class="w-9 h-9 rounded-full bg-emerald-600 flex items-center justify-center text-white shrink-0 text-lg">🤖</div>
-                                <div class="chat-bubble-bot p-4 max-w-[80%] text-slate-700 text-sm">
-                                    He cargado <span id="initialDocCount">0</span> documentos. Pregúntame sobre planeamiento, DUA, evaluación, o lo que necesites.
+                        <div class="flex gap-2">
+                            <button onclick="openModal('nuevoEstudianteModal')" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center gap-2">
+                                <i class="fas fa-user-plus"></i> Agregar Estudiante
+                            </button>
+                            <button onclick="eliminarSeccionActual()" class="px-4 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 mb-6">
+                    <div class="border-b border-gray-200">
+                        <nav class="flex -mb-px">
+                            <button onclick="cambiarTab('estudiantes')" id="tab-estudiantes" class="tab-btn active-nav px-6 py-4 text-sm font-medium border-b-2 border-purple-500 text-purple-600">
+                                <i class="fas fa-users mr-2"></i>Estudiantes
+                            </button>
+                            <button onclick="cambiarTab('asistencia')" id="tab-asistencia" class="tab-btn px-6 py-4 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700">
+                                <i class="fas fa-check-circle mr-2"></i>Asistencia
+                            </button>
+                            <button onclick="cambiarTab('evaluaciones')" id="tab-evaluaciones" class="tab-btn px-6 py-4 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700">
+                                <i class="fas fa-clipboard-list mr-2"></i>Evaluaciones
+                            </button>
+                            <button onclick="cambiarTab('reporte')" id="tab-reporte" class="tab-btn px-6 py-4 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700">
+                                <i class="fas fa-chart-bar mr-2"></i>Reporte Final
+                            </button>
+                        </nav>
+                    </div>
+
+                    <div class="p-6">
+                        <!-- Estudiantes Tab -->
+                        <div id="content-estudiantes" class="tab-content">
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estudiante</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ACS</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Promedio</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tablaEstudiantes" class="bg-white divide-y divide-gray-200">
+                                        <!-- Dynamic -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Asistencia Tab -->
+                        <div id="content-asistencia" class="tab-content hidden">
+                            <div class="mb-4 flex justify-between items-center">
+                                <div class="flex gap-2">
+                                    <button onclick="cambiarPeriodoAsistencia('I')" class="periodo-tab active px-4 py-2 rounded-lg text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300">I Periodo</button>
+                                    <button onclick="cambiarPeriodoAsistencia('II')" class="periodo-tab px-4 py-2 rounded-lg text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300">II Periodo</button>
+                                    <button onclick="cambiarPeriodoAsistencia('III')" class="periodo-tab px-4 py-2 rounded-lg text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300">III Periodo</button>
+                                </div>
+                                <button onclick="registrarAsistenciaHoy()" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
+                                    <i class="fas fa-calendar-check mr-2"></i>Registrar Hoy
+                                </button>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200" id="tablaAsistencia">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estudiante</th>
+                                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">L</th>
+                                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">M</th>
+                                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">X</th>
+                                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">J</th>
+                                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">V</th>
+                                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="bodyAsistencia" class="bg-white divide-y divide-gray-200">
+                                        <!-- Dynamic -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Evaluaciones Tab -->
+                        <div id="content-evaluaciones" class="tab-content hidden">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                                <div onclick="abrirEvaluacion('trabajo')" class="cursor-pointer bg-blue-50 border-2 border-blue-200 rounded-xl p-6 hover:border-blue-400 hover:bg-blue-100 transition text-center">
+                                    <i class="fas fa-briefcase text-4xl text-blue-600 mb-3"></i>
+                                    <h4 class="font-semibold text-gray-900">Trabajo Cotidiano</h4>
+                                    <p class="text-sm text-gray-600 mt-1" id="countTrabajo">0 registros</p>
+                                </div>
+                                <div onclick="abrirEvaluacion('tareas')" class="cursor-pointer bg-green-50 border-2 border-green-200 rounded-xl p-6 hover:border-green-400 hover:bg-green-100 transition text-center">
+                                    <i class="fas fa-home text-4xl text-green-600 mb-3"></i>
+                                    <h4 class="font-semibold text-gray-900">Tareas</h4>
+                                    <p class="text-sm text-gray-600 mt-1" id="countTareas">0 registros</p>
+                                </div>
+                                <div onclick="abrirEvaluacion('pruebas')" class="cursor-pointer bg-purple-50 border-2 border-purple-200 rounded-xl p-6 hover:border-purple-400 hover:bg-purple-100 transition text-center">
+                                    <i class="fas fa-file-alt text-4xl text-purple-600 mb-3"></i>
+                                    <h4 class="font-semibold text-gray-900">Pruebas</h4>
+                                    <p class="text-sm text-gray-600 mt-1" id="countPruebas">0 registros</p>
+                                </div>
+                            </div>
+                            
+                            <div id="formularioEvaluacion" class="hidden bg-gray-50 rounded-xl p-6 border border-gray-200">
+                                <h4 class="font-semibold text-lg mb-4" id="tituloEvalForm">Nueva Evaluación</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                    <input type="text" id="nombreEvaluacion" placeholder="Nombre de la evaluación" class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none">
+                                    <input type="date" id="fechaEvaluacion" class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none">
+                                    <input type="number" id="porcentajeEvaluacion" placeholder="%" class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none" min="0" max="100">
+                                </div>
+                                <div id="listaNotasEstudiantes" class="space-y-2 max-h-96 overflow-y-auto">
+                                    <!-- Dynamic inputs for grades -->
+                                </div>
+                                <div class="mt-4 flex justify-end gap-2">
+                                    <button onclick="cancelarEvaluacion()" class="px-4 py-2 text-gray-600 hover:text-gray-800">Cancelar</button>
+                                    <button onclick="guardarEvaluacion()" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Guardar Notas</button>
                                 </div>
                             </div>
                         </div>
-                        <div class="p-4 bg-white border-t border-slate-200">
-                            <!-- Upload area funcional -->
-                            <div class="upload-area p-3 rounded-2xl mb-3 flex items-center gap-2 text-sm text-slate-600 cursor-pointer" onclick="document.getElementById('chatFileUpload').click()">
-                                <i class="fas fa-cloud-upload-alt text-blue-500"></i>
-                                <span>Sube PDF, DOCX, XLSX o TXT para alimentar mi conocimiento</span>
-                                <i class="fas fa-info-circle ml-auto text-slate-400"></i>
-                                <input type="file" id="chatFileUpload" class="hidden" accept=".pdf,.docx,.xlsx,.txt" multiple onchange="processUploadedFiles(this)">
+
+                        <!-- Reporte Tab -->
+                        <div id="content-reporte" class="tab-content hidden">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="text-lg font-semibold">Reporte Final del Periodo</h3>
+                                <div class="flex gap-2">
+                                    <button onclick="generarReportePDF()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center gap-2">
+                                        <i class="fas fa-file-pdf"></i> PDF
+                                    </button>
+                                    <button onclick="generarReporteExcel()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2">
+                                        <i class="fas fa-file-excel"></i> Excel
+                                    </button>
+                                </div>
                             </div>
-                            <div id="chatUploadPreview" class="flex flex-wrap gap-2 mb-2"></div>
-                            <div class="flex gap-2">
-                                <input type="text" id="chatInputField" placeholder="Ej: ¿Cómo crear un indicador con taxonomía de Bloom?" class="flex-1 p-4 bg-slate-100 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500">
-                                <button onclick="sendChatMessage()" class="p-4 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition shadow-md"><i class="fas fa-paper-plane"></i></button>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200" id="tablaReporteFinal">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">#</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estudiante</th>
+                                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">T.Cotidiano</th>
+                                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Tareas</th>
+                                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Pruebas</th>
+                                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Promedio</th>
+                                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Asistencia</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="bodyReporteFinal" class="bg-white divide-y divide-gray-200">
+                                        <!-- Dynamic -->
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                    </div>
-                    <!-- Panel lateral con lista de documentos cargados -->
-                    <div class="lg:w-80 bg-white/80 backdrop-blur rounded-3xl p-5 border border-slate-200 shadow-sm">
-                        <h4 class="font-bold text-slate-700 mb-3 flex items-center gap-2"><i class="fas fa-file-alt text-blue-500"></i> Documentos en memoria</h4>
-                        <ul id="documentList" class="space-y-2 max-h-96 overflow-y-auto text-sm">
-                            <li class="text-slate-400 text-center py-4">Sube archivos para comenzar</li>
-                        </ul>
-                        <p class="text-xs text-slate-400 mt-4">La IA usará estos documentos para responder y generar contenido.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- ===== CENTRO DE RECURSOS (planeamiento, evaluación, exportación) ===== -->
-            <section id="resources" class="section hidden fade-in">
-                <h2 class="text-2xl font-bold mb-6 text-slate-800">Centro de Innovación Pedagógica</h2>
-                <div class="grid md:grid-cols-3 gap-5 mb-8">
-                    <div class="card-dashboard p-6 hover:shadow-xl transition">
-                        <i class="fas fa-pencil-alt text-3xl text-blue-500 mb-4"></i>
-                        <h3 class="font-bold text-lg">Macro/micro currículo</h3>
-                        <p class="text-sm text-slate-500 mb-3">Genera planeaciones con ejes transversales y RdA</p>
-                        <button class="text-blue-600 font-semibold flex items-center gap-1 text-sm" onclick="generateFromDocs('planeamiento')">Crear <i class="fas fa-arrow-right"></i></button>
+            <!-- Horario -->
+            <section id="horario" class="hidden-section animate-fade-in">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-3xl font-bold text-gray-900">Horario de Clases</h2>
+                    <button onclick="openModal('nuevaClaseModal')" class="gradient-bg text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition">
+                        <i class="fas fa-plus mr-2"></i>Agregar Clase
+                    </button>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="grid grid-cols-6 border-b border-gray-200 bg-gray-50 font-medium text-gray-700">
+                        <div class="p-4 border-r border-gray-200">Hora</div>
+                        <div class="p-4 border-r border-gray-200">Lunes</div>
+                        <div class="p-4 border-r border-gray-200">Martes</div>
+                        <div class="p-4 border-r border-gray-200">Miércoles</div>
+                        <div class="p-4 border-r border-gray-200">Jueves</div>
+                        <div class="p-4">Viernes</div>
                     </div>
-                    <div class="card-dashboard p-6 hover:shadow-xl transition">
-                        <i class="fas fa-magic text-3xl text-purple-500 mb-4"></i>
-                        <h3 class="font-bold text-lg">Prompts seguros</h3>
-                        <p class="text-sm text-slate-500 mb-3">Contextualizados por área y nivel</p>
-                        <button class="text-purple-600 font-semibold flex items-center gap-1 text-sm" onclick="generateFromDocs('prompts')">Diseñar <i class="fas fa-arrow-right"></i></button>
-                    </div>
-                    <div class="card-dashboard p-6 hover:shadow-xl transition">
-                        <i class="fas fa-clipboard-list text-3xl text-green-500 mb-4"></i>
-                        <h3 class="font-bold text-lg">Evaluación (Taxonomía Bloom)</h3>
-                        <p class="text-sm text-slate-500 mb-3">Indicadores en tercera persona, instrumentos</p>
-                        <button class="text-green-600 font-semibold flex items-center gap-1 text-sm" onclick="generateFromDocs('evaluacion')">Ejemplos <i class="fas fa-arrow-right"></i></button>
+                    <div id="horarioGrid" class="divide-y divide-gray-200">
+                        <!-- Dynamic horario -->
                     </div>
                 </div>
-                <!-- Área de exportación/importación -->
-                <div class="card-dashboard p-6">
-                    <h3 class="font-bold text-lg mb-2">Exportar / Importar planes</h3>
-                    <p class="text-sm text-slate-500 mb-4">Descarga tu progreso o sube documentación adicional</p>
-                    <div class="flex flex-wrap gap-3">
-                        <label class="cursor-pointer bg-slate-100 hover:bg-slate-200 px-5 py-3 rounded-xl font-medium text-sm flex items-center gap-2 transition">
-                            <i class="fas fa-upload"></i> Subir planeamiento
-                            <input type="file" class="hidden" accept=".pdf,.docx,.xlsx" onchange="handleResourceUpload(this)">
-                        </label>
-                        <button class="bg-slate-800 text-white px-5 py-3 rounded-xl font-medium text-sm flex items-center gap-2 hover:bg-slate-700 transition" onclick="exportUserData()">
-                            <i class="fas fa-download"></i> Exportar informe (JSON)
+            </section>
+
+            <!-- Reportes -->
+            <section id="reportes" class="hidden-section animate-fade-in">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">Generar Reportes</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 card-hover">
+                        <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center text-red-600 mb-4">
+                            <i class="fas fa-file-pdf text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Reporte Individual PDF</h3>
+                        <p class="text-gray-600 text-sm mb-4">Genera reportes detallados por estudiante en formato PDF.</p>
+                        <select id="selectReporteEstudiante" class="w-full mb-3 px-3 py-2 border rounded-lg">
+                            <option value="">Seleccionar estudiante...</option>
+                        </select>
+                        <button onclick="generarReporteIndividualPDF()" class="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+                            Descargar PDF
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 card-hover">
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-green-600 mb-4">
+                            <i class="fas fa-file-excel text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Exportar a Excel</h3>
+                        <p class="text-gray-600 text-sm mb-4">Exporta todas las notas y asistencias a Excel.</p>
+                        <select id="selectReporteSeccion" class="w-full mb-3 px-3 py-2 border rounded-lg">
+                            <option value="">Seleccionar sección...</option>
+                        </select>
+                        <button onclick="exportarExcel()" class="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+                            Descargar Excel
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 card-hover">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 mb-4">
+                            <i class="fas fa-file-csv text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Formato SEA</h3>
+                        <p class="text-gray-600 text-sm mb-4">Genera archivo CSV compatible con el sistema SEA.</p>
+                        <button onclick="generarCSV()" class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                            Descargar CSV
                         </button>
                     </div>
                 </div>
             </section>
+
+            <!-- Bitácoras -->
+            <section id="bitacoras" class="hidden-section animate-fade-in">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-3xl font-bold text-gray-900">Bitácoras y Recordatorios</h2>
+                    <button onclick="openModal('nuevaBitacoraModal')" class="gradient-bg text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition">
+                        <i class="fas fa-plus mr-2"></i>Nueva Entrada
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 space-y-4" id="listaBitacoras">
+                        <!-- Dynamic bitacoras -->
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 h-fit">
+                        <h3 class="font-semibold text-gray-900 mb-4">Recordatorios</h3>
+                        <div id="listaRecordatorios" class="space-y-3">
+                            <p class="text-gray-500 text-sm italic">No hay recordatorios pendientes</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    
+    <!-- Nueva Sección -->
+    <div id="nuevaSeccionModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4 animate-fade-in">
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Nueva Sección</h3>
+            <form id="formNuevaSeccion" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Asignatura</label>
+                    <input type="text" id="seccionAsignatura" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none" placeholder="Ej: Matemáticas">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Sección/Grupo</label>
+                    <input type="text" id="seccionGrupo" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none" placeholder="Ej: 6-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Institución</label>
+                    <input type="text" id="seccionInstitucion" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none" placeholder="Ej: Escuela República de Francia">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Año Lectivo</label>
+                    <input type="number" id="seccionAnio" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none" value="2025">
+                </div>
+                <div class="flex justify-end gap-3 mt-6">
+                    <button type="button" onclick="closeModal('nuevaSeccionModal')" class="px-4 py-2 text-gray-600 hover:text-gray-800">Cancelar</button>
+                    <button type="submit" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Crear Sección</button>
+                </div>
+            </form>
         </div>
-    </main>
+    </div>
+
+    <!-- Nuevo Estudiante -->
+    <div id="nuevoEstudianteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4 animate-fade-in">
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Agregar Estudiante</h3>
+            <form id="formNuevoEstudiante" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo</label>
+                    <input type="text" id="estNombre" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none">
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" id="estACS" class="w-4 h-4 text-purple-600 rounded">
+                    <label for="estACS" class="text-sm text-gray-700">¿Adecuación Curricular Significativa (ACS)?</label>
+                </div>
+                <div class="flex justify-end gap-3 mt-6">
+                    <button type="button" onclick="closeModal('nuevoEstudianteModal')" class="px-4 py-2 text-gray-600 hover:text-gray-800">Cancelar</button>
+                    <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Agregar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Nueva Bitácora -->
+    <div id="nuevaBitacoraModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white rounded-xl p-8 max-w-lg w-full mx-4 animate-fade-in">
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Nueva Bitácora</h3>
+            <form id="formBitacora" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Título</label>
+                    <input type="text" id="bitacoraTitulo" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Sección</label>
+                    <select id="bitacoraSeccion" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none">
+                        <!-- Dynamic -->
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Contenido</label>
+                    <textarea id="bitacoraContenido" rows="4" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"></textarea>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" id="bitacoraRecordatorio" class="w-4 h-4 text-purple-600 rounded">
+                    <label for="bitacoraRecordatorio" class="text-sm text-gray-700">¿Establecer recordatorio?</label>
+                </div>
+                <div class="flex justify-end gap-3 mt-6">
+                    <button type="button" onclick="closeModal('nuevaBitacoraModal')" class="px-4 py-2 text-gray-600 hover:text-gray-800">Cancelar</button>
+                    <button type="submit" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Nueva Clase (Horario) -->
+    <div id="nuevaClaseModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4 animate-fade-in">
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Agregar Clase al Horario</h3>
+            <form id="formNuevaClase" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Sección</label>
+                    <select id="claseSeccion" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none">
+                        <!-- Dynamic -->
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Día</label>
+                    <select id="claseDia" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none">
+                        <option value="1">Lunes</option>
+                        <option value="2">Martes</option>
+                        <option value="3">Miércoles</option>
+                        <option value="4">Jueves</option>
+                        <option value="5">Viernes</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Hora Inicio</label>
+                    <input type="time" id="claseHoraInicio" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Hora Fin</label>
+                    <input type="time" id="claseHoraFin" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none">
+                </div>
+                <div class="flex justify-end gap-3 mt-6">
+                    <button type="button" onclick="closeModal('nuevaClaseModal')" class="px-4 py-2 text-gray-600 hover:text-gray-800">Cancelar</button>
+                    <button type="submit" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Agregar</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script>
-        // ========== VARIABLES GLOBALES Y ESTADO ==========
-        let userPoints = 2860;
-        let userLevel = 'Explorador';
-        let documents = []; // { name, content, type, date }
-        let chatHistory = [];
-        let simQuestions = []; // se llena desde documentos
-        let currentSimIndex = 0;
+        // Data Store
+        let data = {
+            user: { name: 'Profesor', email: '' },
+            secciones: [],
+            horario: [],
+            bitacoras: [],
+            currentSeccion: null,
+            currentTab: 'estudiantes',
+            currentPeriodo: 'I',
+            currentEvalType: null
+        };
 
-        // Elementos DOM
-        const pointsSpan = document.getElementById('globalPoints');
-        const levelSpan = document.getElementById('globalLevel');
-        const progressBar = document.getElementById('globalProgress');
-        const docCountSpan = document.getElementById('docCount');
-        const memoryDocCount = document.getElementById('memoryDocCount');
-        const documentList = document.getElementById('documentList');
-        const chatMessagesDiv = document.getElementById('chatMessages');
-        const initialDocCountSpan = document.getElementById('initialDocCount');
-
-        // ========== SISTEMA DE MEMORIA DOCUMENTAL (IndexedDB simulado con localStorage) ==========
-        function loadDocumentsFromStorage() {
-            const stored = localStorage.getItem('idonet_docs');
-            if (stored) {
-                try {
-                    documents = JSON.parse(stored);
-                } catch (e) { documents = []; }
-            } else {
-                // Documentos semilla para demo
-                documents = [
-                    { name: 'PNFT_marco_2026.pdf', content: 'La Política Curricular promueve el diseño universal y la ciudadanía planetaria. El DUA se basa en tres principios: Representación, Acción y Expresión, Motivación. La evaluación debe ser formativa.', type: 'pdf', date: Date.now() - 86400000 },
-                    { name: 'Lineamientos_evaluacion_MEP.docx', content: 'Los instrumentos de evaluación: rúbricas, listas de cotejo, escalas numéricas. La taxonomía de Bloom: recordar, comprender, aplicar, analizar, evaluar, crear.', type: 'docx', date: Date.now() - 172800000 }
-                ];
-                saveDocuments();
-            }
-            updateDocUI();
-        }
-        function saveDocuments() {
-            localStorage.setItem('idonet_docs', JSON.stringify(documents));
-            updateDocUI();
-        }
-        function updateDocUI() {
-            docCountSpan.innerText = documents.length;
-            if (memoryDocCount) memoryDocCount.innerText = documents.length;
-            if (initialDocCountSpan) initialDocCountSpan.innerText = documents.length;
-            // Lista de documentos
-            if (documentList) {
-                if (documents.length === 0) {
-                    documentList.innerHTML = '<li class="text-slate-400 text-center py-4">Sube archivos para comenzar</li>';
-                } else {
-                    documentList.innerHTML = documents.map(d => `
-                        <li class="p-2 bg-blue-50 rounded-lg text-blue-800 text-xs flex items-center gap-2">
-                            <i class="fas fa-file-${d.type === 'pdf' ? 'pdf' : (d.type==='docx'?'word':'excel')}"></i>
-                            ${d.name}
-                        </li>
-                    `).join('');
+        // Initialize with sample data
+        function initSampleData() {
+            data.secciones = [
+                {
+                    id: 1,
+                    asignatura: 'Matemáticas',
+                    seccion: '6-2',
+                    institucion: 'Escuela República de Francia',
+                    anio: 2025,
+                    estudiantes: [
+                        { id: 1, nombre: 'María González', acs: false, notas: { trabajo: [85, 90], tareas: [100, 95], pruebas: [88] }, asistencia: { 'I': { '2025-02-10': 'P', '2025-02-11': 'P', '2025-02-12': 'T' } } },
+                        { id: 2, nombre: 'Juan Pérez', acs: false, notas: { trabajo: [78, 82], tareas: [90, 85], pruebas: [75] }, asistencia: { 'I': { '2025-02-10': 'P', '2025-02-11': 'A' } } },
+                        { id: 3, nombre: 'Ana Martínez', acs: true, notas: { trabajo: [95], tareas: [100], pruebas: [92] }, asistencia: { 'I': { '2025-02-10': 'P', '2025-02-11': 'P' } } }
+                    ],
+                    evaluaciones: []
+                },
+                {
+                    id: 2,
+                    asignatura: 'Ciencias',
+                    seccion: '6-2',
+                    institucion: 'Escuela República de Francia',
+                    anio: 2025,
+                    estudiantes: [
+                        { id: 4, nombre: 'Carlos Ruiz', acs: false, notas: { trabajo: [88], tareas: [90], pruebas: [85] }, asistencia: { 'I': {} } }
+                    ],
+                    evaluaciones: []
                 }
-            }
-            // Actualizar contador en sidebar
-            const sidebarCount = document.getElementById('docCount');
-            if (sidebarCount) sidebarCount.innerText = documents.length;
+            ];
+            
+            data.horario = [
+                { id: 1, seccionId: 1, dia: 1, horaInicio: '07:00', horaFin: '08:30', asignatura: 'Matemáticas', seccion: '6-2' },
+                { id: 2, seccionId: 1, dia: 3, horaInicio: '09:00', horaFin: '10:30', asignatura: 'Matemáticas', seccion: '6-2' },
+                { id: 3, seccionId: 2, dia: 2, horaInicio: '07:00', horaFin: '08:30', asignatura: 'Ciencias', seccion: '6-2' }
+            ];
+
+            updateDashboard();
+            renderSecciones();
+            renderHorario();
+            updateSelects();
         }
 
-        // ========== PROCESAMIENTO REAL DE ARCHIVOS ==========
-        async function processUploadedFiles(input) {
-            const files = Array.from(input.files);
-            const preview = document.getElementById('chatUploadPreview');
+        // Auth
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            data.user.email = email;
+            data.user.name = email.split('@')[0];
+            document.getElementById('userName').textContent = data.user.name;
+            document.getElementById('welcomeName').textContent = data.user.name;
             
-            for (const file of files) {
-                preview.innerHTML += `<span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs flex items-center gap-1"><i class="fas fa-spinner fa-spin"></i> Procesando ${file.name}</span>`;
-                
-                let content = '';
-                const ext = file.name.split('.').pop().toLowerCase();
-                
-                try {
-                    if (ext === 'pdf') {
-                        content = await extractPDFText(file);
-                    } else if (ext === 'docx') {
-                        content = await extractDOCXText(file);
-                    } else if (ext === 'xlsx') {
-                        content = await extractXLSXText(file);
-                    } else if (ext === 'txt') {
-                        content = await file.text();
-                    } else {
-                        content = '[Formato no soportado para extracción]';
-                    }
-                    
-                    documents.push({
-                        name: file.name,
-                        content: content.substring(0, 5000), // limitar para demo
-                        type: ext,
-                        date: Date.now()
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            initSampleData();
+        });
+
+        function logout() {
+            location.reload();
+        }
+
+        // Navigation
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('main > section').forEach(sec => {
+                sec.classList.add('hidden-section');
+            });
+            
+            // Show target
+            document.getElementById(sectionId).classList.remove('hidden-section');
+            
+            // Update nav
+            document.querySelectorAll('nav button[id^="nav-"]').forEach(btn => {
+                btn.classList.remove('active-nav', 'text-gray-900');
+                btn.classList.add('text-gray-500');
+            });
+            
+            const navBtn = document.getElementById('nav-' + sectionId);
+            if (navBtn) {
+                navBtn.classList.add('active-nav', 'text-gray-900');
+                navBtn.classList.remove('text-gray-500');
+            }
+
+            if (sectionId === 'dashboard') updateDashboard();
+            if (sectionId === 'reportes') updateReportesSelects();
+        }
+
+        // Modals
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+            if (modalId === 'nuevaBitacoraModal' || modalId === 'nuevaClaseModal') updateSelects();
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        // Dashboard
+        function updateDashboard() {
+            document.getElementById('totalSecciones').textContent = data.secciones.length;
+            const totalEst = data.secciones.reduce((acc, s) => acc + s.estudiantes.length, 0);
+            document.getElementById('totalEstudiantes').textContent = totalEst;
+            
+            // Calculate asistencia promedio
+            let totalAsist = 0, totalRegistros = 0;
+            data.secciones.forEach(sec => {
+                sec.estudiantes.forEach(est => {
+                    const asist = est.asistencia[data.currentPeriodo] || {};
+                    Object.values(asist).forEach(a => {
+                        if (a === 'P') totalAsist++;
+                        totalRegistros++;
                     });
-                    
-                } catch (e) {
-                    console.error('Error procesando archivo', e);
-                    content = 'Error al leer el archivo';
-                }
-            }
-            
-            saveDocuments();
-            preview.innerHTML = ''; // limpiar preview
-            input.value = '';
-            
-            // Mensaje del bot confirmando
-            addBotMessage(`He procesado ${files.length} archivo(s). Ya están en mi memoria. Pregúntame sobre su contenido.`);
-        }
-
-        // Extractores (simulados pero funcionales)
-        async function extractPDFText(file) {
-            // Usando PDF.js (básico)
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    try {
-                        const pdfData = new Uint8Array(e.target.result);
-                        const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
-                        let text = '';
-                        for (let i = 1; i <= Math.min(pdf.numPages, 3); i++) {
-                            const page = await pdf.getPage(i);
-                            const content = await page.getTextContent();
-                            text += content.items.map(item => item.str).join(' ') + '\n';
-                        }
-                        resolve(text || 'Contenido extraído del PDF (demo limitada)');
-                    } catch {
-                        resolve('Contenido del PDF no pudo ser extraído completamente.');
-                    }
-                };
-                reader.readAsArrayBuffer(file);
+                });
             });
-        }
-        async function extractDOCXText(file) {
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    try {
-                        const result = await mammoth.extractRawText({ arrayBuffer: e.target.result });
-                        resolve(result.value);
-                    } catch {
-                        resolve('Contenido DOCX extraído (simulado)');
-                    }
-                };
-                reader.readAsArrayBuffer(file);
-            });
-        }
-        async function extractXLSXText(file) {
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    try {
-                        const data = new Uint8Array(e.target.result);
-                        const workbook = XLSX.read(data, { type: 'array' });
-                        let text = '';
-                        workbook.SheetNames.forEach(name => {
-                            const sheet = workbook.Sheets[name];
-                            text += XLSX.utils.sheet_to_csv(sheet) + '\n';
-                        });
-                        resolve(text);
-                    } catch {
-                        resolve('Contenido XLSX extraído');
-                    }
-                };
-                reader.readAsArrayBuffer(file);
-            });
-        }
+            const prom = totalRegistros > 0 ? Math.round((totalAsist / totalRegistros) * 100) : 0;
+            document.getElementById('asistenciaPromedio').textContent = prom + '%';
 
-        // ========== CHAT CON RESPUESTAS BASADAS EN DOCUMENTOS ==========
-        function addBotMessage(text) {
-            const msgDiv = document.createElement('div');
-            msgDiv.className = 'flex items-start gap-3';
-            msgDiv.innerHTML = `<div class="w-9 h-9 rounded-full bg-emerald-600 flex items-center justify-center text-white shrink-0 text-lg">🤖</div>
-                                <div class="chat-bubble-bot p-4 max-w-[80%] text-slate-700 text-sm">${text}</div>`;
-            chatMessagesDiv.appendChild(msgDiv);
-            chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
-        }
-
-        function sendChatMessage() {
-            const input = document.getElementById('chatInputField');
-            const msg = input.value.trim();
-            if (!msg) return;
-
-            // mensaje usuario
-            const userDiv = document.createElement('div');
-            userDiv.className = 'flex items-start gap-3 justify-end';
-            userDiv.innerHTML = `<div class="chat-bubble-user p-4 max-w-[80%] text-white text-sm">${msg}</div>
-                                 <div class="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-white shrink-0">DR</div>`;
-            chatMessagesDiv.appendChild(userDiv);
-            input.value = '';
-            chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
-
-            // Generar respuesta basada en documentos
-            setTimeout(() => {
-                let answer = buscarEnDocumentos(msg);
-                addBotMessage(answer);
-            }, 700);
-        }
-
-        function buscarEnDocumentos(query) {
-            if (documents.length === 0) return 'Aún no has subido documentos. Sube archivos para que pueda responder con precisión.';
-            
-            const q = query.toLowerCase();
-            let relevantes = documents.filter(d => d.content && d.content.toLowerCase().includes(q) || d.name.toLowerCase().includes(q));
-            
-            if (relevantes.length > 0) {
-                let fragment = relevantes[0].content.split('.').find(s => s.toLowerCase().includes(q)) || relevantes[0].content.substring(0, 300);
-                return `Según "${relevantes[0].name}": ${fragment}...`;
+            // Próximas clases
+            const hoy = new Date().getDay();
+            const clasesHoy = data.horario.filter(h => h.dia === hoy).sort((a, b) => a.horaInicio.localeCompare(b.horaInicio));
+            const container = document.getElementById('proximasClases');
+            if (clasesHoy.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 italic">No hay clases programadas para hoy</p>';
             } else {
-                // Respuesta genérica pero contextual
-                return `No encontré una coincidencia exacta en tus documentos. Según lineamientos generales: El planeamiento debe incluir ejes transversales y adecuaciones curriculares. ¿Puedes ser más específico?`;
+                container.innerHTML = clasesHoy.map(c => `
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200">
+                        <div>
+                            <p class="font-medium text-gray-900">${c.asignatura} - ${c.seccion}</p>
+                            <p class="text-sm text-gray-500">${c.horaInicio} - ${c.horaFin}</p>
+                        </div>
+                        <button onclick="irAAsistencia(${c.seccionId})" class="text-purple-600 hover:text-purple-800">
+                            <i class="fas fa-check-circle text-xl"></i>
+                        </button>
+                    </div>
+                `).join('');
             }
         }
 
-        // ========== GENERAR PREGUNTAS DEL SIMULADOR DESDE DOCUMENTOS ==========
-        function generateSimQuestions() {
-            if (documents.length === 0) {
-                simQuestions = [
-                    { cat: 'General', question: '¿Qué es el DUA?', options: ['Diseño Universal de Aprendizaje', 'Desarrollo Unificado de Áreas', 'Documento Único de Admisión'], correct: 0, explanation: 'DUA: Diseño Universal para el Aprendizaje' }
-                ];
-            } else {
-                // Crear preguntas tontas pero basadas en contenido real (para demo)
-                simQuestions = [];
-                let content = documents.map(d => d.content).join(' ').toLowerCase();
-                if (content.includes('dua')) {
-                    simQuestions.push({ cat: 'DUA', question: '¿Cuáles son los tres principios del DUA?', options: ['Representación, Acción, Motivación', 'Teoría, Práctica, Evaluación', 'Física, Cognitiva, Emocional'], correct: 0, explanation: 'Representación, Acción y expresión, Motivación.' });
-                }
-                if (content.includes('evaluación') || content.includes('evaluacion')) {
-                    simQuestions.push({ cat: 'Evaluación', question: '¿Qué instrumento evalúa con niveles de logro?', options: ['Rúbrica', 'Lista de cotejo', 'Prueba escrita'], correct: 0, explanation: 'La rúbrica describe niveles de desempeño.' });
-                }
-                if (content.includes('taxonomía') || content.includes('bloom')) {
-                    simQuestions.push({ cat: 'Bloom', question: '¿Cuál es el nivel más alto de la taxonomía de Bloom?', options: ['Evaluar', 'Crear', 'Analizar'], correct: 1, explanation: 'Crear es el nivel más alto.' });
-                }
-                // Siempre al menos 3 preguntas
-                while (simQuestions.length < 3) {
-                    simQuestions.push({ cat: 'PNFT', question: '¿Qué promueve la Política Curricular?', options: ['Ciudadanía planetaria', 'Estandarización', 'Competencias técnicas'], correct: 0, explanation: 'Formar ciudadanos planetarios con pensamiento crítico.' });
-                }
-            }
-            currentSimIndex = 0;
-            loadSimQuestion();
-        }
-
-        function loadSimQuestion() {
-            if (simQuestions.length === 0) return;
-            let q = simQuestions[currentSimIndex];
-            document.getElementById('simCategoryDisplay').innerText = q.cat;
-            document.getElementById('simCounterDisplay').innerText = `${currentSimIndex+1} / ${simQuestions.length}`;
-            document.getElementById('simQuestionDisplay').innerText = q.question;
-            let optsDiv = document.getElementById('simOptionsContainer');
-            optsDiv.innerHTML = '';
-            q.options.forEach((opt, idx) => {
-                let btn = document.createElement('button');
-                btn.className = 'w-full text-left p-4 border-2 border-slate-100 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition font-medium';
-                btn.innerText = opt;
-                btn.onclick = () => checkSimAnswer(idx, btn);
-                optsDiv.appendChild(btn);
-            });
-            document.getElementById('simFeedbackPanel').classList.add('hidden');
-            document.getElementById('simNextBtnAction').classList.add('hidden');
-        }
-
-        function checkSimAnswer(selected, btn) {
-            let q = simQuestions[currentSimIndex];
-            let fb = document.getElementById('simFeedbackPanel');
-            fb.classList.remove('hidden');
-            fb.innerHTML = '';
-            if (selected === q.correct) {
-                fb.classList.add('bg-green-50', 'border-green-600', 'text-green-800');
-                fb.innerHTML = `<p class="font-bold">✅ Correcto!</p><p class="text-sm mt-1">${q.explanation}</p>`;
-                addPoints(30);
-            } else {
-                fb.classList.add('bg-red-50', 'border-red-600', 'text-red-800');
-                fb.innerHTML = `<p class="font-bold">❌ Incorrecto. La respuesta correcta es: ${q.options[q.correct]}</p><p class="text-sm mt-1">${q.explanation}</p>`;
-            }
-            document.querySelectorAll('#simOptionsContainer button').forEach(b => b.disabled = true);
-            document.getElementById('simNextBtnAction').classList.remove('hidden');
-        }
-
-        function nextSimQuestion() {
-            currentSimIndex = (currentSimIndex + 1) % simQuestions.length;
-            loadSimQuestion();
-        }
-
-        // ========== FUNCIONES COMUNES ==========
-        function showSection(id, btn) {
-            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
-            document.getElementById(id).classList.remove('hidden');
-            document.querySelectorAll('.nav-btn').forEach(b => {
-                b.classList.remove('nav-btn-active', 'bg-blue-50', 'text-blue-800');
-                b.classList.add('text-slate-700');
-            });
-            if (btn) {
-                btn.classList.add('nav-btn-active', 'bg-blue-50', 'text-blue-800');
-            }
-            const titles = {
-                'dashboard': 'Panel del Ciudadano Planetario',
-                'focus': 'Modo Enfoque',
-                'simulator': 'Simulador MEP',
-                'tutor': 'Asesor IA con Memoria',
-                'resources': 'Centro de Recursos'
-            };
-            document.getElementById('pageTitle').innerText = titles[id];
-            if (id === 'simulator') generateSimQuestions();
-        }
-
-        function addPoints(amount) {
-            userPoints += amount;
-            pointsSpan.innerText = userPoints.toLocaleString();
-            let progress = (userPoints / 5000) * 100;
-            progressBar.style.width = Math.min(progress, 100) + '%';
-        }
-
-        function claimReward(p, name) {
-            addPoints(p);
-            alert(`¡Has recibido ${p} IdoPoints por: ${name}!`);
-        }
-
-        function handleGlobalUpload(input) {
-            processUploadedFiles(input);
-        }
-
-        function handleResourceUpload(input) {
-            processUploadedFiles(input);
-        }
-
-        function generateFromDocs(topic) {
-            if (documents.length === 0) {
-                alert('Sube documentos primero para generar contenido personalizado.');
+        // Secciones
+        function renderSecciones() {
+            const grid = document.getElementById('seccionesGrid');
+            if (data.secciones.length === 0) {
+                grid.innerHTML = '<div class="col-span-full text-center py-12 text-gray-500">No hay secciones creadas. ¡Crea tu primera sección!</div>';
                 return;
             }
-            alert(`Generando ${topic} basado en ${documents.length} documento(s)... (demo)`);
+            
+            grid.innerHTML = data.secciones.map(sec => `
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 card-hover cursor-pointer" onclick="verDetalleSeccion(${sec.id})">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                            ${sec.asignatura.charAt(0)}
+                        </div>
+                        <span class="text-sm text-gray-500">Año ${sec.anio}</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-1">${sec.asignatura}</h3>
+                    <p class="text-gray-600 mb-3">Sección: ${sec.seccion}</p>
+                    <p class="text-sm text-gray-500 mb-4">${sec.institucion}</p>
+                    
+                    <div class="flex gap-2 flex-wrap">
+                        <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">I Periodo</span>
+                        <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">${sec.estudiantes.length} estudiantes</span>
+                    </div>
+                    
+                    <div class="mt-4 pt-4 border-t border-gray-100 flex gap-2">
+                        <button class="flex-1 px-3 py-2 bg-blue-50 text-blue-600 rounded-lg text-sm hover:bg-blue-100 transition" onclick="event.stopPropagation(); verDetalleSeccion(${sec.id}); cambiarTab('asistencia')">
+                            Asistencia
+                        </button>
+                        <button class="flex-1 px-3 py-2 bg-purple-50 text-purple-600 rounded-lg text-sm hover:bg-purple-100 transition" onclick="event.stopPropagation(); verDetalleSeccion(${sec.id}); cambiarTab('evaluaciones')">
+                            Notas
+                        </button>
+                    </div>
+                </div>
+            `).join('');
         }
 
-        function exportUserData() {
-            const data = {
-                points: userPoints,
-                documents: documents.map(d => ({ name: d.name, type: d.type, date: d.date })),
-                exportDate: new Date()
+        document.getElementById('formNuevaSeccion').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nueva = {
+                id: Date.now(),
+                asignatura: document.getElementById('seccionAsignatura').value,
+                seccion: document.getElementById('seccionGrupo').value,
+                institucion: document.getElementById('seccionInstitucion').value,
+                anio: parseInt(document.getElementById('seccionAnio').value),
+                estudiantes: [],
+                evaluaciones: []
             };
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
+            data.secciones.push(nueva);
+            closeModal('nuevaSeccionModal');
+            this.reset();
+            renderSecciones();
+            updateDashboard();
+            updateSelects();
+        });
+
+        // Detalle Sección
+        function verDetalleSeccion(id) {
+            data.currentSeccion = data.secciones.find(s => s.id === id);
+            if (!data.currentSeccion) return;
+            
+            document.getElementById('detalleTitulo').textContent = data.currentSeccion.asignatura;
+            document.getElementById('detalleSubtitulo').textContent = `Sección ${data.currentSeccion.seccion} • ${data.currentSeccion.institucion}`;
+            document.getElementById('detalleCantidad').textContent = `${data.currentSeccion.estudiantes.length} estudiantes`;
+            
+            showSection('detalleSeccion');
+            cambiarTab('estudiantes');
+            renderEstudiantes();
+        }
+
+        function cambiarTab(tab) {
+            data.currentTab = tab;
+            
+            // Update buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active-nav', 'border-purple-500', 'text-purple-600');
+                btn.classList.add('border-transparent', 'text-gray-500');
+            });
+            document.getElementById('tab-' + tab).classList.add('active-nav', 'border-purple-500', 'text-purple-600');
+            document.getElementById('tab-' + tab).classList.remove('border-transparent', 'text-gray-500');
+            
+            // Update content
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            document.getElementById('content-' + tab).classList.remove('hidden');
+            
+            if (tab === 'estudiantes') renderEstudiantes();
+            if (tab === 'asistencia') renderAsistencia();
+            if (tab === 'evaluaciones') renderEvaluaciones();
+            if (tab === 'reporte') renderReporteFinal();
+        }
+
+        function renderEstudiantes() {
+            const tbody = document.getElementById('tablaEstudiantes');
+            if (data.currentSeccion.estudiantes.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-4 text-center text-gray-500">No hay estudiantes registrados</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = data.currentSeccion.estudiantes.map((est, idx) => {
+                const prom = calcularPromedio(est);
+                return `
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${idx + 1}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-10 w-10">
+                                <div class="h-10 w-10 rounded-full bg-gradient-to-br from-purple-400 to-blue-500 flex items-center justify-center text-white font-bold">
+                                    ${est.nombre.charAt(0)}
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-gray-900">${est.nombre}</div>
+                                ${est.acs ? '<span class="text-xs text-orange-600 font-medium">ACS</span>' : ''}
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        ${est.acs ? '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">Sí</span>' : '<span class="text-gray-400">-</span>'}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-semibold">${prom.toFixed(1)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button onclick="eliminarEstudiante(${est.id})" class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `}).join('');
+        }
+
+        document.getElementById('formNuevoEstudiante').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nuevo = {
+                id: Date.now(),
+                nombre: document.getElementById('estNombre').value,
+                acs: document.getElementById('estACS').checked,
+                notas: { trabajo: [], tareas: [], pruebas: [] },
+                asistencia: { 'I': {}, 'II': {}, 'III': {} }
+            };
+            data.currentSeccion.estudiantes.push(nuevo);
+            closeModal('nuevoEstudianteModal');
+            this.reset();
+            renderEstudiantes();
+            document.getElementById('detalleCantidad').textContent = `${data.currentSeccion.estudiantes.length} estudiantes`;
+        });
+
+        function eliminarEstudiante(id) {
+            if (!confirm('¿Eliminar este estudiante?')) return;
+            data.currentSeccion.estudiantes = data.currentSeccion.estudiantes.filter(e => e.id !== id);
+            renderEstudiantes();
+        }
+
+        function eliminarSeccionActual() {
+            if (!confirm('¿Eliminar esta sección permanentemente?')) return;
+            data.secciones = data.secciones.filter(s => s.id !== data.currentSeccion.id);
+            showSection('secciones');
+            renderSecciones();
+        }
+
+        // Asistencia
+        function cambiarPeriodoAsistencia(per) {
+            data.currentPeriodo = per;
+            document.querySelectorAll('.periodo-tab').forEach(btn => {
+                btn.classList.remove('active', 'bg-purple-600', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-700');
+            });
+            event.target.classList.add('active', 'bg-purple-600', 'text-white');
+            event.target.classList.remove('bg-gray-200', 'text-gray-700');
+            renderAsistencia();
+        }
+
+        function renderAsistencia() {
+            const tbody = document.getElementById('bodyAsistencia');
+            const dias = ['L', 'M', 'X', 'J', 'V'];
+            
+            tbody.innerHTML = data.currentSeccion.estudiantes.map(est => {
+                const asistPeriodo = est.asistencia[data.currentPeriodo] || {};
+                const totalAsist = Object.values(asistPeriodo).filter(a => a === 'P').length;
+                const total = Object.keys(asistPeriodo).length;
+                const porc = total > 0 ? Math.round((totalAsist/total)*100) : 0;
+                
+                return `
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${est.nombre}</td>
+                    ${dias.map((d, i) => {
+                        const estado = asistPeriodo[d] || '';
+                        const color = estado === 'P' ? 'bg-green-500' : estado === 'A' ? 'bg-red-500' : estado === 'T' ? 'bg-yellow-500' : 'bg-gray-200';
+                        return `<td class="px-6 py-4 whitespace-nowrap text-center">
+                            <button onclick="cambiarEstadoAsistencia(${est.id}, '${d}')" class="w-8 h-8 rounded-full ${color} text-white text-xs font-bold status-badge">
+                                ${estado || '-'}
+                            </button>
+                        </td>`;
+                    }).join('')}
+                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold ${porc >= 80 ? 'text-green-600' : porc >= 60 ? 'text-yellow-600' : 'text-red-600'}">
+                        ${porc}%
+                    </td>
+                </tr>
+            `}).join('');
+        }
+
+        function cambiarEstadoAsistencia(estId, dia) {
+            const est = data.currentSeccion.estudiantes.find(e => e.id === estId);
+            if (!est.asistencia[data.currentPeriodo]) est.asistencia[data.currentPeriodo] = {};
+            
+            const estados = ['', 'P', 'A', 'T'];
+            const actual = est.asistencia[data.currentPeriodo][dia] || '';
+            const nextIndex = (estados.indexOf(actual) + 1) % estados.length;
+            est.asistencia[data.currentPeriodo][dia] = estados[nextIndex];
+            
+            renderAsistencia();
+        }
+
+        function registrarAsistenciaHoy() {
+            const hoy = new Date().toISOString().split('T')[0];
+            data.currentSeccion.estudiantes.forEach(est => {
+                if (!est.asistencia[data.currentPeriodo]) est.asistencia[data.currentPeriodo] = {};
+                if (!est.asistencia[data.currentPeriodo][hoy]) {
+                    est.asistencia[data.currentPeriodo][hoy] = 'P';
+                }
+            });
+            alert('Asistencia registrada para hoy. Puedes modificarla en la tabla.');
+            renderAsistencia();
+        }
+
+        // Evaluaciones
+        function renderEvaluaciones() {
+            const counts = { trabajo: 0, tareas: 0, pruebas: 0 };
+            data.currentSeccion.evaluaciones.forEach(ev => counts[ev.tipo]++);
+            
+            document.getElementById('countTrabajo').textContent = `${counts.trabajo} registros`;
+            document.getElementById('countTareas').textContent = `${counts.tareas} registros`;
+            document.getElementById('countPruebas').textContent = `${counts.pruebas} registros`;
+        }
+
+        function abrirEvaluacion(tipo) {
+            data.currentEvalType = tipo;
+            const nombres = { trabajo: 'Trabajo Cotidiano', tareas: 'Tareas', pruebas: 'Pruebas' };
+            document.getElementById('tituloEvalForm').textContent = `Nueva ${nombres[tipo]}`;
+            document.getElementById('formularioEvaluacion').classList.remove('hidden');
+            
+            const lista = document.getElementById('listaNotasEstudiantes');
+            lista.innerHTML = data.currentSeccion.estudiantes.map(est => `
+                <div class="flex items-center justify-between bg-white p-3 rounded border">
+                    <span class="font-medium ${est.acs ? 'text-orange-600' : ''}">${est.nombre} ${est.acs ? '(ACS)' : ''}</span>
+                    <input type="number" min="0" max="100" class="nota-input w-20 px-2 py-1 border rounded text-center" 
+                           data-est-id="${est.id}" placeholder="Nota">
+                </div>
+            `).join('');
+        }
+
+        function cancelarEvaluacion() {
+            document.getElementById('formularioEvaluacion').classList.add('hidden');
+        }
+
+        function guardarEvaluacion() {
+            const nombre = document.getElementById('nombreEvaluacion').value;
+            const fecha = document.getElementById('fechaEvaluacion').value;
+            const porcentaje = document.getElementById('porcentajeEvaluacion').value;
+            
+            if (!nombre || !fecha) {
+                alert('Complete nombre y fecha');
+                return;
+            }
+            
+            const notas = [];
+            document.querySelectorAll('.nota-input').forEach(input => {
+                const val = parseFloat(input.value);
+                if (!isNaN(val)) {
+                    notas.push({ estId: parseInt(input.dataset.estId), nota: val });
+                }
+            });
+            
+            data.currentSeccion.evaluaciones.push({
+                id: Date.now(),
+                tipo: data.currentEvalType,
+                nombre,
+                fecha,
+                porcentaje: parseFloat(porcentaje) || 0,
+                notas
+            });
+            
+            // Update student records
+            notas.forEach(n => {
+                const est = data.currentSeccion.estudiantes.find(e => e.id === n.estId);
+                if (est) {
+                    est.notas[data.currentEvalType].push(n.nota);
+                }
+            });
+            
+            cancelarEvaluacion();
+            renderEvaluaciones();
+            alert('Evaluación guardada correctamente');
+        }
+
+        function calcularPromedio(est) {
+            const pesos = { trabajo: 0.3, tareas: 0.2, pruebas: 0.5 };
+            let total = 0, pesoTotal = 0;
+            
+            for (let tipo in pesos) {
+                const notas = est.notas[tipo];
+                if (notas.length > 0) {
+                    const prom = notas.reduce((a, b) => a + b, 0) / notas.length;
+                    total += prom * pesos[tipo];
+                    pesoTotal += pesos[tipo];
+                }
+            }
+            
+            return pesoTotal > 0 ? (total / pesoTotal) * (pesoTotal > 0 ? 1 : 0) : 0;
+        }
+
+        // Reporte Final
+        function renderReporteFinal() {
+            const tbody = document.getElementById('bodyReporteFinal');
+            tbody.innerHTML = data.currentSeccion.estudiantes.map((est, idx) => {
+                const prom = calcularPromedio(est);
+                const asist = est.asistencia[data.currentPeriodo] || {};
+                const totalAsist = Object.values(asist).filter(a => a === 'P').length;
+                const total = Object.keys(asist).length;
+                const porcAsist = total > 0 ? Math.round((totalAsist/total)*100) : 0;
+                
+                const promTrabajo = est.notas.trabajo.length ? (est.notas.trabajo.reduce((a,b)=>a+b,0)/est.notas.trabajo.length).toFixed(1) : '-';
+                const promTareas = est.notas.tareas.length ? (est.notas.tareas.reduce((a,b)=>a+b,0)/est.notas.tareas.length).toFixed(1) : '-';
+                const promPruebas = est.notas.pruebas.length ? (est.notas.pruebas.reduce((a,b)=>a+b,0)/est.notas.pruebas.length).toFixed(1) : '-';
+                
+                return `
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${idx + 1}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${est.nombre}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-600">${promTrabajo}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-600">${promTareas}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-600">${promPruebas}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center font-bold ${prom >= 70 ? 'text-green-600' : 'text-red-600'}">${prom.toFixed(1)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center ${porcAsist >= 80 ? 'text-green-600' : 'text-yellow-600'}">${porcAsist}%</td>
+                </tr>
+            `}).join('');
+        }
+
+        // Horario
+        function renderHorario() {
+            const horas = ['07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00'];
+            const container = document.getElementById('horarioGrid');
+            
+            container.innerHTML = horas.map(hora => {
+                const clasesHora = data.horario.filter(h => {
+                    const inicio = parseInt(h.horaInicio.split(':')[0]);
+                    const fin = parseInt(h.horaFin.split(':')[0]);
+                    const current = parseInt(hora.split(':')[0]);
+                    return current >= inicio && current < fin;
+                });
+                
+                return `
+                <div class="grid grid-cols-6 border-b border-gray-100">
+                    <div class="p-4 border-r border-gray-200 bg-gray-50 font-medium text-gray-700">${hora}</div>
+                    ${[1,2,3,4,5].map(dia => {
+                        const clase = data.horario.find(h => {
+                            const inicio = parseInt(h.horaInicio.split(':')[0]);
+                            const fin = parseInt(h.horaFin.split(':')[0]);
+                            const current = parseInt(hora.split(':')[0]);
+                            return h.dia === dia && current >= inicio && current < fin;
+                        });
+                        
+                        if (clase && parseInt(clase.horaInicio.split(':')[0]) === parseInt(hora.split(':')[0])) {
+                            const duracion = parseInt(clase.horaFin.split(':')[0]) - parseInt(clase.horaInicio.split(':')[0]);
+                            return `
+                                <div class="p-2 border-r border-gray-200 bg-purple-50 border-l-4 border-purple-500 row-span-${duracion}">
+                                    <div class="text-sm font-semibold text-purple-900">${clase.asignatura}</div>
+                                    <div class="text-xs text-purple-700">${clase.seccion}</div>
+                                    <div class="text-xs text-purple-600">${clase.horaInicio}-${clase.horaFin}</div>
+                                </div>
+                            `;
+                        } else if (clase && parseInt(clase.horaInicio.split(':')[0]) < parseInt(hora.split(':')[0]) && parseInt(hora.split(':')[0]) < parseInt(clase.horaFin.split(':')[0])) {
+                            return `<div class="border-r border-gray-200 bg-purple-50"></div>`;
+                        } else {
+                            return `<div class="p-4 border-r border-gray-200 hover:bg-gray-50 cursor-pointer" onclick="openModal('nuevaClaseModal')"></div>`;
+                        }
+                    }).join('')}
+                </div>
+            `}).join('');
+        }
+
+        document.getElementById('formNuevaClase').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const seccion = data.secciones.find(s => s.id === parseInt(document.getElementById('claseSeccion').value));
+            const nuevaClase = {
+                id: Date.now(),
+                seccionId: seccion.id,
+                dia: parseInt(document.getElementById('claseDia').value),
+                horaInicio: document.getElementById('claseHoraInicio').value,
+                horaFin: document.getElementById('claseHoraFin').value,
+                asignatura: seccion.asignatura,
+                seccion: seccion.seccion
+            };
+            data.horario.push(nuevaClase);
+            closeModal('nuevaClaseModal');
+            this.reset();
+            renderHorario();
+        });
+
+        // Bitácoras
+        function renderBitacoras() {
+            const container = document.getElementById('listaBitacoras');
+            if (data.bitacoras.length === 0) {
+                container.innerHTML = '<div class="text-center py-12 text-gray-500 bg-white rounded-xl">No hay bitácoras registradas</div>';
+                return;
+            }
+            
+            container.innerHTML = data.bitacoras.map(b => `
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-semibold text-lg text-gray-900">${b.titulo}</h4>
+                        <span class="text-sm text-gray-500">${new Date(b.fecha).toLocaleDateString()}</span>
+                    </div>
+                    <p class="text-sm text-purple-600 mb-3">${b.seccionNombre}</p>
+                    <p class="text-gray-700 mb-3">${b.contenido}</p>
+                    ${b.recordatorio ? '<span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-orange-100 text-orange-800"><i class="fas fa-bell mr-1"></i> Recordatorio activo</span>' : ''}
+                </div>
+            `).join('');
+            
+            document.getElementById('bitacoraCount').textContent = data.bitacoras.filter(b => b.recordatorio).length;
+        }
+
+        document.getElementById('formBitacora').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const seccion = data.secciones.find(s => s.id === parseInt(document.getElementById('bitacoraSeccion').value));
+            const nueva = {
+                id: Date.now(),
+                titulo: document.getElementById('bitacoraTitulo').value,
+                seccionId: seccion.id,
+                seccionNombre: `${seccion.asignatura} - ${seccion.seccion}`,
+                contenido: document.getElementById('bitacoraContenido').value,
+                fecha: new Date().toISOString(),
+                recordatorio: document.getElementById('bitacoraRecordatorio').checked
+            };
+            data.bitacoras.unshift(nueva);
+            closeModal('nuevaBitacoraModal');
+            this.reset();
+            renderBitacoras();
+        });
+
+        // Reportes y Exportación
+        function updateSelects() {
+            const opts = data.secciones.map(s => `<option value="${s.id}">${s.asignatura} - ${s.seccion}</option>`).join('');
+            document.getElementById('bitacoraSeccion').innerHTML = opts;
+            document.getElementById('claseSeccion').innerHTML = opts;
+        }
+
+        function updateReportesSelects() {
+            const estudiantesOpts = data.secciones.flatMap(s => 
+                s.estudiantes.map(e => `<option value="${e.id}" data-seccion="${s.id}">${e.nombre} (${s.asignatura})</option>`)
+            ).join('');
+            document.getElementById('selectReporteEstudiante').innerHTML = '<option value="">Seleccionar estudiante...</option>' + estudiantesOpts;
+            
+            const seccionOpts = data.secciones.map(s => `<option value="${s.id}">${s.asignatura} - ${s.seccion}</option>`).join('');
+            document.getElementById('selectReporteSeccion').innerHTML = '<option value="">Seleccionar sección...</option>' + seccionOpts;
+        }
+
+        function generarReportePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFontSize(18);
+            doc.text(`Reporte Final - ${data.currentSeccion.asignatura}`, 14, 20);
+            doc.setFontSize(12);
+            doc.text(`Sección: ${data.currentSeccion.seccion} | Periodo: ${data.currentPeriodo}`, 14, 30);
+            
+            const rows = data.currentSeccion.estudiantes.map((est, idx) => {
+                const prom = calcularPromedio(est);
+                return [idx + 1, est.nombre, prom.toFixed(1), prom >= 70 ? 'Aprobado' : 'Reprobado'];
+            });
+            
+            doc.autoTable({
+                head: [['#', 'Estudiante', 'Promedio', 'Estado']],
+                body: rows,
+                startY: 40
+            });
+            
+            doc.save(`Reporte_${data.currentSeccion.asignatura}_${data.currentPeriodo}.pdf`);
+        }
+
+        function generarReporteIndividualPDF() {
+            const select = document.getElementById('selectReporteEstudiante');
+            const estId = parseInt(select.value);
+            if (!estId) return alert('Seleccione un estudiante');
+            
+            const seccion = data.secciones.find(s => s.estudiantes.some(e => e.id === estId));
+            const est = seccion.estudiantes.find(e => e.id === estId);
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFontSize(18);
+            doc.text('Reporte Individual del Estudiante', 14, 20);
+            doc.setFontSize(12);
+            doc.text(`Estudiante: ${est.nombre}`, 14, 35);
+            doc.text(`Sección: ${seccion.asignatura} - ${seccion.seccion}`, 14, 45);
+            doc.text(`Periodo: ${data.currentPeriodo}`, 14, 55);
+            
+            const prom = calcularPromedio(est);
+            const asist = est.asistencia[data.currentPeriodo] || {};
+            const totalAsist = Object.values(asist).filter(a => a === 'P').length;
+            const total = Object.keys(asist).length;
+            const porcAsist = total > 0 ? Math.round((totalAsist/total)*100) : 0;
+            
+            doc.text(`Promedio Académico: ${prom.toFixed(1)}`, 14, 70);
+            doc.text(`Asistencia: ${porcAsist}%`, 14, 80);
+            
+            doc.save(`Reporte_${est.nombre}.pdf`);
+        }
+
+        function exportarExcel() {
+            const seccionId = document.getElementById('selectReporteSeccion').value;
+            if (!seccionId) return alert('Seleccione una sección');
+            
+            const seccion = data.secciones.find(s => s.id === parseInt(seccionId));
+            let csv = 'Nombre,Trabajo Cotidiano,Tareas,Pruebas,Promedio,Asistencia\n';
+            
+            seccion.estudiantes.forEach(est => {
+                const prom = calcularPromedio(est);
+                const promT = est.notas.trabajo.length ? (est.notas.trabajo.reduce((a,b)=>a+b,0)/est.notas.trabajo.length).toFixed(1) : '0';
+                const promTa = est.notas.tareas.length ? (est.notas.tareas.reduce((a,b)=>a+b,0)/est.notas.tareas.length).toFixed(1) : '0';
+                const promP = est.notas.pruebas.length ? (est.notas.pruebas.reduce((a,b)=>a+b,0)/est.notas.pruebas.length).toFixed(1) : '0';
+                
+                csv += `"${est.nombre}",${promT},${promTa},${promP},${prom.toFixed(1)},${prom >= 70 ? 'Aprobado' : 'Reprobado'}\n`;
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'idonet_informe.json';
+            a.download = `Notas_${seccion.asignatura}.csv`;
             a.click();
         }
 
-        // ========== TEMPORIZADOR ENFOQUE ==========
-        let focusTime = 25 * 60;
-        let focusInterval = null;
-        let focusRunning = false;
-        let focusMode = 'pomodoro';
-        const focusDisplay = document.getElementById('focusTimerDisplay');
-        const focusCircle = document.getElementById('timerCircle');
-        const modeLabel = document.getElementById('timerModeLabel');
-        const toggleBtnFocus = document.getElementById('focusToggleBtn');
-
-        function updateFocusTimerDisplay() {
-            let m = Math.floor(focusTime / 60);
-            let s = focusTime % 60;
-            focusDisplay.innerText = `${m}:${s < 10 ? '0'+s : s}`;
-            let total = focusMode === 'pomodoro' ? 25*60 : 45*60;
-            let offset = 283 * (1 - focusTime / total);
-            focusCircle.setAttribute('stroke-dashoffset', offset);
+        function generarCSV() {
+            exportarExcel(); // Same format for demo
         }
-        function toggleFocusTimer() {
-            if (focusRunning) {
-                clearInterval(focusInterval);
-                focusRunning = false;
-                toggleBtnFocus.innerHTML = '<i class="fas fa-play"></i> Reanudar';
-            } else {
-                focusInterval = setInterval(() => {
-                    if (focusTime > 0) {
-                        focusTime--;
-                        updateFocusTimerDisplay();
-                    } else {
-                        clearInterval(focusInterval);
-                        focusRunning = false;
-                        addPoints(80);
-                        alert('Sesión completada +80 IdoPoints');
-                        resetFocusTimer();
-                    }
-                }, 1000);
-                focusRunning = true;
-                toggleBtnFocus.innerHTML = '<i class="fas fa-pause"></i> Pausar';
+
+        function irAAsistencia(seccionId) {
+            verDetalleSeccion(seccionId);
+            cambiarTab('asistencia');
+        }
+
+        // Close modals on outside click
+        window.onclick = function(event) {
+            if (event.target.classList.contains('fixed')) {
+                event.target.classList.add('hidden');
             }
         }
-        function resetFocusTimer() {
-            clearInterval(focusInterval);
-            focusRunning = false;
-            if (focusMode === 'pomodoro') focusTime = 25*60;
-            else focusTime = 45*60;
-            updateFocusTimerDisplay();
-            toggleBtnFocus.innerHTML = '<i class="fas fa-play"></i> Iniciar';
-        }
-        function setPomodoro() {
-            focusMode = 'pomodoro';
-            focusTime = 25*60;
-            modeLabel.innerText = 'Pomodoro';
-            resetFocusTimer();
-        }
-        function setFlowtime() {
-            focusMode = 'flowtime';
-            focusTime = 45*60;
-            modeLabel.innerText = 'Flowtime';
-            resetFocusTimer();
-        }
-
-        // Inicialización
-        loadDocumentsFromStorage();
-        updateFocusTimerDisplay();
     </script>
 </body>
 </html>
