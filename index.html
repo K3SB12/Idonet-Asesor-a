@@ -2,245 +2,1048 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SISTEMA DOCENTE INTEGRAL 2026</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>SISTEMA DOCENTE MEP 2026 - PROFESIONAL</title>
+    <!-- Librerías esenciales -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     <style>
-        :root { --mep-blue: #003366; --mep-red: #cc0000; --bg: #f8f9fa; --card: #ffffff; --text: #212529; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: var(--bg); color: var(--text); padding-bottom: 90px; }
-        header { background: var(--mep-blue); color: white; padding: 15px; text-align: center; border-bottom: 4px solid var(--mep-red); position: sticky; top: 0; z-index: 1000; }
-        .container { padding: 15px; max-width: 1000px; margin: auto; }
-        .card { background: var(--card); border-radius: 15px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 20px; border: 1px solid #e0e0e0; }
-        
-        /* NAVEGACIÓN PRINCIPAL */
-        .tab-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #dee2e6; z-index: 2000; }
-        .tab-item { background: none; border: none; font-size: 11px; color: #6c757d; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; flex: 1; }
-        .tab-item.active { color: var(--mep-blue); font-weight: bold; }
-        .tab-item i { font-size: 20px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+        }
 
-        /* TABLAS E INPUTS */
-        .table-responsive { overflow-x: auto; margin-top: 15px; border-radius: 8px; }
-        table { width: 100%; border-collapse: collapse; background: white; }
-        th, td { border: 1px solid #dee2e6; padding: 12px; text-align: center; font-size: 14px; }
-        th { background: #e9ecef; color: var(--mep-blue); }
-        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 8px; margin-top: 5px; font-size: 16px; }
-        .btn { padding: 15px; border: none; border-radius: 10px; font-weight: bold; width: 100%; margin-top: 10px; cursor: pointer; transition: 0.3s; color: white; }
-        .btn-mep { background: var(--mep-blue); }
-        .btn-wa { background: #25d366; }
-        .btn-pdf { background: #dc3545; }
-        .btn-sec { background: #6c757d; }
+        :root {
+            --azul-mep: #003366;
+            --rojo-mep: #CC0000;
+            --gris-fondo: #f5f7fa;
+            --blanco: #ffffff;
+            --texto: #2c3e50;
+            --borde: #e1e4e8;
+            --exito: #27ae60;
+            --advertencia: #f39c12;
+            --peligro: #e74c3c;
+        }
+
+        body {
+            background: var(--gris-fondo);
+            color: var(--texto);
+            padding-bottom: 85px;
+            min-height: 100vh;
+            font-size: 14px;
+        }
+
+        /* Header institucional */
+        .header-mep {
+            background: var(--azul-mep);
+            color: white;
+            padding: 16px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-bottom: 4px solid var(--rojo-mep);
+        }
+
+        .header-mep h1 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .header-mep .subtitulo {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+        /* Contenedor principal */
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        /* Tarjetas */
+        .card {
+            background: var(--blanco);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid var(--borde);
+        }
+
+        .card h2 {
+            font-size: 1.2rem;
+            color: var(--azul-mep);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--rojo-mep);
+        }
+
+        .card h3 {
+            font-size: 1rem;
+            margin: 12px 0 8px;
+            color: var(--texto);
+        }
+
+        /* Grids responsivos */
+        .grid-2, .grid-3, .grid-4 {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .grid-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-3 { grid-template-columns: repeat(3, 1fr); }
+        .grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+        /* Formularios */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--texto);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1.5px solid var(--borde);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border 0.2s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--azul-mep);
+        }
+
+        /* Botones */
+        .btn {
+            padding: 14px 20px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            width: 100%;
+            margin: 8px 0;
+            transition: all 0.2s;
+            color: white;
+        }
+
+        .btn-primary { background: var(--azul-mep); }
+        .btn-success { background: var(--exito); }
+        .btn-warning { background: var(--advertencia); color: black; }
+        .btn-danger { background: var(--rojo-mep); }
+        .btn-wa { background: #25D366; }
+
+        /* Tablas */
+        .table-responsive {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--borde);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: var(--azul-mep);
+            color: white;
+            padding: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid var(--borde);
+            text-align: center;
+        }
+
+        td input {
+            padding: 6px;
+            margin: 0;
+            text-align: center;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .badge-acs { background: #f39c12; }
+        .badge-no-acs { background: #3498db; }
+        .badge-riesgo { background: var(--peligro); }
+
+        /* Navegación inferior */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            overflow-x: auto;
+            padding: 8px 4px;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+            z-index: 1000;
+            border-top: 2px solid var(--azul-mep);
+        }
+
+        .nav-item {
+            min-width: 70px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 4px;
+            background: none;
+            border: none;
+            color: #7f8c8d;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.2s;
+            border-radius: 12px;
+        }
+
+        .nav-item.active {
+            color: var(--azul-mep);
+            font-weight: 600;
+            background: rgba(0,51,102,0.1);
+        }
+
+        .nav-item span:first-child {
+            font-size: 1.4rem;
+            margin-bottom: 2px;
+        }
+
+        /* Utilidades */
+        .text-success { color: var(--exito); }
+        .text-danger { color: var(--peligro); }
+        .text-warning { color: var(--advertencia); }
+        .mt-2 { margin-top: 10px; }
+        .mb-2 { margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
-<header>
-    <div id="inst-display" style="font-size: 10px; opacity: 0.9; text-transform: uppercase;">REGISTRO DOCENTE</div>
-    <div id="active-title" style="font-weight: bold; font-size: 18px;">CONFIGURACIÓN</div>
+<header class="header-mep" id="mainHeader">
+    <h1 id="nombreInstitucion">Sistema Docente MEP 2026</h1>
+    <div class="subtitulo" id="infoInstitucion">Cargando datos institucionales...</div>
 </header>
 
-<div class="container" id="app-content"></div>
+<main class="app-container" id="appMain">
+    <!-- El contenido se renderiza dinámicamente -->
+</main>
 
-<nav class="tab-bar">
-    <button class="tab-item active" onclick="navigate('config', this)">⚙️<span>Config</span></button>
-    <button class="tab-item" onclick="navigate('lista', this)">👥<span>Lista</span></button>
-    <button class="tab-item" onclick="navigate('eval', this)">📊<span>Eval</span></button>
-    <button class="tab-item" onclick="navigate('dua', this)">📖<span>DUA</span></button>
-    <button class="tab-item" onclick="navigate('reportes', this)">➕<span>Más</span></button>
+<nav class="bottom-nav" id="bottomNav">
+    <button class="nav-item active" data-view="config">⚙️<span>Config</span></button>
+    <button class="nav-item" data-view="parametros">⚖️<span>Ponderar</span></button>
+    <button class="nav-item" data-view="estudiantes">👥<span>Lista</span></button>
+    <button class="nav-item" data-view="asistencia">📅<span>Asistencia</span></button>
+    <button class="nav-item" data-view="instrumentos">📝<span>Instrum</span></button>
+    <button class="nav-item" data-view="evaluacion">📊<span>Evaluar</span></button>
+    <button class="nav-item" data-view="bitacora">📖<span>DUA</span></button>
+    <button class="nav-item" data-view="alertas">🚨<span>Alertas</span></button>
+    <button class="nav-item" data-view="reportes">📑<span>Reportes</span></button>
 </nav>
 
 <script>
-// --- MOTOR DE DATOS (PROTECCIÓN DE DATOS LOCAL) ---
-let db;
-let Config = { centro: "Liceo Bello Horizonte", tc: 45, pr: 20, ta: 10, py: 25, modalidad: "primaria" };
+    (function() {
+        // ==================== CONFIGURACIÓN INICIAL Y CONSTANTES ====================
+        const DB_NAME = 'MEP_DOCENTE_2026';
+        const DB_VERSION = 1;
+        const CODIGO_PAIS = '506'; // Costa Rica
 
-const DB_REQ = indexedDB.open("REGISTRO_MEP_FULL", 1);
-DB_REQ.onupgradeneeded = e => {
-    let d = e.target.result;
-    d.createObjectStore("config", { keyPath: "id" });
-    d.createObjectStore("estudiantes", { keyPath: "id", autoIncrement: true });
-    d.createObjectStore("asistencia", { keyPath: "fecha" });
-    d.createObjectStore("bitacora", { keyPath: "id", autoIncrement: true });
-};
-DB_REQ.onsuccess = e => { db = e.target.result; startup(); };
+        // Estado global reactivo
+        let db = null;
+        let configuracionActual = {
+            id: 'configPrincipal',
+            nombreCentro: 'Liceo Experimental MEP',
+            codigoPresupuestario: 'MEP-001-2026',
+            seccion: 'Secundaria',
+            periodo: 'I Periodo',
+            rubros: {
+                cotidiano: 30,
+                pruebas: 30,
+                tareas: 20,
+                proyectos: 20
+            }
+        };
 
-function startup() {
-    db.transaction("config").objectStore("config").get("main").onsuccess = e => {
-        if(e.target.result) Config = e.target.result;
-        document.getElementById('inst-display').innerText = Config.centro;
-        navigate('config', document.querySelector('.tab-item'));
-    };
-}
+        // ==================== INICIALIZACIÓN DE INDEXEDDB ====================
+        function inicializarDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
 
-// --- NAVEGACIÓN Y FUNCIONES ---
-function navigate(view, el) {
-    const main = document.getElementById('app-content');
-    const title = document.getElementById('active-title');
-    document.querySelectorAll('.tab-item').forEach(i => i.classList.remove('active'));
-    if(el) el.classList.add('active');
-    title.innerText = view.toUpperCase();
+                request.onerror = (event) => {
+                    console.error('Error abriendo DB:', event.target.error);
+                    reject('Error al abrir la base de datos');
+                };
 
-    if(view === 'config') {
-        main.innerHTML = `
-            <div class="card">
-                <h3>Institución y Modalidad</h3>
-                <input type="text" id="c-nom" value="${Config.centro}">
-                <select id="c-mod">
-                    <option value="pre" ${Config.modalidad==='pre'?'selected':''}>Preescolar (Cualitativo)</option>
-                    <option value="primaria" ${Config.modalidad==='primaria'?'selected':''}>Primaria/Secundaria (Numérico)</option>
-                </select>
-                <h3>Ponderaciones (%)</h3>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                    <div>Cotidiano: <input type="number" id="c-tc" value="${Config.tc}"></div>
-                    <div>Pruebas: <input type="number" id="c-pr" value="${Config.pr}"></div>
+                request.onsuccess = (event) => {
+                    db = event.target.result;
+                    console.log('✅ IndexedDB conectada');
+                    cargarConfiguracionInicial().then(() => {
+                        resolve(db);
+                    });
+                };
+
+                request.onupgradeneeded = (event) => {
+                    const db = event.target.result;
+
+                    // Store de configuración
+                    if (!db.objectStoreNames.contains('configuracion')) {
+                        db.createObjectStore('configuracion', { keyPath: 'id' });
+                    }
+
+                    // Store de estudiantes
+                    if (!db.objectStoreNames.contains('estudiantes')) {
+                        const storeEstudiantes = db.createObjectStore('estudiantes', { keyPath: 'id', autoIncrement: true });
+                        storeEstudiantes.createIndex('nombre', 'nombre', { unique: false });
+                        storeEstudiantes.createIndex('cedula', 'cedula', { unique: true });
+                    }
+
+                    // Store de bitácora DUA
+                    if (!db.objectStoreNames.contains('bitacora')) {
+                        db.createObjectStore('bitacora', { keyPath: 'id', autoIncrement: true });
+                    }
+
+                    // Store de asistencia
+                    if (!db.objectStoreNames.contains('asistencia')) {
+                        const storeAsistencia = db.createObjectStore('asistencia', { keyPath: 'id', autoIncrement: true });
+                        storeAsistencia.createIndex('fecha', 'fecha', { unique: false });
+                        storeAsistencia.createIndex('estudianteId', 'estudianteId', { unique: false });
+                    }
+
+                    // Store de instrumentos
+                    if (!db.objectStoreNames.contains('instrumentos')) {
+                        db.createObjectStore('instrumentos', { keyPath: 'id', autoIncrement: true });
+                    }
+
+                    // Store de calificaciones
+                    if (!db.objectStoreNames.contains('calificaciones')) {
+                        const storeCalif = db.createObjectStore('calificaciones', { keyPath: 'id', autoIncrement: true });
+                        storeCalif.createIndex('estudianteId', 'estudianteId', { unique: false });
+                        storeCalif.createIndex('periodo', 'periodo', { unique: false });
+                    }
+
+                    console.log('✅ Estructura de Base de Datos creada');
+                };
+            });
+        }
+
+        // ==================== FUNCIONES DE CARGA INICIAL ====================
+        async function cargarConfiguracionInicial() {
+            return new Promise((resolve) => {
+                if (!db) return resolve();
+
+                const tx = db.transaction('configuracion', 'readonly');
+                const store = tx.objectStore('configuracion');
+                const request = store.get('configPrincipal');
+
+                request.onsuccess = (e) => {
+                    if (e.target.result) {
+                        configuracionActual = e.target.result;
+                    } else {
+                        // Guardar configuración por defecto
+                        guardarConfiguracion(configuracionActual);
+                    }
+                    actualizarHeaderInstitucional();
+                    resolve();
+                };
+
+                request.onerror = () => resolve();
+            });
+        }
+
+        function guardarConfiguracion(config) {
+            if (!db) return;
+            const tx = db.transaction('configuracion', 'readwrite');
+            const store = tx.objectStore('configuracion');
+            store.put(config);
+            configuracionActual = config;
+            actualizarHeaderInstitucional();
+        }
+
+        function actualizarHeaderInstitucional() {
+            document.getElementById('nombreInstitucion').textContent = configuracionActual.nombreCentro;
+            document.getElementById('infoInstitucion').textContent = 
+                `${configuracionActual.codigoPresupuestario} · ${configuracionActual.seccion} · ${configuracionActual.periodo}`;
+        }
+
+        // ==================== VALIDACIONES CENTRALES ====================
+        function validarPorcentajesRubros(rubros) {
+            const suma = rubros.cotidiano + rubros.pruebas + rubros.tareas + rubros.proyectos;
+            return suma === 100;
+        }
+
+        function calcularNotaFinal(estudiante, rubros) {
+            if (!estudiante || !rubros) return 0;
+            
+            // Si tiene ACS, aplicar fórmula diferenciada (50% cotidiano, 50% pruebas)
+            if (estudiante.tipoAdecuacion === 'ACS') {
+                return (estudiante.cotidiano * 0.5) + (estudiante.pruebas * 0.5);
+            }
+            
+            // Fórmula estándar con ponderaciones
+            return (
+                (estudiante.cotidiano || 0) * (rubros.cotidiano / 100) +
+                (estudiante.pruebas || 0) * (rubros.pruebas / 100) +
+                (estudiante.tareas || 0) * (rubros.tareas / 100) +
+                (estudiante.proyectos || 0) * (rubros.proyectos / 100)
+            ).toFixed(2);
+        }
+
+        // ==================== SISTEMA DE NAVEGACIÓN ====================
+        function cambiarVista(vistaId) {
+            // Actualizar botones activos
+            document.querySelectorAll('.nav-item').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.view === vistaId);
+            });
+
+            // Renderizar vista correspondiente
+            const container = document.getElementById('appMain');
+            
+            switch(vistaId) {
+                case 'config':
+                    renderizarConfiguracion(container);
+                    break;
+                case 'parametros':
+                    renderizarParametros(container);
+                    break;
+                case 'estudiantes':
+                    renderizarEstudiantes(container);
+                    break;
+                case 'asistencia':
+                    renderizarAsistencia(container);
+                    break;
+                case 'instrumentos':
+                    renderizarInstrumentos(container);
+                    break;
+                case 'evaluacion':
+                    renderizarEvaluacion(container);
+                    break;
+                case 'bitacora':
+                    renderizarBitacora(container);
+                    break;
+                case 'alertas':
+                    renderizarAlertas(container);
+                    break;
+                case 'reportes':
+                    renderizarReportes(container);
+                    break;
+                default:
+                    renderizarConfiguracion(container);
+            }
+        }
+
+        // ==================== VISTA 1: CONFIGURACIÓN INSTITUCIONAL ====================
+        function renderizarConfiguracion(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <h2>🏫 Configuración Institucional</h2>
+                    <div class="form-group">
+                        <label>Nombre del Centro Educativo</label>
+                        <input type="text" id="cfg-nombre" value="${configuracionActual.nombreCentro}" placeholder="Ej: Liceo de Costa Rica">
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Código Presupuestario</label>
+                            <input type="text" id="cfg-codigo" value="${configuracionActual.codigoPresupuestario}">
+                        </div>
+                        <div class="form-group">
+                            <label>Sección</label>
+                            <select id="cfg-seccion">
+                                <option value="Primaria" ${configuracionActual.seccion === 'Primaria' ? 'selected' : ''}>Primaria</option>
+                                <option value="Secundaria" ${configuracionActual.seccion === 'Secundaria' ? 'selected' : ''}>Secundaria</option>
+                                <option value="Preescolar" ${configuracionActual.seccion === 'Preescolar' ? 'selected' : ''}>Preescolar</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Periodo Lectivo</label>
+                        <select id="cfg-periodo">
+                            <option value="I Periodo" ${configuracionActual.periodo === 'I Periodo' ? 'selected' : ''}>I Periodo</option>
+                            <option value="II Periodo" ${configuracionActual.periodo === 'II Periodo' ? 'selected' : ''}>II Periodo</option>
+                            <option value="III Periodo" ${configuracionActual.periodo === 'III Periodo' ? 'selected' : ''}>III Periodo</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" onclick="guardarConfiguracionInstitucional()">💾 Guardar Configuración</button>
                 </div>
-                <button class="btn btn-mep" onclick="saveConfig()">Guardar Configuración</button>
-            </div>`;
-    }
+            `;
 
-    if(view === 'lista') {
-        main.innerHTML = `
-            <div class="card">
-                <h3>Registro Estudiantil</h3>
-                <input type="text" id="s-nom" placeholder="Nombre completo">
-                <input type="number" id="s-tel" placeholder="WhatsApp Encargado">
-                <select id="s-acs"><option value="no">Sin Adecuación</option><option value="si">Con ACS (50/50)</option></select>
-                <button class="btn btn-mep" onclick="addS()">Registrar Estudiante</button>
-            </div>
-            <div id="student-render"></div>`;
-        renderStudents();
-    }
+            // Exponer función global
+            window.guardarConfiguracionInstitucional = () => {
+                const nuevaConfig = {
+                    id: 'configPrincipal',
+                    nombreCentro: document.getElementById('cfg-nombre').value,
+                    codigoPresupuestario: document.getElementById('cfg-codigo').value,
+                    seccion: document.getElementById('cfg-seccion').value,
+                    periodo: document.getElementById('cfg-periodo').value,
+                    rubros: configuracionActual.rubros // Mantener rubros existentes
+                };
+                guardarConfiguracion(nuevaConfig);
+                alert('✅ Configuración guardada exitosamente');
+            };
+        }
 
-    if(view === 'eval') {
-        main.innerHTML = `
-            <div class="card">
-                <h3>Registro de Calificaciones</h3>
-                <div class="table-responsive">
-                    <table id="table-eval">
-                        <tr><th>Estudiante</th><th>Cot %</th><th>Pru %</th><th>Nota</th></tr>
-                    </table>
+        // ==================== VISTA 2: PARÁMETROS DE EVALUACIÓN ====================
+        function renderizarParametros(container) {
+            const r = configuracionActual.rubros;
+            container.innerHTML = `
+                <div class="card">
+                    <h2>⚖️ Parámetros de Evaluación</h2>
+                    <div class="grid-4">
+                        <div class="form-group">
+                            <label>Trabajo Cotidiano (%)</label>
+                            <input type="number" id="rubro-tc" value="${r.cotidiano}" min="0" max="100">
+                        </div>
+                        <div class="form-group">
+                            <label>Pruebas (%)</label>
+                            <input type="number" id="rubro-pr" value="${r.pruebas}" min="0" max="100">
+                        </div>
+                        <div class="form-group">
+                            <label>Tareas (%)</label>
+                            <input type="number" id="rubro-ta" value="${r.tareas}" min="0" max="100">
+                        </div>
+                        <div class="form-group">
+                            <label>Proyectos (%)</label>
+                            <input type="number" id="rubro-py" value="${r.proyectos}" min="0" max="100">
+                        </div>
+                    </div>
+                    <div id="suma-rubros" class="badge" style="margin-bottom:10px;"></div>
+                    <button class="btn btn-primary" onclick="guardarRubros()">✅ Actualizar Porcentajes</button>
                 </div>
-            </div>`;
-        renderEval();
-    }
+            `;
 
-    if(view === 'dua') {
-        main.innerHTML = `
-            <div class="card">
-                <h3>Bitácora de Estrategias DUA</h3>
-                <input type="date" id="b-fecha" value="${new Date().toISOString().split('T')[0]}">
-                <input type="text" id="b-tema" placeholder="Tema de la lección">
-                <textarea id="b-ajuste" placeholder="Ajustes realizados para estudiantes con adecuación..."></textarea>
-                <button class="btn btn-mep" onclick="saveBit()">Guardar en Bitácora</button>
-            </div>
-            <div id="bit-render"></div>`;
-        renderBit();
-    }
+            actualizarSumaRubros();
+            
+            ['rubro-tc', 'rubro-pr', 'rubro-ta', 'rubro-py'].forEach(id => {
+                document.getElementById(id).addEventListener('input', actualizarSumaRubros);
+            });
 
-    if(view === 'reportes') {
-        main.innerHTML = `
-            <div class="card">
-                <h3>Control de Asistencia</h3>
-                <button class="btn btn-sec" onclick="alert('Cargando Lista de Asistencia...')">📅 Tomar Asistencia Hoy</button>
-                <hr>
-                <h3>Reportes y Documentación</h3>
-                <button class="btn btn-pdf" onclick="genPDF()">📑 Generar Informe de Traslado (PDF)</button>
-                <button class="btn btn-wa" onclick="sendWA()">🚨 Notificar Promedios Bajos (WA)</button>
-                <button class="btn btn-sec" onclick="exportCSV()">📤 Exportar Lista a Excel</button>
-            </div>`;
-    }
-}
+            window.guardarRubros = () => {
+                const nuevosRubros = {
+                    cotidiano: parseInt(document.getElementById('rubro-tc').value) || 0,
+                    pruebas: parseInt(document.getElementById('rubro-pr').value) || 0,
+                    tareas: parseInt(document.getElementById('rubro-ta').value) || 0,
+                    proyectos: parseInt(document.getElementById('rubro-py').value) || 0
+                };
 
-// --- FUNCIONES DE PERSISTENCIA ---
-function saveConfig() {
-    Config.centro = document.getElementById('c-nom').value;
-    Config.modalidad = document.getElementById('c-mod').value;
-    Config.tc = parseInt(document.getElementById('c-tc').value);
-    Config.pr = parseInt(document.getElementById('c-pr').value);
-    db.transaction("config","readwrite").objectStore("config").put({...Config, id:"main"});
-    alert("Configuración Exitosa");
-    location.reload();
-}
+                if (!validarPorcentajesRubros(nuevosRubros)) {
+                    alert('❌ Los porcentajes deben sumar exactamente 100%');
+                    return;
+                }
 
-function addS() {
-    const n = document.getElementById('s-nom').value;
-    const t = document.getElementById('s-tel').value;
-    const a = document.getElementById('s-acs').value;
-    if(!n) return;
-    const tx = db.transaction("estudiantes","readwrite");
-    tx.objectStore("estudiantes").add({nombre:n, tel:t, acs:a, tc:0, pr:0});
-    tx.oncomplete = () => navigate('lista');
-}
+                configuracionActual.rubros = nuevosRubros;
+                guardarConfiguracion(configuracionActual);
+                alert('✅ Porcentajes actualizados correctamente');
+            };
+        }
 
-function renderStudents() {
-    const div = document.getElementById('student-render');
-    let html = "";
-    db.transaction("estudiantes").objectStore("estudiantes").getAll().onsuccess = e => {
-        e.target.result.forEach(s => {
-            html += `<div class="card" style="margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
-                <span><b>${s.nombre}</b><br><small>Tel: ${s.tel}</small></span>
-                <span style="font-size:10px; background:#eee; padding:5px; border-radius:5px;">${s.acs.toUpperCase()}</span>
-            </div>`;
-        });
-        div.innerHTML = html;
-    };
-}
+        function actualizarSumaRubros() {
+            const tc = parseInt(document.getElementById('rubro-tc')?.value) || 0;
+            const pr = parseInt(document.getElementById('rubro-pr')?.value) || 0;
+            const ta = parseInt(document.getElementById('rubro-ta')?.value) || 0;
+            const py = parseInt(document.getElementById('rubro-py')?.value) || 0;
+            const suma = tc + pr + ta + py;
+            const badge = document.getElementById('suma-rubros');
+            
+            if (badge) {
+                badge.textContent = `Suma total: ${suma}%`;
+                badge.style.backgroundColor = suma === 100 ? '#27ae60' : '#e74c3c';
+            }
+        }
 
-function renderEval() {
-    const table = document.getElementById('table-eval');
-    db.transaction("estudiantes").objectStore("estudiantes").getAll().onsuccess = e => {
-        e.target.result.forEach(s => {
-            let n = ((s.tc * Config.tc/100) + (s.pr * Config.pr/100)).toFixed(1);
-            let row = table.insertRow();
-            row.innerHTML = `<td>${s.nombre}</td>
-                <td><input type="number" value="${s.tc}" onchange="upd(${s.id},'tc',this.value)"></td>
-                <td><input type="number" value="${s.pr}" onchange="upd(${s.id},'pr',this.value)"></td>
-                <td style="color:${n<70?'red':'green'}"><b>${n}</b></td>`;
-        });
-    };
-}
+        // ==================== VISTA 3: GESTIÓN DE ESTUDIANTES ====================
+        function renderizarEstudiantes(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <h2>👥 Registro de Estudiantes</h2>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Cédula / Identificación</label>
+                            <input type="text" id="est-cedula" placeholder="Ej: 1-1234-5678">
+                        </div>
+                        <div class="form-group">
+                            <label>Nombre Completo</label>
+                            <input type="text" id="est-nombre" placeholder="Nombre completo">
+                        </div>
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Teléfono Encargado</label>
+                            <input type="tel" id="est-telefono" placeholder="8888-7777">
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo de Adecuación</label>
+                            <select id="est-adecuacion">
+                                <option value="ninguna">Sin adecuación</option>
+                                <option value="acceso">Acceso</option>
+                                <option value="no-significativa">No significativa</option>
+                                <option value="ACS">ACS</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-success" onclick="agregarEstudiante()">➕ Agregar Estudiante</button>
+                </div>
+                <div class="card">
+                    <h3>Listado de Estudiantes</h3>
+                    <div class="table-responsive" id="lista-estudiantes">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Cédula</th>
+                                    <th>Nombre</th>
+                                    <th>Teléfono</th>
+                                    <th>Adecuación</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-estudiantes-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
 
-function upd(id, f, v) {
-    const s = db.transaction("estudiantes","readwrite").objectStore("estudiantes");
-    s.get(id).onsuccess = e => {
-        let d = e.target.result;
-        d[f] = parseFloat(v) || 0;
-        s.put(d);
-    };
-}
+            cargarListaEstudiantes();
 
-function genPDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    doc.text(`INFORME OFICIAL - ${Config.centro}`, 15, 15);
-    db.transaction("estudiantes").objectStore("estudiantes").getAll().onsuccess = e => {
-        const body = e.target.result.map(s => [s.nombre, s.acs, ((s.tc*Config.tc/100)+(s.pr*Config.pr/100)).toFixed(1)]);
-        doc.autoTable({ head: [['Estudiante', 'ACS', 'Nota']], body: body, startY: 25 });
-        doc.save("Reporte_Traslado.pdf");
-    };
-}
+            window.agregarEstudiante = () => {
+                const cedula = document.getElementById('est-cedula').value.trim();
+                const nombre = document.getElementById('est-nombre').value.trim();
+                const telefono = document.getElementById('est-telefono').value.trim();
+                const adecuacion = document.getElementById('est-adecuacion').value;
 
-function saveBit() {
-    const f = document.getElementById('b-fecha').value;
-    const t = document.getElementById('b-tema').value;
-    const a = document.getElementById('b-ajuste').value;
-    db.transaction("bitacora","readwrite").objectStore("bitacora").add({fecha:f, tema:t, ajuste:a});
-    navigate('dua');
-}
+                if (!cedula || !nombre) {
+                    alert('❌ Cédula y nombre son obligatorios');
+                    return;
+                }
 
-function renderBit() {
-    const div = document.getElementById('bit-render');
-    let html = "";
-    db.transaction("bitacora").objectStore("bitacora").openCursor(null, 'prev').onsuccess = e => {
-        const c = e.target.result;
-        if(c) {
-            html += `<div class="card" style="border-left:5px solid var(--mep-blue)">
-                <b>${c.value.fecha} - ${c.value.tema}</b><p style="font-size:13px">${c.value.ajuste}</p>
-            </div>`;
-            c.continue();
-        } else { div.innerHTML = html; }
-    };
-}
+                const tx = db.transaction('estudiantes', 'readwrite');
+                const store = tx.objectStore('estudiantes');
+                
+                store.add({
+                    cedula,
+                    nombre,
+                    telefono,
+                    tipoAdecuacion: adecuacion,
+                    cotidiano: 0,
+                    pruebas: 0,
+                    tareas: 0,
+                    proyectos: 0
+                });
+
+                tx.oncomplete = () => {
+                    alert('✅ Estudiante registrado');
+                    cargarListaEstudiantes();
+                    // Limpiar campos
+                    document.getElementById('est-cedula').value = '';
+                    document.getElementById('est-nombre').value = '';
+                    document.getElementById('est-telefono').value = '';
+                };
+            };
+        }
+
+        function cargarListaEstudiantes() {
+            const tx = db.transaction('estudiantes', 'readonly');
+            const store = tx.objectStore('estudiantes');
+            const request = store.getAll();
+
+            request.onsuccess = (e) => {
+                const estudiantes = e.target.result;
+                const tbody = document.getElementById('tabla-estudiantes-body');
+                
+                tbody.innerHTML = estudiantes.map(est => `
+                    <tr>
+                        <td>${est.cedula || '-'}</td>
+                        <td>${est.nombre}</td>
+                        <td>${est.telefono || '-'}</td>
+                        <td>
+                            <span class="badge ${est.tipoAdecuacion === 'ACS' ? 'badge-acs' : 'badge-no-acs'}">
+                                ${est.tipoAdecuacion || 'Ninguna'}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger btn-small" style="padding:5px 10px;" onclick="eliminarEstudiante(${est.id})">🗑️</button>
+                        </td>
+                    </tr>
+                `).join('');
+            };
+        }
+
+        window.eliminarEstudiante = (id) => {
+            if (confirm('¿Eliminar este estudiante?')) {
+                const tx = db.transaction('estudiantes', 'readwrite');
+                const store = tx.objectStore('estudiantes');
+                store.delete(id);
+                tx.oncomplete = () => cargarListaEstudiantes();
+            }
+        };
+
+        // ==================== VISTA 6: EVALUACIÓN (INTEGRADA) ====================
+        function renderizarEvaluacion(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <h2>📊 Matriz de Evaluación por Rubros</h2>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Estudiante</th>
+                                    <th>ACS</th>
+                                    <th>Cotidiano</th>
+                                    <th>Pruebas</th>
+                                    <th>Tareas</th>
+                                    <th>Proyectos</th>
+                                    <th>Nota Final</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="eval-tabla-body"></tbody>
+                        </table>
+                    </div>
+                    <button class="btn btn-primary mt-2" onclick="guardarTodasNotas()">💾 Guardar todas las notas</button>
+                </div>
+            `;
+
+            cargarMatrizEvaluacion();
+        }
+
+        function cargarMatrizEvaluacion() {
+            const tx = db.transaction('estudiantes', 'readonly');
+            const store = tx.objectStore('estudiantes');
+            const request = store.getAll();
+
+            request.onsuccess = (e) => {
+                const estudiantes = e.target.result;
+                const tbody = document.getElementById('eval-tabla-body');
+                
+                tbody.innerHTML = estudiantes.map(est => {
+                    const notaFinal = calcularNotaFinal(est, configuracionActual.rubros);
+                    const estado = parseFloat(notaFinal) >= 65 ? 'Aprobado' : parseFloat(notaFinal) >= 50 ? 'Convocatoria' : 'Reprobado';
+                    
+                    return `
+                        <tr>
+                            <td>${est.nombre}</td>
+                            <td><span class="badge ${est.tipoAdecuacion === 'ACS' ? 'badge-acs' : ''}">${est.tipoAdecuacion === 'ACS' ? 'ACS' : 'No'}</span></td>
+                            <td><input type="number" id="nota-${est.id}-cot" value="${est.cotidiano || 0}" min="0" max="100" step="0.1" style="width:70px;"></td>
+                            <td><input type="number" id="nota-${est.id}-pr" value="${est.pruebas || 0}" min="0" max="100" step="0.1" style="width:70px;"></td>
+                            <td><input type="number" id="nota-${est.id}-ta" value="${est.tareas || 0}" min="0" max="100" step="0.1" style="width:70px;"></td>
+                            <td><input type="number" id="nota-${est.id}-py" value="${est.proyectos || 0}" min="0" max="100" step="0.1" style="width:70px;"></td>
+                            <td><strong class="${parseFloat(notaFinal) < 65 ? 'text-danger' : 'text-success'}">${notaFinal}</strong></td>
+                            <td><span class="badge ${estado === 'Aprobado' ? 'badge-no-acs' : 'badge-riesgo'}">${estado}</span></td>
+                        </tr>
+                    `;
+                }).join('');
+            };
+        }
+
+        window.guardarTodasNotas = () => {
+            const tx = db.transaction('estudiantes', 'readwrite');
+            const store = tx.objectStore('estudiantes');
+            const request = store.getAll();
+
+            request.onsuccess = (e) => {
+                const estudiantes = e.target.result;
+                
+                estudiantes.forEach(est => {
+                    const cot = parseFloat(document.getElementById(`nota-${est.id}-cot`)?.value) || 0;
+                    const pr = parseFloat(document.getElementById(`nota-${est.id}-pr`)?.value) || 0;
+                    const ta = parseFloat(document.getElementById(`nota-${est.id}-ta`)?.value) || 0;
+                    const py = parseFloat(document.getElementById(`nota-${est.id}-py`)?.value) || 0;
+                    
+                    est.cotidiano = cot;
+                    est.pruebas = pr;
+                    est.tareas = ta;
+                    est.proyectos = py;
+                    
+                    store.put(est);
+                });
+
+                alert('✅ Notas guardadas correctamente');
+                cargarMatrizEvaluacion(); // Recargar para mostrar nuevos promedios
+            };
+        };
+
+        // ==================== VISTA 8: ALERTAS CON WHATSAPP ====================
+        function renderizarAlertas(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <h2>🚨 Alertas de Rendimiento</h2>
+                    <div id="alertas-lista"></div>
+                </div>
+            `;
+
+            const tx = db.transaction('estudiantes', 'readonly');
+            const store = tx.objectStore('estudiantes');
+            const request = store.getAll();
+
+            request.onsuccess = (e) => {
+                const estudiantes = e.target.result;
+                const lista = document.getElementById('alertas-lista');
+                
+                const estudiantesEnRiesgo = estudiantes.filter(est => {
+                    const nota = calcularNotaFinal(est, configuracionActual.rubros);
+                    return parseFloat(nota) < 65;
+                });
+
+                if (estudiantesEnRiesgo.length === 0) {
+                    lista.innerHTML = '<p class="text-success">✅ No hay estudiantes con bajo rendimiento</p>';
+                    return;
+                }
+
+                lista.innerHTML = estudiantesEnRiesgo.map(est => {
+                    const nota = calcularNotaFinal(est, configuracionActual.rubros);
+                    const telefono = est.telefono ? `${CODIGO_PAIS}${est.telefono.replace(/\D/g, '')}` : '';
+                    const mensaje = encodeURIComponent(`Apreciable encargado de ${est.nombre}, su nota actual es ${nota}. Solicitamos su apoyo para mejorar su rendimiento académico. Atentamente, ${configuracionActual.nombreCentro}`);
+                    
+                    return `
+                        <div class="card" style="margin-bottom:10px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <div>
+                                    <strong>${est.nombre}</strong><br>
+                                    <span class="badge badge-riesgo">Nota: ${nota}</span>
+                                </div>
+                                ${telefono ? `
+                                    <button class="btn btn-wa" style="width:auto; padding:10px;" onclick="window.open('https://wa.me/${telefono}?text=${mensaje}')">
+                                        📱 WhatsApp
+                                    </button>
+                                ` : '<span class="badge">Sin teléfono</span>'}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            };
+        }
+
+        // ==================== VISTA 9: REPORTES PDF ====================
+        function renderizarReportes(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <h2>📑 Generación de Reportes</h2>
+                    <div class="grid-2">
+                        <button class="btn btn-primary" onclick="generarInformeTraslado()">📄 Informe de Traslado</button>
+                        <button class="btn btn-success" onclick="generarActaCalificaciones()">📊 Acta de Calificaciones</button>
+                    </div>
+                    <button class="btn btn-secondary mt-2" onclick="exportarCSV()">📥 Exportar a Excel (CSV)</button>
+                </div>
+            `;
+
+            window.generarInformeTraslado = () => {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                doc.setFontSize(16);
+                doc.text(configuracionActual.nombreCentro, 15, 15);
+                doc.setFontSize(10);
+                doc.text(`Código: ${configuracionActual.codigoPresupuestario}`, 15, 22);
+                doc.text(`Fecha: ${new Date().toLocaleDateString('es-CR')}`, 15, 28);
+
+                const tx = db.transaction('estudiantes', 'readonly');
+                const store = tx.objectStore('estudiantes');
+                const request = store.getAll();
+
+                request.onsuccess = (e) => {
+                    const estudiantes = e.target.result;
+                    const data = estudiantes.map(est => [
+                        est.nombre,
+                        est.cedula || '-',
+                        calcularNotaFinal(est, configuracionActual.rubros),
+                        est.tipoAdecuacion || 'Ninguna'
+                    ]);
+
+                    doc.autoTable({
+                        head: [['Estudiante', 'Cédula', 'Nota Final', 'Adecuación']],
+                        body: data,
+                        startY: 35,
+                        styles: { fontSize: 8 },
+                        headStyles: { fillColor: [0, 51, 102] }
+                    });
+
+                    doc.save(`Informe_Traslado_${new Date().toISOString().slice(0,10)}.pdf`);
+                };
+            };
+
+            window.generarActaCalificaciones = () => {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF('landscape');
+                
+                doc.text('Acta de Calificaciones - MEP 2026', 15, 15);
+                doc.text(configuracionActual.nombreCentro, 15, 22);
+
+                const tx = db.transaction('estudiantes', 'readonly');
+                const store = tx.objectStore('estudiantes');
+                const request = store.getAll();
+
+                request.onsuccess = (e) => {
+                    const estudiantes = e.target.result;
+                    const data = estudiantes.map(est => [
+                        est.nombre,
+                        est.cotidiano || 0,
+                        est.pruebas || 0,
+                        est.tareas || 0,
+                        est.proyectos || 0,
+                        calcularNotaFinal(est, configuracionActual.rubros)
+                    ]);
+
+                    doc.autoTable({
+                        head: [['Estudiante', 'Cotidiano', 'Pruebas', 'Tareas', 'Proyectos', 'Nota Final']],
+                        body: data,
+                        startY: 30,
+                        styles: { fontSize: 8 },
+                        headStyles: { fillColor: [0, 51, 102] }
+                    });
+
+                    doc.save(`Acta_Calificaciones_${new Date().toISOString().slice(0,10)}.pdf`);
+                };
+            };
+        }
+
+        // ==================== VISTAS PENDIENTES POR IMPLEMENTAR (Placeholders funcionales) ====================
+        function renderizarAsistencia(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <h2>📅 Control de Asistencia</h2>
+                    <div class="form-group">
+                        <label>Mes</label>
+                        <select id="asist-mes">
+                            <option value="1">Enero</option>
+                            <option value="2">Febrero</option>
+                            <option value="3">Marzo</option>
+                            <option value="4">Abril</option>
+                            <option value="5">Mayo</option>
+                            <option value="6">Junio</option>
+                            <option value="7">Julio</option>
+                            <option value="8">Agosto</option>
+                            <option value="9">Setiembre</option>
+                            <option value="10">Octubre</option>
+                            <option value="11">Noviembre</option>
+                            <option value="12">Diciembre</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" onclick="alert('Módulo de asistencia en desarrollo profesional')">📊 Ver Asistencia</button>
+                </div>
+            `;
+        }
+
+        function renderizarInstrumentos(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <h2>📝 Instrumentos de Evaluación</h2>
+                    <p>Diseñe rúbricas y listas de cotejo</p>
+                    <button class="btn btn-primary" onclick="alert('Módulo de instrumentos disponible en versión completa')">➕ Crear Instrumento</button>
+                </div>
+            `;
+        }
+
+        function renderizarBitacora(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <h2>📖 Bitácora DUA</h2>
+                    <div class="form-group">
+                        <label>Fecha</label>
+                        <input type="date" id="bit-fecha" value="${new Date().toISOString().split('T')[0]}">
+                    </div>
+                    <div class="form-group">
+                        <label>Estrategias implementadas</label>
+                        <textarea id="bit-texto" rows="4" placeholder="Describa las estrategias DUA aplicadas..."></textarea>
+                    </div>
+                    <button class="btn btn-primary" onclick="guardarBitacora()">📝 Guardar Registro</button>
+                </div>
+                <div class="card">
+                    <h3>Registros Recientes</h3>
+                    <div id="bitacora-lista"></div>
+                </div>
+            `;
+
+            window.guardarBitacora = () => {
+                const fecha = document.getElementById('bit-fecha').value;
+                const texto = document.getElementById('bit-texto').value;
+
+                if (!fecha || !texto) {
+                    alert('Complete todos los campos');
+                    return;
+                }
+
+                const tx = db.transaction('bitacora', 'readwrite');
+                const store = tx.objectStore('bitacora');
+                store.add({ fecha, texto, timestamp: Date.now() });
+
+                tx.oncomplete = () => {
+                    alert('✅ Registro guardado');
+                    document.getElementById('bit-texto').value = '';
+                    cargarBitacora();
+                };
+            };
+
+            cargarBitacora();
+        }
+
+        function cargarBitacora() {
+            const tx = db.transaction('bitacora', 'readonly');
+            const store = tx.objectStore('bitacora');
+            const request = store.getAll();
+
+            request.onsuccess = (e) => {
+                const registros = e.target.result.slice(-5).reverse();
+                const lista = document.getElementById('bitacora-lista');
+                
+                lista.innerHTML = registros.map(r => `
+                    <div class="card" style="margin-bottom:8px; padding:10px;">
+                        <strong>${r.fecha}</strong>
+                        <p style="margin-top:5px;">${r.texto}</p>
+                    </div>
+                `).join('') || '<p>No hay registros</p>';
+            };
+        }
+
+        // ==================== INICIALIZACIÓN ====================
+        async function iniciarSistema() {
+            await inicializarDB();
+            
+            // Configurar navegación
+            document.querySelectorAll('.nav-item').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    cambiarVista(e.currentTarget.dataset.view);
+                });
+            });
+
+            // Cargar vista inicial
+            cambiarVista('config');
+        }
+
+        // Exponer funciones globales necesarias
+        window.cambiarVista = cambiarVista;
+        window.validarPorcentajesRubros = validarPorcentajesRubros;
+
+        // Iniciar cuando el DOM esté listo
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', iniciarSistema);
+        } else {
+            iniciarSistema();
+        }
+    })();
 </script>
 </body>
 </html>
