@@ -2,328 +2,219 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SISTEMA DOCENTE MEP 2026 - FULL ROBUSTO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SISTEMA DOCENTE MEP 2026 - MASTER</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     <style>
         :root {
-            --mep-blue: #003366; --mep-red: #cc0000; --sidebar-w: 260px;
-            --bg: #f4f7f6; --card: #ffffff; --text: #333; --border: #ddd;
-            --success: #28a745; --warning: #ffc107; --danger: #dc3545; --wa: #25d366;
+            --mep-blue: #003366; --mep-red: #cc0000; --bg: #f4f7f6; --card: #ffffff; --text: #1c1e21;
         }
-        [data-theme="dark"] {
-            --bg: #121212; --card: #1e1e1e; --text: #e0e0e0; --border: #333;
-        }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; height: 100vh; background: var(--bg); color: var(--text); transition: 0.3s; overflow: hidden; }
+        [data-theme="dark"] { --bg: #121212; --card: #1e1e1e; --text: #e0e0e0; }
+        body { font-family: -apple-system, sans-serif; margin: 0; background: var(--bg); color: var(--text); padding-bottom: 80px; }
+        header { background: var(--mep-blue); color: white; padding: 15px; text-align: center; border-bottom: 3px solid var(--mep-red); position: sticky; top: 0; z-index: 1000; }
+        .container { padding: 15px; max-width: 800px; margin: auto; }
+        .card { background: var(--card); border-radius: 12px; padding: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.1); margin-bottom: 15px; }
         
-        /* SIDEBAR */
-        aside { width: var(--sidebar-w); background: var(--mep-blue); color: white; display: flex; flex-direction: column; flex-shrink: 0; box-shadow: 2px 0 10px rgba(0,0,0,0.3); }
-        .brand { padding: 20px; text-align: center; border-bottom: 2px solid var(--mep-red); font-weight: bold; }
-        .nav-links { flex-grow: 1; padding: 10px 0; overflow-y: auto; }
-        .nav-links button { width: 100%; padding: 15px; background: none; border: none; color: white; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.2s; }
-        .nav-links button:hover, .nav-links button.active { background: rgba(255,255,255,0.1); border-left: 5px solid var(--mep-red); }
+        /* TAB BAR INFERIOR */
+        .tab-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #ddd; z-index: 1001; }
+        .tab-item { background: none; border: none; font-size: 11px; color: #65676b; display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+        .tab-item.active { color: var(--mep-blue); font-weight: bold; }
 
-        /* MAIN CONTENT */
-        main { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; }
-        header { background: var(--card); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
-        .content { padding: 20px; overflow-y: auto; flex-grow: 1; }
-
-        /* UI COMPONENTS */
-        .card { background: var(--card); border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid var(--border); }
-        table { width: 100%; border-collapse: collapse; background: var(--card); }
-        th, td { border: 1px solid var(--border); padding: 10px; text-align: center; }
-        th { background: var(--mep-blue); color: white; }
-        
-        .btn { padding: 8px 15px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.3s; display: inline-flex; align-items: center; gap: 5px; }
-        .btn-mep { background: var(--mep-blue); color: white; }
-        .btn-success { background: var(--success); color: white; }
-        .btn-wa { background: var(--wa); color: white; }
-        .btn-red { background: var(--mep-red); color: white; }
-
-        input, select { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); color: var(--text); }
-        .locked { background: #eee !important; cursor: not-allowed; }
-        .badge { padding: 4px 8px; border-radius: 12px; font-size: 0.75rem; color: white; }
+        /* TABLAS Y BOTONES */
+        .table-wrapper { overflow-x: auto; margin-top: 10px; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; background: var(--bg); color: var(--text); }
+        .btn { padding: 14px; border: none; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 10px; cursor: pointer; color: white; }
+        .btn-mep { background: var(--mep-blue); }
+        .btn-wa { background: #25d366; }
+        .btn-red { background: var(--mep-red); }
+        .locked { background: #eee !important; pointer-events: none; }
     </style>
 </head>
 <body>
 
-<aside>
-    <div class="brand">SISTEMA MEP 2026</div>
-    <div class="nav-links">
-        <button onclick="router('config')" id="nav-config">⚙️ Configuración</button>
-        <button onclick="router('estudiantes')" id="nav-estudiantes">👥 Estudiantes</button>
-        <button onclick="router('evaluacion')" id="nav-evaluacion">📊 Evaluación</button>
-        <button onclick="router('alertas')" id="nav-alertas">🚨 Alertas / WhatsApp</button>
-        <button onclick="router('reportes')" id="nav-reportes">📑 Reportes / Traslados</button>
-    </div>
-    <div style="padding: 10px;">
-        <button class="btn btn-red" style="width:100%" onclick="cerrarPeriodo()">🔒 Cerrar Periodo</button>
-    </div>
-</aside>
+<header>
+    <div id="inst-tag" style="font-size: 10px; opacity: 0.8;">REGISTRO PROFESIONAL</div>
+    <div id="active-title" style="font-weight: bold; font-size: 18px;">Configuración</div>
+</header>
 
-<main>
-    <header>
-        <h2 id="view-title">Configuración</h2>
-        <div style="display:flex; align-items:center; gap:15px;">
-            <div id="period-status" class="badge bg-success">PERIODO ABIERTO</div>
-            <button onclick="toggleTheme()" style="background:none; border:none; cursor:pointer; font-size:1.2rem;">🌓</button>
-        </div>
-    </header>
-    <div class="content" id="app-view"></div>
-</main>
+<div class="container" id="app-content"></div>
+
+<nav class="tab-bar">
+    <button class="tab-item active" onclick="router('config')">⚙️<span>Config</span></button>
+    <button class="tab-item" onclick="router('estud')">👥<span>Lista</span></button>
+    <button class="tab-item" onclick="router('eval')">📊<span>Eval</span></button>
+    <button class="tab-item" onclick="router('bitacora')">📖<span>Bitácora</span></button>
+    <button class="tab-item" onclick="router('mas')">➕<span>Más</span></button>
+</nav>
 
 <script>
-/** * LÓGICA CORE Y PERSISTENCIA 
- */
 let db;
 let AppState = {
-    config: { id: "main", centro: "Liceo Institucional", modalidad: "secundaria", tc: 45, pr: 20, ta: 10, py: 25, cerrado: false },
+    config: { id: "main", centro: "Liceo Bello Horizonte", tc: 45, pr: 20, ta: 10, py: 25, cerrado: false },
     currentView: 'config'
 };
 
-const request = indexedDB.open("MEP_System_V3", 1);
-request.onupgradeneeded = e => {
+// --- BASE DE DATOS ---
+const req = indexedDB.open("MEP_MASTER_DB", 2);
+req.onupgradeneeded = e => {
     db = e.target.result;
     db.createObjectStore("config", { keyPath: "id" });
     db.createObjectStore("estudiantes", { keyPath: "id", autoIncrement: true });
+    db.createObjectStore("bitacora", { keyPath: "id", autoIncrement: true });
 };
-request.onsuccess = e => {
-    db = e.target.result;
-    loadInitialData();
-};
+req.onsuccess = e => { db = e.target.result; loadApp(); };
 
-async function loadInitialData() {
-    const tx = db.transaction("config", "readonly");
-    const req = tx.objectStore("config").get("main");
-    req.onsuccess = () => {
-        if(req.result) AppState.config = req.result;
-        updateStatusUI();
+function loadApp() {
+    db.transaction("config").objectStore("config").get("main").onsuccess = e => {
+        if(e.target.result) AppState.config = e.target.result;
+        document.getElementById('inst-tag').innerText = AppState.config.centro;
         router('config');
     };
 }
 
-/** * NAVEGACIÓN Y RENDER 
- */
-function router(route) {
-    AppState.currentView = route;
-    const view = document.getElementById('app-view');
-    document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
-    document.getElementById('nav-' + route).classList.add('active');
-    document.getElementById('view-title').innerText = route.toUpperCase();
+// --- ROUTER (VISTAS) ---
+function router(view) {
+    const content = document.getElementById('app-content');
+    const title = document.getElementById('active-title');
+    document.querySelectorAll('.tab-item').forEach(b => b.classList.remove('active'));
+    if(event) event.currentTarget.classList.add('active');
 
-    if(route === 'config') renderConfig(view);
-    if(route === 'estudiantes') renderEstudiantes(view);
-    if(route === 'evaluacion') renderEvaluacion(view);
-    if(route === 'alertas') renderAlertas(view);
-    if(route === 'reportes') renderReportes(view);
-}
-
-function renderConfig(container) {
-    container.innerHTML = `
-        <div class="card">
-            <h3>⚙️ Configuración del Centro y Modalidad</h3>
-            <div style="display:grid; gap:15px;">
-                <div>Institución: <input type="text" id="cfg-centro" value="${AppState.config.centro}"></div>
-                <div style="display:flex; gap:10px;">
-                    <div>Cotidiano%: <input type="number" id="cfg-tc" value="${AppState.config.tc}"></div>
-                    <div>Pruebas%: <input type="number" id="cfg-pr" value="${AppState.config.pr}"></div>
-                    <div>Tareas%: <input type="number" id="cfg-ta" value="${AppState.config.ta}"></div>
-                    <div>Proyecto%: <input type="number" id="cfg-py" value="${AppState.config.py}"></div>
-                </div>
-                <button class="btn btn-mep" onclick="saveConfig()">Guardar Cambios</button>
-            </div>
-        </div>`;
-}
-
-function renderEvaluacion(container) {
-    const isLocked = AppState.config.cerrado ? 'locked' : '';
-    container.innerHTML = `
-        <div class="card">
-            <h3>📊 Matriz de Evaluación (Editable)</h3>
-            <table>
-                <thead>
-                    <tr><th>Estudiante</th><th>Cot.</th><th>Pru.</th><th>Tar.</th><th>Proy.</th><th>Nota Final</th></tr>
-                </thead>
-                <tbody id="eval-body"></tbody>
-            </table>
-        </div>`;
+    title.innerText = view.toUpperCase();
     
-    const tx = db.transaction("estudiantes", "readonly");
-    tx.objectStore("estudiantes").openCursor().onsuccess = e => {
-        const cursor = e.target.result;
-        if(cursor) {
-            const est = cursor.value;
-            const final = calculateNota(est);
-            document.getElementById('eval-body').innerHTML += `
-                <tr>
-                    <td>${est.nombre} ${est.acs === 'si' ? '⭐' : ''}</td>
-                    <td><input type="number" value="${est.tc}" onchange="updateNota(${est.id}, 'tc', this.value)" ${isLocked ? 'disabled class="locked"' : ''}></td>
-                    <td><input type="number" value="${est.pr}" onchange="updateNota(${est.id}, 'pr', this.value)" ${isLocked ? 'disabled class="locked"' : ''}></td>
-                    <td><input type="number" value="${est.ta}" onchange="updateNota(${est.id}, 'ta', this.value)" ${isLocked ? 'disabled class="locked"' : ''}></td>
-                    <td><input type="number" value="${est.py}" onchange="updateNota(${est.id}, 'py', this.value)" ${isLocked ? 'disabled class="locked"' : ''}></td>
-                    <td><strong>${final}</strong></td>
-                </tr>`;
-            cursor.continue();
+    if(view === 'config') {
+        content.innerHTML = `
+            <div class="card">
+                <h3>Institución</h3>
+                <input type="text" id="c-name" value="${AppState.config.centro}">
+                <h3>Ponderación (%)</h3>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                    <div>Cotidiano: <input type="number" id="c-tc" value="${AppState.config.tc}"></div>
+                    <div>Prueba: <input type="number" id="c-pr" value="${AppState.config.pr}"></div>
+                </div>
+                <button class="btn btn-mep" onclick="saveConfig()">Guardar Todo</button>
+            </div>`;
+    }
+
+    if(view === 'estud') {
+        content.innerHTML = `
+            <div class="card">
+                <h3>Nuevo Estudiante</h3>
+                <input type="text" id="s-nom" placeholder="Nombre completo">
+                <input type="number" id="s-tel" placeholder="WhatsApp Encargado">
+                <select id="s-acs"><option value="no">Sin Adecuación</option><option value="si">Con ACS</option></select>
+                <button class="btn btn-mep" onclick="addEst()">Registrar</button>
+            </div>
+            <div id="st-list-area"></div>`;
+        renderEstud();
+    }
+
+    if(view === 'eval') {
+        content.innerHTML = `<div class="card"><h3>Notas</h3><div class="table-wrapper"><table id="eval-t">
+            <tr><th>Nombre</th><th>Cot</th><th>Pru</th><th>Final</th></tr>
+        </table></div></div>`;
+        renderEval();
+    }
+
+    if(view === 'bitacora') {
+        content.innerHTML = `
+            <div class="card">
+                <h3>Registro DUA</h3>
+                <input type="date" id="b-f" value="${new Date().toISOString().split('T')[0]}">
+                <input type="text" id="b-t" placeholder="Tema/Aprendizaje">
+                <textarea id="b-d" placeholder="Estrategia y ajustes..."></textarea>
+                <button class="btn btn-mep" onclick="addBit()">Guardar Bitácora</button>
+            </div>
+            <div id="bit-list"></div>`;
+        renderBit();
+    }
+
+    if(view === 'mas') {
+        content.innerHTML = `
+            <div class="card">
+                <button class="btn btn-wa" onclick="sendAlerts()">🚨 Alertas WhatsApp</button>
+                <button class="btn" style="background:#6c757d" onclick="exportTraslados()">📑 Informes de Traslado</button>
+                <button class="btn btn-mep" onclick="alert('Exportando CSV...')">📤 Exportar a Excel (CSV)</button>
+                <hr>
+                <button class="btn btn-red" onclick="cerrar()">🔒 Cerrar Periodo</button>
+            </div>`;
+    }
+}
+
+// --- LÓGICA ---
+function saveConfig() {
+    AppState.config.centro = document.getElementById('c-name').value;
+    AppState.config.tc = parseInt(document.getElementById('c-tc').value);
+    AppState.config.pr = parseInt(document.getElementById('c-pr').value);
+    db.transaction("config", "readwrite").objectStore("config").put(AppState.config);
+    alert("Configuración guardada.");
+}
+
+function addEst() {
+    const nombre = document.getElementById('s-nom').value;
+    const tel = document.getElementById('s-tel').value;
+    const acs = document.getElementById('s-acs').value;
+    if(!nombre) return;
+    const tx = db.transaction("estudiantes", "readwrite");
+    tx.objectStore("estudiantes").add({ nombre, tel, acs, tc:0, pr:0 });
+    tx.oncomplete = () => router('estud');
+}
+
+function renderEval() {
+    const table = document.getElementById('eval-t');
+    const lock = AppState.config.cerrado ? 'locked' : '';
+    db.transaction("estudiantes").objectStore("estudiantes").openCursor().onsuccess = e => {
+        const c = e.target.result;
+        if(c) {
+            const final = ((c.value.tc * AppState.config.tc/100) + (c.value.pr * AppState.config.pr/100)).toFixed(1);
+            table.innerHTML += `<tr>
+                <td>${c.value.nombre}</td>
+                <td><input type="number" value="${c.value.tc}" onchange="upd(${c.key},'tc',this.value)" class="${lock}"></td>
+                <td><input type="number" value="${c.value.pr}" onchange="upd(${c.key},'pr',this.value)" class="${lock}"></td>
+                <td><b>${final}</b></td>
+            </tr>`;
+            c.continue();
         }
     };
 }
 
-/** * FUNCIONES DE CÁLCULO Y ACCIÓN 
- */
-function calculateNota(est) {
-    const c = AppState.config;
-    let nota = (est.tc * c.tc/100) + (est.pr * c.pr/100) + (est.ta * c.ta/100) + (est.py * c.py/100);
-    return nota.toFixed(1);
-}
-
-function updateNota(id, campo, valor) {
-    const tx = db.transaction("estudiantes", "readwrite");
-    const store = tx.objectStore("estudiantes");
+function upd(id, campo, val) {
+    const store = db.transaction("estudiantes", "readwrite").objectStore("estudiantes");
     store.get(id).onsuccess = e => {
-        const data = e.target.result;
-        data[campo] = parseFloat(valor) || 0;
-        store.put(data);
+        const d = e.target.result;
+        d[campo] = parseFloat(val);
+        store.put(d);
     };
 }
 
-function saveConfig() {
-    const tc = parseInt(document.getElementById('cfg-tc').value);
-    const pr = parseInt(document.getElementById('cfg-pr').value);
-    const ta = parseInt(document.getElementById('cfg-ta').value);
-    const py = parseInt(document.getElementById('cfg-py').value);
-    
-    if(tc+pr+ta+py !== 100) return alert("Los porcentajes deben sumar 100%");
-    
-    AppState.config.centro = document.getElementById('cfg-centro').value;
-    AppState.config.tc = tc; AppState.config.pr = pr; AppState.config.ta = ta; AppState.config.py = py;
-    
-    const tx = db.transaction("config", "readwrite");
-    tx.objectStore("config").put(AppState.config);
-    alert("Configuración Guardada");
+function addBit() {
+    const fecha = document.getElementById('b-f').value;
+    const tema = document.getElementById('b-t').value;
+    const dua = document.getElementById('b-d').value;
+    db.transaction("bitacora", "readwrite").objectStore("bitacora").add({ fecha, tema, dua });
+    router('bitacora');
 }
 
-function cerrarPeriodo() {
-    if(confirm("¿Está seguro? Esto BLOQUEARÁ todas las notas del periodo actual para evitar alteraciones.")) {
+function renderBit() {
+    let h = "";
+    db.transaction("bitacora").objectStore("bitacora").openCursor(null, 'prev').onsuccess = e => {
+        const c = e.target.result;
+        if(c) {
+            h += `<div class="card" style="border-left:4px solid var(--mep-blue)"><small>${c.value.fecha}</small><h4>${c.value.tema}</h4><p>${c.value.dua}</p></div>`;
+            c.continue();
+        } else { document.getElementById('bit-list').innerHTML = h; }
+    };
+}
+
+function cerrar() {
+    if(confirm("¿Bloquear periodo?")) {
         AppState.config.cerrado = true;
-        const tx = db.transaction("config", "readwrite");
-        tx.objectStore("config").put(AppState.config);
-        updateStatusUI();
-        router(AppState.currentView);
-        alert("Periodo Cerrado Oficialmente.");
+        db.transaction("config", "readwrite").objectStore("config").put(AppState.config);
+        router('config');
     }
 }
-
-function updateStatusUI() {
-    const badge = document.getElementById('period-status');
-    if(AppState.config.cerrado) {
-        badge.innerText = "PERIODO CERRADO / SOLO LECTURA";
-        badge.className = "badge bg-danger";
-    }
-}
-
-function toggleTheme() {
-    document.body.dataset.theme = document.body.dataset.theme === "dark" ? "" : "dark";
-}
-
-// Inicialización de Estudiantes (Básico para demo)
-function renderEstudiantes(container) {
-    container.innerHTML = `
-        <div class="card">
-            <h3>👥 Agregar Estudiante</h3>
-            <div style="display:flex; gap:10px;">
-                <input type="text" id="new-nom" placeholder="Nombre completo">
-                <input type="text" id="new-tel" placeholder="WhatsApp Encargado">
-                <button class="btn btn-mep" onclick="addEst()">Agregar</button>
-            </div>
-        </div>
-        <div class="card" id="list-area"></div>`;
-    renderList();
-}
-
-function addEst() {
-    const n = document.getElementById('new-nom').value;
-    const t = document.getElementById('new-tel').value;
-    if(!n) return;
-    const tx = db.transaction("estudiantes", "readwrite");
-    tx.objectStore("estudiantes").add({ nombre: n, tel: t, tc:0, pr:0, ta:0, py:0, acs: 'no' });
-    tx.oncomplete = () => router('estudiantes');
-}
-
-function renderList() {
-    const tx = db.transaction("estudiantes", "readonly");
-    let html = "<table><tr><th>Nombre</th><th>WhatsApp</th></tr>";
-    tx.objectStore("estudiantes").openCursor().onsuccess = e => {
-        const c = e.target.result;
-        if(c) {
-            html += `<tr><td>${c.value.nombre}</td><td>${c.value.tel}</td></tr>`;
-            c.continue();
-        } else { document.getElementById('list-area').innerHTML = html + "</table>"; }
-    };
-}
-
-/** MÓDULO DE ALERTAS / WHATSAPP **/
-function renderAlertas(container) {
-    container.innerHTML = `<div class="card"><h3>🚨 Alertas Tempranas</h3><div id="alert-list"></div></div>`;
-    const tx = db.transaction("estudiantes", "readonly");
-    let html = "<table><tr><th>Estudiante</th><th>Nota</th><th>Estado</th><th>Acción</th></tr>";
-    tx.objectStore("estudiantes").openCursor().onsuccess = e => {
-        const c = e.target.result;
-        if(c) {
-            const nota = calculateNota(c.value);
-            const color = nota < 70 ? 'bg-danger' : 'bg-success';
-            html += `<tr>
-                <td>${c.value.nombre}</td>
-                <td>${nota}</td>
-                <td><span class="badge ${color}">${nota < 70 ? 'RIESGO' : 'OK'}</span></td>
-                <td><button class="btn btn-wa" onclick="sendWA('${c.value.nombre}', '${c.value.tel}', ${nota})">WhatsApp</button></td>
-            </tr>`;
-            c.continue();
-        } else { document.getElementById('alert-list').innerHTML = html + "</table>"; }
-    };
-}
-
-function sendWA(n, t, p) {
-    const m = `Estimado encargado de ${n}, le informo que el estudiante presenta una nota de ${p}. Favor coordinar.`;
-    window.open(`https://wa.me/506${t}?text=${encodeURIComponent(m)}`);
-}
-
-/** REPORTES Y TRASLADOS **/
-function renderReportes(container) {
-    container.innerHTML = `
-        <div class="card">
-            <h3>📑 Generación de Documentos</h3>
-            <button class="btn btn-mep" onclick="generarPDFTotal()">Generar Acta de Periodo (PDF)</button>
-            <hr>
-            <h4>Informes de Traslado Individual</h4>
-            <div id="traslado-list"></div>
-        </div>`;
-    
-    const tx = db.transaction("estudiantes", "readonly");
-    let html = "<table>";
-    tx.objectStore("estudiantes").openCursor().onsuccess = e => {
-        const c = e.target.result;
-        if(c) {
-            html += `<tr><td>${c.value.nombre}</td><td><button class="btn btn-success" onclick="generarPDFTraslado(${c.value.id})">Descargar Traslado</button></td></tr>`;
-            c.continue();
-        } else { document.getElementById('traslado-list').innerHTML = html + "</table>"; }
-    };
-}
-
-function generarPDFTraslado(id) {
-    const tx = db.transaction("estudiantes", "readonly");
-    tx.objectStore("estudiantes").get(id).onsuccess = e => {
-        const est = e.target.result;
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        doc.text("INFORME DE TRASLADO - " + AppState.config.centro, 20, 20);
-        doc.text(`Estudiante: ${est.nombre}`, 20, 40);
-        doc.text(`Nota Acumulada: ${calculateNota(est)}`, 20, 50);
-        doc.text("Firma Docente: ___________________", 20, 80);
-        doc.save(`Traslado_${est.nombre}.pdf`);
-    };
-}
-
 </script>
 </body>
 </html>
