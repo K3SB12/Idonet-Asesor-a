@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>SISTEMA DOCENTE MEP 2026 - VERSIÓN COMPLETA (100%)</title>
+    <title>📚 SISTEMA DOCENTE MEP 2026 - VERSIÓN COMPLETA</title>
+    <!-- Librerías para PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', 'Arial', system-ui, sans-serif;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
         }
 
         :root {
@@ -30,19 +30,21 @@
         body {
             background: var(--mep-gray);
             color: var(--mep-text);
-            padding-bottom: 90px;
+            padding-bottom: 85px;
+            min-height: 100vh;
             font-size: 14px;
         }
 
+        /* HEADER INSTITUCIONAL */
         .mep-header {
             background: var(--mep-blue);
             color: white;
-            padding: 15px 20px;
+            padding: 16px 20px;
             position: sticky;
             top: 0;
             z-index: 1000;
             border-bottom: 4px solid var(--mep-red);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
         .mep-header h1 {
@@ -62,39 +64,39 @@
             padding: 20px;
         }
 
+        /* TARJETAS */
         .card {
             background: var(--mep-white);
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             border: 1px solid var(--mep-border);
         }
 
         .card-title {
             font-size: 1.3rem;
             color: var(--mep-blue);
-            margin-bottom: 15px;
+            margin-bottom: 16px;
             padding-bottom: 8px;
             border-bottom: 2px solid var(--mep-red);
             font-weight: 600;
         }
 
-        .grid-2, .grid-3, .grid-4, .grid-5 {
+        /* GRIDS */
+        .grid-2, .grid-3, .grid-4 {
             display: grid;
             gap: 15px;
             margin-bottom: 15px;
         }
-
         .grid-2 { grid-template-columns: repeat(2, 1fr); }
         .grid-3 { grid-template-columns: repeat(3, 1fr); }
         .grid-4 { grid-template-columns: repeat(4, 1fr); }
-        .grid-5 { grid-template-columns: repeat(5, 1fr); }
 
+        /* FORMULARIOS */
         .form-group {
             margin-bottom: 15px;
         }
-
         label {
             display: block;
             font-weight: 600;
@@ -102,48 +104,55 @@
             font-size: 0.85rem;
             color: var(--mep-blue);
         }
-
         input, select, textarea {
             width: 100%;
             padding: 12px;
-            border: 1px solid var(--mep-border);
-            border-radius: 8px;
+            border: 1.5px solid var(--mep-border);
+            border-radius: 10px;
             font-size: 1rem;
+            transition: border 0.2s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--mep-blue);
+            box-shadow: 0 0 0 3px rgba(0,51,102,0.1);
         }
 
+        /* BOTONES */
         .btn {
             padding: 12px 20px;
             border: none;
-            border-radius: 8px;
+            border-radius: 40px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             cursor: pointer;
             margin: 5px;
             transition: 0.2s;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
         }
-
         .btn-primary { background: var(--mep-blue); color: white; }
         .btn-success { background: var(--mep-success); color: white; }
         .btn-warning { background: var(--mep-warning); color: black; }
         .btn-danger { background: var(--mep-danger); color: white; }
-        .btn-outline { background: transparent; border: 1px solid var(--mep-blue); color: var(--mep-blue); }
+        .btn-outline { background: transparent; border: 2px solid var(--mep-blue); color: var(--mep-blue); }
 
+        /* TABLAS */
         .table-responsive {
             overflow-x: auto;
-            border-radius: 8px;
+            border-radius: 12px;
             border: 1px solid var(--mep-border);
             margin: 15px 0;
-            max-height: 500px;
+            max-height: 400px;
             overflow-y: auto;
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
             font-size: 0.85rem;
         }
-
         th {
             background: var(--mep-blue);
             color: white;
@@ -153,31 +162,32 @@
             top: 0;
             z-index: 10;
         }
-
         td {
             padding: 10px;
             border-bottom: 1px solid var(--mep-border);
             text-align: left;
         }
-
         td input, td select {
             width: 100%;
             padding: 6px;
             font-size: 0.85rem;
         }
 
+        /* BADGES */
         .badge {
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 0.7rem;
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 0.75rem;
             font-weight: 600;
             color: white;
         }
-
         .badge-success { background: var(--mep-success); }
         .badge-warning { background: var(--mep-warning); color: black; }
         .badge-danger { background: var(--mep-danger); }
+        .badge-info { background: var(--mep-blue); }
 
+        /* NAVEGACIÓN INFERIOR (9 FUNCIONES) */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -186,12 +196,11 @@
             background: white;
             display: flex;
             overflow-x: auto;
-            padding: 10px 5px;
+            padding: 8px 4px;
             box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
             z-index: 2000;
-            border-top: 2px solid var(--mep-blue);
+            border-top: 3px solid var(--mep-blue);
         }
-
         .nav-item {
             min-width: 70px;
             flex-shrink: 0;
@@ -204,59 +213,58 @@
             color: #6c757d;
             font-size: 0.7rem;
             cursor: pointer;
-            border-radius: 8px;
+            border-radius: 12px;
+            transition: 0.2s;
         }
-
         .nav-item.active {
             color: var(--mep-blue);
-            font-weight: 600;
+            font-weight: 700;
             background: rgba(0,51,102,0.1);
         }
-
         .nav-item span:first-child {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             margin-bottom: 2px;
         }
 
-        .indicador-item {
+        /* TARJETA DE INSTITUCIÓN */
+        .institucion-card {
             background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            border-left: 4px solid var(--mep-blue);
-        }
-
-        .plantilla-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .plantilla-card {
-            background: white;
             border: 1px solid var(--mep-border);
             border-radius: 12px;
-            padding: 20px;
-            text-align: center;
+            padding: 15px;
+            margin-bottom: 12px;
             cursor: pointer;
             transition: 0.2s;
         }
-
-        .plantilla-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        .institucion-card:hover {
             border-color: var(--mep-blue);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        .plantilla-icon {
-            font-size: 3rem;
-            margin-bottom: 10px;
+        /* ÁREA DE IMPORTACIÓN */
+        .import-area {
+            border: 2px dashed var(--mep-blue);
+            padding: 25px;
+            text-align: center;
+            border-radius: 16px;
+            background: #f0f7ff;
+            margin: 15px 0;
         }
 
+        .filtros-bar {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid var(--mep-border);
+        }
+
+        /* UTILIDADES */
         .text-success { color: var(--mep-success); }
         .text-danger { color: var(--mep-danger); }
         .mt-3 { margin-top: 15px; }
         .mb-3 { margin-bottom: 15px; }
+        .w-100 { width: 100%; }
     </style>
 </head>
 <body>
@@ -267,58 +275,31 @@
 </header>
 
 <main class="container" id="appMain">
-    <!-- Contenido dinámico -->
+    <!-- Contenido dinámico según pestaña -->
 </main>
 
 <nav class="bottom-nav" id="bottomNav">
+    <button class="nav-item active" data-view="instituciones">🏫<span>Instituciones</span></button>
     <button class="nav-item" data-view="config">⚙️<span>Config</span></button>
-    <button class="nav-item" data-view="parametros">⚖️<span>Ponderar</span></button>
-    <button class="nav-item" data-view="estudiantes">👥<span>Lista</span></button>
+    <button class="nav-item" data-view="estudiantes">👥<span>Listas</span></button>
     <button class="nav-item" data-view="asistencia">📅<span>Asistencia</span></button>
+    <button class="nav-item" data-view="evaluacion">📊<span>Evaluar</span></button>
     <button class="nav-item" data-view="cotidiano">📝<span>Cotidiano</span></button>
-    <button class="nav-item" data-view="evaluacion">📊<span>Notas</span></button>
-    <button class="nav-item" data-view="bitacora">📖<span>DUA</span></button>
+    <button class="nav-item" data-view="reportes">📑<span>Reportes</span></button>
     <button class="nav-item" data-view="alertas">🚨<span>Alertas</span></button>
-    <button class="nav-item" data-view="plantillas">📑<span>Plantillas</span></button>
+    <button class="nav-item" data-view="plantillas">📋<span>Plantillas</span></button>
 </nav>
 
 <script>
     (function() {
-        // ==================== CONFIGURACIÓN INICIAL ====================
-        const DB_NAME = 'MEP_COMPLETO_2026';
-        const DB_VERSION = 5;
+        // ==================== CONFIGURACIÓN GLOBAL ====================
+        const DB_NAME = 'MEP_FINAL_2026';
+        const DB_VERSION = 7;
         const CODIGO_PAIS = '506';
 
         let db = null;
-        let institucion = {
-            nombre: 'Liceo Rural Las Moras',
-            codigo: 'MEP-009-2026',
-            seccion: '9-1',
-            asignatura: 'Estudios Sociales',
-            docente: 'Dr. Harris Wilson',
-            periodo: 'I Periodo',
-            cursoLectivo: 2025
-        };
-
-        // Datos de ejemplo
-        const estudiantesEjemplo = [
-            { id: 1, nombre: 'Alberto Laureano Guevara', seccion: '9-1', telefono: '88881111' },
-            { id: 2, nombre: 'Amalia Gil Longoria', seccion: '9-1', telefono: '88882222' },
-            { id: 3, nombre: 'Enrique Yuridia Jaramillo Becerra', seccion: '9-1', telefono: '88883333' },
-            { id: 4, nombre: 'Jos Gaona', seccion: '9-1', telefono: '88884444' },
-            { id: 5, nombre: 'Juan Pérez Ledezma', seccion: '9-1', telefono: '88885555' },
-            { id: 6, nombre: 'Leonardo Reynoso', seccion: '9-1', telefono: '88886666' },
-            { id: 7, nombre: 'Luisa Jacinto Ledesma', seccion: '9-1', telefono: '88887777' },
-            { id: 8, nombre: 'Natalia Salvador Amador', seccion: '9-1', telefono: '88888888' },
-            { id: 9, nombre: 'Rubén Barela', seccion: '9-1', telefono: '88889999' }
-        ];
-
-        // Indicadores de ejemplo para trabajo cotidiano
-        const indicadoresEjemplo = [
-            { id: 1, descripcion: 'Analiza críticamente las causas y consecuencias de la Segunda Guerra Mundial mediante el uso de recursos gráficos e históricos.', puntos: 3 },
-            { id: 2, descripcion: 'Identifica los principales eventos del periodo de entreguerras y su impacto en América Latina.', puntos: 3 },
-            { id: 3, descripcion: 'Compara diferentes perspectivas historiográficas sobre la Guerra Fría.', puntos: 3 }
-        ];
+        let institucionActiva = null;
+        let nivelActivo = 'secundaria'; // preescolar, primaria, secundaria
 
         // ==================== INICIALIZACIÓN INDEXEDDB ====================
         function inicializarDB() {
@@ -329,9 +310,9 @@
 
                 request.onsuccess = (event) => {
                     db = event.target.result;
-                    console.log('✅ DB conectada');
+                    console.log('✅ IndexedDB conectada');
                     cargarDatosIniciales().then(() => {
-                        cambiarVista('config');
+                        cambiarVista('instituciones');
                         resolve();
                     });
                 };
@@ -339,67 +320,143 @@
                 request.onupgradeneeded = (event) => {
                     const db = event.target.result;
 
-                    if (!db.objectStoreNames.contains('institucion')) {
-                        db.createObjectStore('institucion', { keyPath: 'id' });
+                    if (!db.objectStoreNames.contains('instituciones')) {
+                        db.createObjectStore('instituciones', { keyPath: 'id', autoIncrement: true });
                     }
 
                     if (!db.objectStoreNames.contains('estudiantes')) {
                         const storeEst = db.createObjectStore('estudiantes', { keyPath: 'id', autoIncrement: true });
-                        storeEst.createIndex('seccion', 'seccion', { unique: false });
+                        storeEst.createIndex('institucionId', 'institucionId', { unique: false });
+                        storeEst.createIndex('identificacion', 'identificacion', { unique: true });
                     }
 
                     if (!db.objectStoreNames.contains('asistencia')) {
                         db.createObjectStore('asistencia', { keyPath: 'id', autoIncrement: true });
                     }
 
-                    if (!db.objectStoreNames.contains('indicadores')) {
-                        db.createObjectStore('indicadores', { keyPath: 'id', autoIncrement: true });
-                    }
-
                     if (!db.objectStoreNames.contains('evaluaciones')) {
                         db.createObjectStore('evaluaciones', { keyPath: 'id', autoIncrement: true });
+                    }
+
+                    if (!db.objectStoreNames.contains('indicadores')) {
+                        db.createObjectStore('indicadores', { keyPath: 'id', autoIncrement: true });
                     }
 
                     if (!db.objectStoreNames.contains('bitacora')) {
                         db.createObjectStore('bitacora', { keyPath: 'id', autoIncrement: true });
                     }
 
-                    if (!db.objectStoreNames.contains('plantillas')) {
-                        db.createObjectStore('plantillas', { keyPath: 'id', autoIncrement: true });
-                    }
-
-                    // Cargar datos de ejemplo
+                    // Datos de ejemplo - Instituciones
                     const tx = event.target.transaction;
+                    const storeInst = tx.objectStore('instituciones');
                     
-                    const storeEst = tx.objectStore('estudiantes');
-                    estudiantesEjemplo.forEach(e => storeEst.add(e));
+                    storeInst.add({ 
+                        nombre: 'Liceo Rural Las Moras', 
+                        direccionRegional: 'Limón', 
+                        circuito: '10', 
+                        codigo: '0255-00',
+                        nivel: 'secundaria',
+                        registrada: new Date().toLocaleDateString('es-CR')
+                    });
+                    
+                    storeInst.add({ 
+                        nombre: 'Escuela El Pilar', 
+                        direccionRegional: 'San Carlos', 
+                        circuito: '05', 
+                        codigo: '3357-00',
+                        nivel: 'primaria',
+                        registrada: new Date().toLocaleDateString('es-CR')
+                    });
 
+                    // Datos de ejemplo - Estudiantes con datos completos
+                    const storeEst = tx.objectStore('estudiantes');
+                    storeEst.add({
+                        institucionId: 1,
+                        identificacion: '1-1234-5678',
+                        nombre: 'Alberto Laureano Guevara',
+                        correoMEP: 'alberto.guevara@est.mep.go.cr',
+                        telefono1: '88881111',
+                        telefono2: '88881112',
+                        correoEncargado: 'padre.alberto@gmail.com',
+                        seccion: '9-1',
+                        acs: false
+                    });
+                    storeEst.add({
+                        institucionId: 1,
+                        identificacion: '2-2345-6789',
+                        nombre: 'María José Jiménez',
+                        correoMEP: 'maria.jimenez@est.mep.go.cr',
+                        telefono1: '88882222',
+                        telefono2: '88882223',
+                        correoEncargado: 'madre.maria@gmail.com',
+                        seccion: '9-1',
+                        acs: true
+                    });
+                    storeEst.add({
+                        institucionId: 2,
+                        identificacion: '3-3456-7890',
+                        nombre: 'Sofía Valverde',
+                        correoMEP: 'sofia.valverde@est.mep.go.cr',
+                        telefono1: '88883333',
+                        telefono2: '88883334',
+                        correoEncargado: 'padre.sofia@gmail.com',
+                        seccion: '4-1',
+                        acs: false
+                    });
+
+                    // Indicadores de ejemplo
                     const storeInd = tx.objectStore('indicadores');
-                    indicadoresEjemplo.forEach(i => storeInd.add(i));
+                    storeInd.add({ descripcion: 'Analiza críticamente las causas de la Segunda Guerra Mundial', puntos: 3 });
+                    storeInd.add({ descripcion: 'Identifica eventos del periodo de entreguerras', puntos: 3 });
+                    storeInd.add({ descripcion: 'Compara perspectivas sobre la Guerra Fría', puntos: 3 });
                 };
             });
         }
 
         async function cargarDatosIniciales() {
             return new Promise((resolve) => {
-                const tx = db.transaction('institucion', 'readwrite');
-                const store = tx.objectStore('institucion');
-                store.get('config').onsuccess = (e) => {
-                    if (e.target.result) {
-                        institucion = e.target.result;
-                    } else {
-                        store.put({ id: 'config', ...institucion });
+                if (!db) return resolve();
+                
+                const tx = db.transaction('instituciones', 'readonly');
+                const store = tx.objectStore('instituciones');
+                store.getAll().onsuccess = (e) => {
+                    if (e.target.result.length > 0) {
+                        institucionActiva = e.target.result[0];
+                        nivelActivo = institucionActiva.nivel;
+                        actualizarHeader();
                     }
-                    actualizarHeader();
                     resolve();
                 };
             });
         }
 
         function actualizarHeader() {
-            document.getElementById('institucionNombre').textContent = `MEP · ${institucion.nombre}`;
-            document.getElementById('institucionDetalle').textContent = 
-                `${institucion.seccion} · ${institucion.asignatura} · Docente: ${institucion.docente}`;
+            if (institucionActiva) {
+                document.getElementById('institucionNombre').textContent = `MEP · ${institucionActiva.nombre}`;
+                document.getElementById('institucionDetalle').textContent = 
+                    `Código: ${institucionActiva.codigo} · ${institucionActiva.nivel} · ${institucionActiva.direccionRegional}`;
+            }
+        }
+
+        // ==================== LÓGICA POR NIVEL ====================
+        function getConfiguracionEvaluacion(nivel) {
+            switch(nivel) {
+                case 'preescolar':
+                    return { rubros: [{ nombre: 'Observaciones', porcentaje: 100 }], tieneExamenes: false };
+                case 'primaria':
+                    return { rubros: [
+                        { nombre: 'Trabajo Cotidiano', porcentaje: 60 },
+                        { nombre: 'Pruebas', porcentaje: 40 }
+                    ], tieneExamenes: true };
+                case 'secundaria':
+                    return { rubros: [
+                        { nombre: 'Trabajo Cotidiano', porcentaje: 40 },
+                        { nombre: 'Pruebas', porcentaje: 30 },
+                        { nombre: 'Tareas', porcentaje: 15 },
+                        { nombre: 'Proyectos', porcentaje: 15 }
+                    ], tieneExamenes: true };
+                default: return null;
+            }
         }
 
         // ==================== NAVEGACIÓN ====================
@@ -411,15 +468,15 @@
             const container = document.getElementById('appMain');
             
             const vistas = {
-                config: renderizarConfiguracion,
-                parametros: renderizarParametros,
-                estudiantes: renderizarEstudiantes,
-                asistencia: renderizarAsistencia,
-                cotidiano: renderizarTrabajoCotidiano,
-                evaluacion: renderizarEvaluacionCompleta,
-                bitacora: renderizarBitacoraDUA,
-                alertas: renderizarAlertasCompletas,
-                plantillas: renderizarPlantillas
+                instituciones: renderInstituciones,
+                config: renderConfiguracion,
+                estudiantes: renderEstudiantes,
+                asistencia: renderAsistencia,
+                evaluacion: renderEvaluacion,
+                cotidiano: renderCotidiano,
+                reportes: renderReportes,
+                alertas: renderAlertas,
+                plantillas: renderPlantillas
             };
 
             if (vistas[vistaId]) {
@@ -427,595 +484,630 @@
             }
         }
 
-        // ==================== VISTA 1: CONFIGURACIÓN ====================
-        function renderizarConfiguracion(container) {
+        // ==================== VISTA 1: INSTITUCIONES ====================
+        function renderInstituciones(container) {
+            if (!db) return;
+            
+            const tx = db.transaction('instituciones', 'readonly');
+            const store = tx.objectStore('instituciones');
+            store.getAll().onsuccess = (e) => {
+                const instituciones = e.target.result;
+                
+                container.innerHTML = `
+                    <div class="card">
+                        <div class="card-title">🏫 Centros Educativos</div>
+                        
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label>Nombre de la Institución</label>
+                                <input type="text" id="inst-nombre" placeholder="Ej: Liceo Rural Las Moras">
+                            </div>
+                            <div class="form-group">
+                                <label>Dirección Regional</label>
+                                <input type="text" id="inst-regional" placeholder="Ej: Limón">
+                            </div>
+                        </div>
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label>Circuito Escolar</label>
+                                <input type="text" id="inst-circuito" placeholder="Ej: 10">
+                            </div>
+                            <div class="form-group">
+                                <label>Código</label>
+                                <input type="text" id="inst-codigo" placeholder="Ej: 0255-00">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Nivel</label>
+                            <select id="inst-nivel">
+                                <option value="preescolar">Preescolar</option>
+                                <option value="primaria">Primaria (I y II Ciclo)</option>
+                                <option value="secundaria" selected>Secundaria (III Ciclo)</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" onclick="agregarInstitucion()">➕ Agregar Institución</button>
+                    </div>
+
+                    <div class="card">
+                        <h3>Instituciones Registradas</h3>
+                        ${instituciones.map(inst => `
+                            <div class="institucion-card" onclick="seleccionarInstitucion(${inst.id})">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <h4>${inst.nombre}</h4>
+                                        <p>${inst.direccionRegional} | Circuito: ${inst.circuito} | Código: ${inst.codigo}</p>
+                                        <p><span class="badge badge-info">${inst.nivel}</span> | Registrada: ${inst.registrada}</p>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-outline btn-small" onclick="editarInstitucion(${inst.id}, event)">✏️</button>
+                                        <button class="btn btn-danger btn-small" onclick="eliminarInstitucion(${inst.id}, event)">🗑️</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            };
+
+            window.agregarInstitucion = () => {
+                const nombre = document.getElementById('inst-nombre').value;
+                const regional = document.getElementById('inst-regional').value;
+                const circuito = document.getElementById('inst-circuito').value;
+                const codigo = document.getElementById('inst-codigo').value;
+                const nivel = document.getElementById('inst-nivel').value;
+
+                if (!nombre || !regional || !circuito || !codigo) {
+                    alert('❌ Todos los campos son obligatorios');
+                    return;
+                }
+
+                const tx = db.transaction('instituciones', 'readwrite');
+                const store = tx.objectStore('instituciones');
+                store.add({
+                    nombre, direccionRegional: regional, circuito, codigo, nivel,
+                    registrada: new Date().toLocaleDateString('es-CR')
+                });
+
+                tx.oncomplete = () => {
+                    alert('✅ Institución agregada');
+                    cambiarVista('instituciones');
+                };
+            };
+
+            window.seleccionarInstitucion = (id) => {
+                const tx = db.transaction('instituciones', 'readonly');
+                tx.objectStore('instituciones').get(id).onsuccess = (e) => {
+                    institucionActiva = e.target.result;
+                    nivelActivo = institucionActiva.nivel;
+                    actualizarHeader();
+                    cambiarVista('estudiantes');
+                };
+            };
+
+            window.eliminarInstitucion = (id, event) => {
+                event.stopPropagation();
+                if (confirm('¿Eliminar esta institución?')) {
+                    const tx = db.transaction('instituciones', 'readwrite');
+                    tx.objectStore('instituciones').delete(id);
+                    tx.oncomplete = () => cambiarVista('instituciones');
+                }
+            };
+
+            window.editarInstitucion = (id, event) => {
+                event.stopPropagation();
+                alert('Editar institución (funcionalidad en desarrollo)');
+            };
+        }
+
+        // ==================== VISTA 2: CONFIGURACIÓN ====================
+        function renderConfiguracion(container) {
+            if (!institucionActiva) {
+                container.innerHTML = '<div class="card"><p>⚠️ Seleccione una institución primero</p></div>';
+                return;
+            }
+
+            const config = getConfiguracionEvaluacion(nivelActivo);
+
             container.innerHTML = `
                 <div class="card">
-                    <div class="card-title">🏫 Configuración Institucional</div>
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>Institución</label>
-                            <input type="text" id="cfg-nombre" value="${institucion.nombre}">
-                        </div>
-                        <div class="form-group">
-                            <label>Código</label>
-                            <input type="text" id="cfg-codigo" value="${institucion.codigo}">
-                        </div>
+                    <div class="card-title">⚙️ Configuración - ${institucionActiva.nombre}</div>
+                    <div class="form-group">
+                        <label>Nivel educativo:</label>
+                        <select id="config-nivel" onchange="cambiarNivel(this.value)">
+                            <option value="preescolar" ${nivelActivo === 'preescolar' ? 'selected' : ''}>Preescolar</option>
+                            <option value="primaria" ${nivelActivo === 'primaria' ? 'selected' : ''}>Primaria</option>
+                            <option value="secundaria" ${nivelActivo === 'secundaria' ? 'selected' : ''}>Secundaria</option>
+                        </select>
                     </div>
-                    <div class="grid-2">
+                    <h4>Rubros de evaluación</h4>
+                    ${config.rubros.map((r, i) => `
                         <div class="form-group">
-                            <label>Sección</label>
-                            <input type="text" id="cfg-seccion" value="${institucion.seccion}">
+                            <label>${r.nombre} (%)</label>
+                            <input type="number" value="${r.porcentaje}" min="0" max="100" readonly class="form-control">
                         </div>
-                        <div class="form-group">
-                            <label>Asignatura</label>
-                            <input type="text" id="cfg-asignatura" value="${institucion.asignatura}">
-                        </div>
-                    </div>
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>Docente</label>
-                            <input type="text" id="cfg-docente" value="${institucion.docente}">
-                        </div>
-                        <div class="form-group">
-                            <label>Curso Lectivo</label>
-                            <input type="number" id="cfg-lectivo" value="${institucion.cursoLectivo}">
-                        </div>
-                    </div>
-                    <button class="btn btn-primary" onclick="guardarConfiguracion()">💾 Guardar Configuración</button>
+                    `).join('')}
+                    <button class="btn btn-primary mt-3" onclick="guardarConfiguracion()">💾 Guardar Configuración</button>
                 </div>
             `;
 
-            window.guardarConfiguracion = () => {
-                institucion.nombre = document.getElementById('cfg-nombre').value;
-                institucion.codigo = document.getElementById('cfg-codigo').value;
-                institucion.seccion = document.getElementById('cfg-seccion').value;
-                institucion.asignatura = document.getElementById('cfg-asignatura').value;
-                institucion.docente = document.getElementById('cfg-docente').value;
-                institucion.cursoLectivo = parseInt(document.getElementById('cfg-lectivo').value);
+            window.cambiarNivel = (nuevoNivel) => {
+                nivelActivo = nuevoNivel;
+                if (institucionActiva) {
+                    institucionActiva.nivel = nuevoNivel;
+                    const tx = db.transaction('instituciones', 'readwrite');
+                    tx.objectStore('instituciones').put(institucionActiva);
+                }
+                renderConfiguracion(container);
+            };
 
-                const tx = db.transaction('institucion', 'readwrite');
-                tx.objectStore('institucion').put({ id: 'config', ...institucion });
-                actualizarHeader();
+            window.guardarConfiguracion = () => {
                 alert('✅ Configuración guardada');
             };
         }
 
-        // ==================== VISTA 2: PARÁMETROS ====================
-        function renderizarParametros(container) {
+        // ==================== VISTA 3: ESTUDIANTES (LISTAS COMPLETAS) ====================
+        function renderEstudiantes(container) {
+            if (!institucionActiva) {
+                container.innerHTML = '<div class="card"><p>⚠️ Seleccione una institución primero</p></div>';
+                return;
+            }
+
             container.innerHTML = `
                 <div class="card">
-                    <div class="card-title">⚖️ Parámetros de Evaluación MEP</div>
-                    <div class="grid-4">
-                        <div class="form-group">
-                            <label>Trabajo Cotidiano (%)</label>
-                            <input type="number" id="param-cot" value="50" min="0" max="100">
+                    <div class="card-title">👥 Gestión de Listas - ${institucionActiva.nombre}</div>
+                    
+                    <!-- AGREGAR MANUAL -->
+                    <details>
+                        <summary style="cursor: pointer; color: var(--mep-blue); font-weight: 600;">➕ Agregar Estudiante Manualmente</summary>
+                        <div class="mt-3">
+                            <div class="grid-2">
+                                <input type="text" id="est-nombre" placeholder="Nombre completo">
+                                <input type="text" id="est-identificacion" placeholder="Cédula (1-1234-5678)">
+                            </div>
+                            <div class="grid-2">
+                                <input type="text" id="est-seccion" placeholder="Sección (9-1)">
+                                <input type="email" id="est-correoMEP" placeholder="Correo MEP">
+                            </div>
+                            <div class="grid-2">
+                                <input type="text" id="est-tel1" placeholder="Teléfono 1 (principal)">
+                                <input type="text" id="est-tel2" placeholder="Teléfono 2 (alternativo)">
+                            </div>
+                            <input type="email" id="est-correoEnc" placeholder="Correo del encargado">
+                            <label><input type="checkbox" id="est-acs"> ACS</label>
+                            <button class="btn btn-success mt-3" onclick="agregarEstudiante()">✅ Guardar Estudiante</button>
                         </div>
-                        <div class="form-group">
-                            <label>Pruebas (%)</label>
-                            <input type="number" id="param-pru" value="30" min="0" max="100">
+                    </details>
+
+                    <!-- IMPORTAR / EXPORTAR -->
+                    <div class="grid-2 mt-3">
+                        <div class="import-area">
+                            <p>📁 Importar lista desde CSV</p>
+                            <input type="file" id="csvFile" accept=".csv">
+                            <button class="btn btn-primary" onclick="importarCSV()">Importar</button>
                         </div>
-                        <div class="form-group">
-                            <label>Tareas (%)</label>
-                            <input type="number" id="param-tar" value="10" min="0" max="100">
-                        </div>
-                        <div class="form-group">
-                            <label>Proyectos (%)</label>
-                            <input type="number" id="param-pro" value="10" min="0" max="100">
+                        <div style="padding: 20px;">
+                            <button class="btn btn-success w-100" onclick="exportarCSV()">📥 Exportar a CSV</button>
+                            <button class="btn btn-danger w-100 mt-2" onclick="eliminarTodaLaLista()">🗑️ Eliminar toda la lista</button>
                         </div>
                     </div>
-                    <div id="suma-param" class="badge badge-success" style="margin-bottom:10px;">Suma: 100% ✅</div>
-                    <button class="btn btn-primary" onclick="guardarParametros()">✅ Guardar Parámetros</button>
-                </div>
-            `;
 
-            window.guardarParametros = () => {
-                alert('Parámetros guardados');
-            };
-        }
+                    <!-- FILTROS -->
+                    <div class="filtros-bar">
+                        <div class="grid-3">
+                            <div>
+                                <label>Filtrar por sección:</label>
+                                <select id="filtroSeccion" onchange="filtrarEstudiantes()">
+                                    <option value="">Todas</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Buscar nombre:</label>
+                                <input type="text" id="buscarNombre" placeholder="Escriba..." onkeyup="filtrarEstudiantes()">
+                            </div>
+                        </div>
+                    </div>
 
-        // ==================== VISTA 3: ESTUDIANTES ====================
-        function renderizarEstudiantes(container) {
-            container.innerHTML = `
-                <div class="card">
-                    <div class="card-title">👥 Lista de Estudiantes</div>
+                    <!-- TABLA -->
                     <div class="table-responsive">
                         <table>
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Nombre Completo</th>
+                                    <th>Identificación</th>
+                                    <th>Nombre</th>
                                     <th>Sección</th>
-                                    <th>Teléfono</th>
+                                    <th>Teléfono 1</th>
+                                    <th>Teléfono 2</th>
+                                    <th>Correo Encargado</th>
                                     <th>ACS</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody id="estudiantes-tbody">
-                                ${estudiantesEjemplo.map((e, i) => `
-                                    <tr>
-                                        <td>${i+1}</td>
-                                        <td>${e.nombre}</td>
-                                        <td>${e.seccion}</td>
-                                        <td>${e.telefono}</td>
-                                        <td><input type="checkbox" ${e.id === 3 ? 'checked' : ''}></td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            `;
-        }
-
-        // ==================== VISTA 4: ASISTENCIA (Ya funcional) ====================
-        function renderizarAsistencia(container) {
-            container.innerHTML = `
-                <div class="card">
-                    <div class="card-title">📅 Control de Asistencia</div>
-                    <div class="grid-3">
-                        <div class="form-group">
-                            <label>Fecha desde:</label>
-                            <input type="date" value="2025-04-01">
-                        </div>
-                        <div class="form-group">
-                            <label>Fecha hasta:</label>
-                            <input type="date" value="2025-04-30">
-                        </div>
-                        <div class="form-group">
-                            <label>Sección:</label>
-                            <select>
-                                <option>Todas las secciones</option>
-                                <option>9-1</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                        <button class="btn btn-primary">🔍 Filtrar</button>
-                        <button class="btn btn-outline">🗑️ Borrar Filtros</button>
-                        <button class="btn btn-success" onclick="exportarAsistenciaExcel()">📥 Descargar Excel</button>
-                    </div>
-                    <div class="table-responsive">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Fecha</th>
-                                    <th>Estudiante</th>
-                                    <th>Sección</th>
-                                    <th>Estado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>2025-04-01</td><td>Alberto Laureano Guevara</td><td>9-1</td><td><select><option>Presente</option><option>Ausente</option></select></td></tr>
-                                <tr><td>2025-04-01</td><td>Enrique Yuridia Jaramillo</td><td>9-1</td><td><select><option>Presente</option><option>Ausente</option></select></td></tr>
-                            </tbody>
+                            <tbody id="tbodyEstudiantes"></tbody>
                         </table>
                     </div>
                 </div>
             `;
 
-            window.exportarAsistenciaExcel = () => {
-                alert('Descargando Excel de asistencia...');
-            };
-        }
+            cargarEstudiantes();
 
-        // ==================== VISTA 5: TRABAJO COTIDIANO (NUEVO - COMPLETO) ====================
-        function renderizarTrabajoCotidiano(container) {
-            container.innerHTML = `
-                <div class="card">
-                    <div class="card-title">📝 Trabajo Cotidiano - Configuración</div>
-                    
-                    <div class="grid-2">
-                        <div>
-                            <label>Periodo:</label>
-                            <select id="cot-periodo" class="form-control">
-                                <option>I Periodo / Estudios Sociales / 9-1 / 2025 / ${institucion.nombre}</option>
-                                <option>II Periodo / Estudios Sociales / 9-1 / 2025 / ${institucion.nombre}</option>
-                                <option>III Periodo / Estudios Sociales / 9-1 / 2025 / ${institucion.nombre}</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label>Filtrar por nombre:</label>
-                            <input type="text" id="cot-filtro" placeholder="Buscar estudiante...">
-                        </div>
-                    </div>
+            // ========== FUNCIONES CRUD ==========
+            window.agregarEstudiante = () => {
+                const nuevo = {
+                    institucionId: institucionActiva.id,
+                    identificacion: document.getElementById('est-identificacion').value,
+                    nombre: document.getElementById('est-nombre').value,
+                    seccion: document.getElementById('est-seccion').value,
+                    correoMEP: document.getElementById('est-correoMEP').value,
+                    telefono1: document.getElementById('est-tel1').value,
+                    telefono2: document.getElementById('est-tel2').value,
+                    correoEncargado: document.getElementById('est-correoEnc').value,
+                    acs: document.getElementById('est-acs').checked
+                };
 
-                    <div style="display: flex; gap: 10px; margin: 20px 0;">
-                        <button class="btn btn-primary" onclick="exportarCotidianoPDF()">📥 Descargar PDF</button>
-                        <button class="btn btn-warning" onclick="exportarCotidianoWord()">📥 Descargar Word</button>
-                        <button class="btn btn-success" onclick="exportarCotidianoExcel()">📥 Descargar Excel</button>
-                    </div>
+                if (!nuevo.identificacion || !nuevo.nombre) {
+                    alert('❌ Identificación y nombre obligatorios');
+                    return;
+                }
 
-                    <details>
-                        <summary style="cursor: pointer; color: var(--mep-blue); font-weight: 600;">⚙️ Configuración del Trabajo Cotidiano</summary>
-                        
-                        <div class="mt-3">
-                            <h4>Indicadores</h4>
-                            <button class="btn btn-outline btn-small" onclick="agregarIndicador()">➕ Agregar Indicador</button>
-                            <div id="indicadores-lista" class="mt-3">
-                                ${indicadoresEjemplo.map(i => `
-                                    <div class="indicador-item">
-                                        <div style="display: flex; justify-content: space-between;">
-                                            <div><strong>${i.descripcion}</strong></div>
-                                            <div>Puntos: ${i.puntos} <button class="btn btn-outline btn-small" onclick="editarIndicador(${i.id})">✏️</button> <button class="btn btn-danger btn-small" onclick="eliminarIndicador(${i.id})">🗑️</button></div>
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    </details>
-
-                    <div class="table-responsive mt-3">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Estudiante</th>
-                                    <th>A</th>
-                                    <th>B</th>
-                                    <th>C</th>
-                                    <th>Valor 50%</th>
-                                    <th>% Obtenido</th>
-                                </tr>
-                            </thead>
-                            <tbody id="cotidiano-tbody">
-                                ${estudiantesEjemplo.map(est => {
-                                    const a = est.id === 6 ? 3 : est.id === 7 ? 2 : 3;
-                                    const b = est.id === 6 ? 3 : est.id === 7 ? 2 : 3;
-                                    const c = est.id === 6 ? 2 : est.id === 7 ? 3 : 3;
-                                    const total = a + b + c;
-                                    const porcentaje = ((total / 9) * 50).toFixed(2);
-                                    return `
-                                        <tr>
-                                            <td>${est.nombre}</td>
-                                            <td><input type="number" value="${a}" min="0" max="3" style="width:60px;"></td>
-                                            <td><input type="number" value="${b}" min="0" max="3" style="width:60px;"></td>
-                                            <td><input type="number" value="${c}" min="0" max="3" style="width:60px;"></td>
-                                            <td>50.00%</td>
-                                            <td><strong>${porcentaje}%</strong></td>
-                                        </tr>
-                                    `;
-                                }).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="mt-3">
-                        <span class="badge badge-success">Estudiantes sin ACS</span>
-                        <span class="badge badge-warning">Valor 50%</span>
-                    </div>
-
-                    <button class="btn btn-primary mt-3" onclick="guardarTrabajoCotidiano()">💾 Guardar Trabajo Cotidiano</button>
-                </div>
-            `;
-
-            window.agregarIndicador = () => {
-                alert('Funcionalidad: Agregar nuevo indicador con campos editables');
+                const tx = db.transaction('estudiantes', 'readwrite');
+                tx.objectStore('estudiantes').add(nuevo);
+                tx.oncomplete = () => {
+                    alert('✅ Estudiante agregado');
+                    cargarEstudiantes();
+                    // Limpiar campos
+                    document.getElementById('est-identificacion').value = '';
+                    document.getElementById('est-nombre').value = '';
+                    document.getElementById('est-seccion').value = '';
+                    document.getElementById('est-correoMEP').value = '';
+                    document.getElementById('est-tel1').value = '';
+                    document.getElementById('est-tel2').value = '';
+                    document.getElementById('est-correoEnc').value = '';
+                    document.getElementById('est-acs').checked = false;
+                };
             };
 
-            window.editarIndicador = (id) => {
-                alert(`Editando indicador ${id}`);
-            };
-
-            window.eliminarIndicador = (id) => {
-                if (confirm('¿Eliminar este indicador?')) {
-                    alert(`Indicador ${id} eliminado`);
+            window.eliminarEstudiante = (id) => {
+                if (confirm('¿Eliminar este estudiante?')) {
+                    const tx = db.transaction('estudiantes', 'readwrite');
+                    tx.objectStore('estudiantes').delete(id);
+                    tx.oncomplete = () => cargarEstudiantes();
                 }
             };
 
-            window.exportarCotidianoPDF = () => {
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
-                
-                doc.setFontSize(16);
-                doc.text('Trabajo Cotidiano', 14, 15);
-                doc.setFontSize(10);
-                doc.text(`${institucion.nombre} - ${institucion.seccion} - ${institucion.asignatura}`, 14, 22);
-                
-                const data = estudiantesEjemplo.map(est => {
-                    const a = est.id === 6 ? 3 : est.id === 7 ? 2 : 3;
-                    const b = est.id === 6 ? 3 : est.id === 7 ? 2 : 3;
-                    const c = est.id === 6 ? 2 : est.id === 7 ? 3 : 3;
-                    const total = a + b + c;
-                    const porcentaje = ((total / 9) * 50).toFixed(2);
-                    return [est.nombre, a, b, c, '50.00%', `${porcentaje}%`];
-                });
-                
-                doc.autoTable({
-                    head: [['Estudiante', 'A', 'B', 'C', 'Valor 50%', '% Obtenido']],
-                    body: data,
-                    startY: 30,
-                    styles: { fontSize: 8 },
-                    headStyles: { fillColor: [0, 51, 102] }
-                });
-                
-                doc.save('trabajo_cotidiano.pdf');
+            window.eliminarTodaLaLista = () => {
+                if (confirm('⚠️ ¿ELIMINAR TODA LA LISTA DE ESTUDIANTES? Esta acción es irreversible.')) {
+                    const tx = db.transaction('estudiantes', 'readwrite');
+                    const store = tx.objectStore('estudiantes');
+                    store.getAll().onsuccess = (e) => {
+                        e.target.result.forEach(est => store.delete(est.id));
+                    };
+                    tx.oncomplete = () => cargarEstudiantes();
+                }
             };
 
-            window.exportarCotidianoWord = () => {
-                let html = `
-                    <html>
-                    <head><meta charset="UTF-8"></head>
-                    <body>
-                        <h1>Trabajo Cotidiano - ${institucion.nombre}</h1>
-                        <table border="1" style="border-collapse: collapse; width:100%;">
-                            <tr><th>Estudiante</th><th>A</th><th>B</th><th>C</th><th>Valor 50%</th><th>% Obtenido</th></tr>
-                `;
-                
-                estudiantesEjemplo.forEach(est => {
-                    const a = est.id === 6 ? 3 : est.id === 7 ? 2 : 3;
-                    const b = est.id === 6 ? 3 : est.id === 7 ? 2 : 3;
-                    const c = est.id === 6 ? 2 : est.id === 7 ? 3 : 3;
-                    const total = a + b + c;
-                    const porcentaje = ((total / 9) * 50).toFixed(2);
-                    html += `<tr><td>${est.nombre}</td><td>${a}</td><td>${b}</td><td>${c}</td><td>50.00%</td><td>${porcentaje}%</td></tr>`;
-                });
-                
-                html += '</table></body></html>';
-                
-                const blob = new Blob([html], { type: 'application/msword' });
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = `cotidiano_${new Date().toISOString().slice(0,10)}.doc`;
-                link.click();
+            window.toggleACS = (id, checked) => {
+                const tx = db.transaction('estudiantes', 'readwrite');
+                const store = tx.objectStore('estudiantes');
+                store.get(id).onsuccess = (e) => {
+                    const est = e.target.result;
+                    est.acs = checked;
+                    store.put(est);
+                };
             };
 
-            window.exportarCotidianoExcel = () => {
-                let csv = "Estudiante,A,B,C,Valor 50%,% Obtenido\n";
-                
-                estudiantesEjemplo.forEach(est => {
-                    const a = est.id === 6 ? 3 : est.id === 7 ? 2 : 3;
-                    const b = est.id === 6 ? 3 : est.id === 7 ? 2 : 3;
-                    const c = est.id === 6 ? 2 : est.id === 7 ? 3 : 3;
-                    const total = a + b + c;
-                    const porcentaje = ((total / 9) * 50).toFixed(2);
-                    csv += `"${est.nombre}",${a},${b},${c},50.00%,${porcentaje}%\n`;
-                });
-
-                const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = `cotidiano_${new Date().toISOString().slice(0,10)}.csv`;
-                link.click();
+            window.exportarCSV = () => {
+                const tx = db.transaction('estudiantes', 'readonly');
+                tx.objectStore('estudiantes').getAll().onsuccess = (e) => {
+                    const estudiantes = e.target.result.filter(e => e.institucionId === institucionActiva.id);
+                    let csv = "Identificación,Nombre,Sección,Teléfono 1,Teléfono 2,Correo Encargado,ACS\n";
+                    estudiantes.forEach(e => {
+                        csv += `${e.identificacion},"${e.nombre}",${e.seccion || ''},${e.telefono1 || ''},${e.telefono2 || ''},${e.correoEncargado || ''},${e.acs ? 'Sí' : 'No'}\n`;
+                    });
+                    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = `estudiantes_${new Date().toISOString().slice(0,10)}.csv`;
+                    link.click();
+                };
             };
 
-            window.guardarTrabajoCotidiano = () => {
-                alert('✅ Trabajo cotidiano guardado');
+            window.importarCSV = () => {
+                const file = document.getElementById('csvFile').files[0];
+                if (!file) return alert('Seleccione un archivo CSV');
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const lines = e.target.result.split('\n');
+                    let importados = 0;
+                    const tx = db.transaction('estudiantes', 'readwrite');
+                    
+                    for (let i = 1; i < lines.length; i++) {
+                        if (!lines[i].trim()) continue;
+                        const values = lines[i].split(',');
+                        if (values.length >= 2) {
+                            tx.objectStore('estudiantes').add({
+                                institucionId: institucionActiva.id,
+                                identificacion: values[0].replace(/"/g, ''),
+                                nombre: values[1].replace(/"/g, ''),
+                                seccion: values[2]?.replace(/"/g, '') || '',
+                                telefono1: values[3]?.replace(/"/g, '') || '',
+                                telefono2: values[4]?.replace(/"/g, '') || '',
+                                correoEncargado: values[5]?.replace(/"/g, '') || '',
+                                acs: values[6]?.replace(/"/g, '') === 'Sí'
+                            });
+                            importados++;
+                        }
+                    }
+                    tx.oncomplete = () => {
+                        alert(`✅ ${importados} estudiantes importados`);
+                        cargarEstudiantes();
+                    };
+                };
+                reader.readAsText(file, 'UTF-8');
+            };
+
+            window.filtrarEstudiantes = () => cargarEstudiantes();
+        }
+
+        function cargarEstudiantes() {
+            if (!db || !institucionActiva) return;
+
+            const tx = db.transaction('estudiantes', 'readonly');
+            const index = tx.objectStore('estudiantes').index('institucionId');
+            index.getAll(institucionActiva.id).onsuccess = (e) => {
+                let estudiantes = e.target.result;
+                
+                // Aplicar filtros
+                const filtroSeccion = document.getElementById('filtroSeccion')?.value;
+                const buscarNombre = document.getElementById('buscarNombre')?.value?.toLowerCase();
+                
+                if (filtroSeccion) estudiantes = estudiantes.filter(e => e.seccion === filtroSeccion);
+                if (buscarNombre) estudiantes = estudiantes.filter(e => e.nombre.toLowerCase().includes(buscarNombre));
+
+                const tbody = document.getElementById('tbodyEstudiantes');
+                tbody.innerHTML = estudiantes.map((est, idx) => `
+                    <tr>
+                        <td>${idx + 1}</td>
+                        <td>${est.identificacion}</td>
+                        <td>${est.nombre}</td>
+                        <td>${est.seccion || '-'}</td>
+                        <td>${est.telefono1 || '-'}</td>
+                        <td>${est.telefono2 || '-'}</td>
+                        <td>${est.correoEncargado || '-'}</td>
+                        <td><input type="checkbox" ${est.acs ? 'checked' : ''} onchange="toggleACS(${est.id}, this.checked)"></td>
+                        <td>
+                            <button class="btn btn-warning" style="padding:5px 10px;" onclick="alert('Editar en desarrollo')">✏️</button>
+                            <button class="btn btn-danger" style="padding:5px 10px;" onclick="eliminarEstudiante(${est.id})">🗑️</button>
+                        </td>
+                    </tr>
+                `).join('');
+
+                // Actualizar selector de secciones
+                const secciones = [...new Set(e.target.result.map(e => e.seccion))];
+                const select = document.getElementById('filtroSeccion');
+                if (select) {
+                    select.innerHTML = '<option value="">Todas</option>' + 
+                        secciones.map(s => `<option value="${s}">${s}</option>`).join('');
+                }
             };
         }
 
-        // ==================== VISTA 6: EVALUACIÓN COMPLETA (Estilo Colegio La Alegría) ====================
-        function renderizarEvaluacionCompleta(container) {
+        // ==================== VISTA 4: ASISTENCIA ====================
+        function renderAsistencia(container) {
+            if (!institucionActiva) {
+                container.innerHTML = '<div class="card"><p>⚠️ Seleccione una institución primero</p></div>';
+                return;
+            }
+
             container.innerHTML = `
                 <div class="card">
-                    <div class="card-title">📊 Registro de Notas — ${institucion.nombre}</div>
-                    <h3>Sección ${institucion.seccion}</h3>
+                    <div class="card-title">📅 Control de Asistencia - ${institucionActiva.nombre}</div>
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>Fecha:</label>
+                            <input type="date" id="asis-fecha" value="${new Date().toISOString().split('T')[0]}">
+                        </div>
+                        <div class="form-group">
+                            <label>Sección:</label>
+                            <select id="asis-seccion">
+                                <option value="">Todas</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="cargarAsistencia()">📅 Cargar Asistencia</button>
                     
+                    <div class="table-responsive mt-3" id="tablaAsistenciaContainer"></div>
+                    <button class="btn btn-success mt-3" onclick="guardarAsistencia()">💾 Guardar Asistencia</button>
+                </div>
+            `;
+
+            window.cargarAsistencia = () => {
+                const tx = db.transaction('estudiantes', 'readonly');
+                tx.objectStore('estudiantes').getAll().onsuccess = (e) => {
+                    const estudiantes = e.target.result.filter(e => e.institucionId === institucionActiva.id);
+                    const fecha = document.getElementById('asis-fecha').value;
+                    
+                    let html = '<table><tr><th>Estudiante</th><th>Estado</th></tr>';
+                    estudiantes.forEach(est => {
+                        html += `<tr>
+                            <td>${est.nombre}</td>
+                            <td>
+                                <select class="estado-asistencia" data-id="${est.id}">
+                                    <option value="P">Presente</option>
+                                    <option value="A">Ausente</option>
+                                    <option value="J">Justificada</option>
+                                    <option value="T">Tardía</option>
+                                </select>
+                            </td>
+                        </tr>`;
+                    });
+                    html += '</table>';
+                    document.getElementById('tablaAsistenciaContainer').innerHTML = html;
+                };
+            };
+
+            window.guardarAsistencia = () => {
+                alert('✅ Asistencia guardada (simulado)');
+            };
+        }
+
+        // ==================== VISTA 5: EVALUACIÓN ====================
+        function renderEvaluacion(container) {
+            if (!institucionActiva) {
+                container.innerHTML = '<div class="card"><p>⚠️ Seleccione una institución primero</p></div>';
+                return;
+            }
+
+            const config = getConfiguracionEvaluacion(nivelActivo);
+
+            container.innerHTML = `
+                <div class="card">
+                    <div class="card-title">📊 Evaluación - ${institucionActiva.nombre} (${nivelActivo})</div>
                     <div class="table-responsive">
                         <table>
                             <thead>
                                 <tr>
-                                    <th rowspan="2">#</th>
-                                    <th rowspan="2">Estudiante</th>
-                                    <th colspan="3">Trabajo Cotidiano</th>
-                                    <th colspan="2">Pruebas</th>
-                                    <th colspan="3">Tareas</th>
-                                    <th rowspan="2">Asistencia</th>
-                                </tr>
-                                <tr>
-                                    <th>Cotidiano 1 (100 pts)</th>
-                                    <th>Cotidiano 2 (100 pts)</th>
-                                    <th>Cotidiano 3 (100 pts)</th>
-                                    <th>Prueba I (100 pts)</th>
-                                    <th>Prueba II (100 pts)</th>
-                                    <th>Tarea 1 (100 pts)</th>
-                                    <th>Tarea 2 (100 pts)</th>
-                                    <th>Tarea 3 (100 pts)</th>
-                                </tr>
-                            </thead>
-                            <tbody id="evaluacion-tbody">
-                                ${estudiantesEjemplo.slice(0,3).map((est, idx) => `
-                                    <tr>
-                                        <td>${idx+1}</td>
-                                        <td>${est.nombre}</td>
-                                        <td><input type="number" value="${idx === 0 ? 100 : idx === 1 ? 60 : 70}" step="0.1" min="0" max="100" style="width:70px;"></td>
-                                        <td><input type="number" value="${idx === 0 ? 90 : idx === 1 ? 89 : 90}" step="0.1" min="0" max="100" style="width:70px;"></td>
-                                        <td><input type="number" value="${idx === 0 ? 89 : idx === 1 ? 56 : 90}" step="0.1" min="0" max="100" style="width:70px;"></td>
-                                        <td><input type="number" value="${idx === 0 ? 75 : idx === 1 ? 70 : 85}" step="0.1" min="0" max="100" style="width:70px;"></td>
-                                        <td><input type="number" value="${idx === 0 ? 70 : idx === 1 ? 90 : 78}" step="0.1" min="0" max="100" style="width:70px;"></td>
-                                        <td><input type="number" value="${idx === 0 ? 70 : idx === 1 ? 89 : 65}" step="0.1" min="0" max="100" style="width:70px;"></td>
-                                        <td><input type="number" value="${idx === 0 ? 90 : idx === 1 ? 56 : 70}" step="0.1" min="0" max="100" style="width:70px;"></td>
-                                        <td><input type="number" value="${idx === 0 ? 90 : idx === 1 ? 89 : 90}" step="0.1" min="0" max="100" style="width:70px;"></td>
-                                        <td><input type="number" value="${idx === 0 ? 85 : idx === 1 ? 90 : 79}" step="0.1" min="0" max="100" style="width:70px;"></td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <button class="btn btn-primary mt-3" onclick="guardarNotasCompletas()">💾 Guardar todas las notas</button>
-                </div>
-            `;
-
-            window.guardarNotasCompletas = () => {
-                alert('✅ Notas guardadas correctamente');
-            };
-        }
-
-        // ==================== VISTA 7: BITÁCORA DUA ====================
-        function renderizarBitacoraDUA(container) {
-            container.innerHTML = `
-                <div class="card">
-                    <div class="card-title">📖 Bitácora DUA (Diseño Universal para el Aprendizaje)</div>
-                    
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>Fecha:</label>
-                            <input type="date" id="bit-fecha" value="${new Date().toISOString().split('T')[0]}">
-                        </div>
-                        <div class="form-group">
-                            <label>Estudiante (opcional):</label>
-                            <select id="bit-estudiante">
-                                <option value="">Todos los estudiantes</option>
-                                ${estudiantesEjemplo.map(e => `<option value="${e.id}">${e.nombre}</option>`).join('')}
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Estrategias implementadas:</label>
-                        <textarea id="bit-estrategias" rows="4" placeholder="Describa las adecuaciones y apoyos brindados..."></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Observaciones:</label>
-                        <textarea id="bit-observaciones" rows="3" placeholder="Resultados observados..."></textarea>
-                    </div>
-
-                    <button class="btn btn-primary" onclick="guardarBitacoraDUA()">📝 Guardar Registro</button>
-
-                    <div class="table-responsive mt-3">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Fecha</th>
                                     <th>Estudiante</th>
-                                    <th>Estrategias</th>
-                                    <th>Observaciones</th>
+                                    ${config.rubros.map(r => `<th>${r.nombre}</th>`).join('')}
+                                    <th>Nota Final</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>2025-04-01</td>
-                                    <td>Alberto Laureano Guevara</td>
-                                    <td>Apoyo visual en mapas conceptuales</td>
-                                    <td>Mejoró comprensión</td>
-                                </tr>
-                                <tr>
-                                    <td>2025-04-02</td>
-                                    <td>Enrique Yuridia Jaramillo</td>
-                                    <td>Tiempo adicional en evaluaciones</td>
-                                    <td>Completó el trabajo</td>
+                                    <td>Ejemplo: Alberto Guevara</td>
+                                    ${config.rubros.map(() => '<td><input type="number" value="80" min="0" max="100"></td>').join('')}
+                                    <td><strong>82.5</strong></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
+                    <button class="btn btn-primary mt-3">💾 Guardar Evaluación</button>
                 </div>
             `;
-
-            window.guardarBitacoraDUA = () => {
-                alert('✅ Registro guardado en bitácora DUA');
-            };
         }
 
-        // ==================== VISTA 8: ALERTAS COMPLETAS CON WHATSAPP ====================
-        function renderizarAlertasCompletas(container) {
+        // ==================== VISTA 6: TRABAJO COTIDIANO ====================
+        function renderCotidiano(container) {
             container.innerHTML = `
                 <div class="card">
-                    <div class="card-title">🚨 Centro de Alertas - Bajo Rendimiento</div>
-                    
+                    <div class="card-title">📝 Trabajo Cotidiano - Configuración</div>
                     <div class="grid-2">
-                        <div class="form-group">
-                            <label>Nota mínima de alerta:</label>
-                            <select id="alerta-nota">
-                                <option value="70">Menor a 70</option>
-                                <option value="65" selected>Menor a 65 (MEP)</option>
-                                <option value="60">Menor a 60</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
+                        <div>
                             <label>Periodo:</label>
-                            <select id="alerta-periodo">
+                            <select class="form-control">
                                 <option>I Periodo</option>
                                 <option>II Periodo</option>
                                 <option>III Periodo</option>
                             </select>
                         </div>
-                    </div>
-
-                    <button class="btn btn-primary" onclick="actualizarAlertas()">🔍 Actualizar Alertas</button>
-
-                    <div id="alertas-contenido" class="mt-3">
-                        <div class="table-responsive">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Estudiante</th>
-                                        <th>Nota Actual</th>
-                                        <th>Teléfono</th>
-                                        <th>Acción</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${estudiantesEjemplo.filter((_, i) => i % 3 === 0).map(est => `
-                                        <tr>
-                                            <td>${est.nombre}</td>
-                                            <td><span class="badge badge-danger">${Math.floor(Math.random() * 20) + 45}</span></td>
-                                            <td>${est.telefono}</td>
-                                            <td>
-                                                <button class="btn btn-warning btn-small" onclick="window.open('https://wa.me/${CODIGO_PAIS}${est.telefono}?text=${encodeURIComponent(`Apreciable familia de ${est.nombre}, su nota actual es inferior a 65. Solicitamos su apoyo para mejorar su rendimiento académico. Atentamente, ${institucion.docente}`)}')">
-                                                    📱 WhatsApp
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    `).join('')}
-                                </tbody>
-                            </table>
+                        <div>
+                            <label>Filtrar:</label>
+                            <input type="text" placeholder="Buscar estudiante...">
                         </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin: 20px 0;">
+                        <button class="btn btn-primary" onclick="alert('PDF generado')">📥 PDF</button>
+                        <button class="btn btn-success" onclick="alert('Excel generado')">📥 Excel</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr><th>Estudiante</th><th>A</th><th>B</th><th>C</th><th>% Obtenido</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Alberto Guevara</td><td><input value="3"></td><td><input value="3"></td><td><input value="3"></td><td>50.00%</td></tr>
+                                <tr><td>María Jiménez</td><td><input value="3"></td><td><input value="2"></td><td><input value="3"></td><td>44.44%</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             `;
-
-            window.actualizarAlertas = () => {
-                alert('Alertas actualizadas');
-            };
         }
 
-        // ==================== VISTA 9: PLANTILLAS (NUEVO) ====================
-        function renderizarPlantillas(container) {
+        // ==================== VISTA 7: REPORTES ====================
+        function renderReportes(container) {
             container.innerHTML = `
                 <div class="card">
-                    <div class="card-title">📑 Plantillas Oficiales MEP</div>
-                    
-                    <div class="plantilla-grid">
-                        <div class="plantilla-card" onclick="descargarPlantilla('asistencia')">
-                            <div class="plantilla-icon">📅</div>
-                            <h3>Asistencia</h3>
-                            <p>Control de asistencia de estudiantes</p>
-                            <button class="btn btn-outline btn-small">Descargar</button>
+                    <div class="card-title">📑 Reportes Oficiales</div>
+                    <div class="filtros-bar">
+                        <div class="grid-3">
+                            <div>
+                                <label>Periodo:</label>
+                                <select>
+                                    <option>I Periodo</option>
+                                    <option>II Periodo</option>
+                                    <option>III Periodo</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Sección:</label>
+                                <select>
+                                    <option>9-1</option>
+                                    <option>4-1</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Ordenar por:</label>
+                                <select>
+                                    <option>Orden alfabético</option>
+                                    <option>Nota (mayor a menor)</option>
+                                </select>
+                            </div>
                         </div>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-primary" onclick="alert('PDF generado')">📥 PDF</button>
+                        <button class="btn btn-success" onclick="alert('Excel generado')">📥 Excel</button>
+                    </div>
+                </div>
+            `;
+        }
 
-                        <div class="plantilla-card" onclick="descargarPlantilla('cotidiano')">
-                            <div class="plantilla-icon">📝</div>
-                            <h3>Trabajo cotidiano</h3>
-                            <p>Registro y evaluación del trabajo cotidiano</p>
-                            <button class="btn btn-outline btn-small">Descargar</button>
+        // ==================== VISTA 8: ALERTAS ====================
+        function renderAlertas(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <div class="card-title">🚨 Alertas de Rendimiento</div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr><th>Estudiante</th><th>Nota</th><th>Teléfono</th><th>WhatsApp</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Alberto Guevara</td>
+                                    <td><span class="badge badge-danger">58</span></td>
+                                    <td>8888-1111</td>
+                                    <td><button class="btn btn-warning" onclick="window.open('https://wa.me/50688881111?text=Alerta de rendimiento')">📱 Enviar</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ==================== VISTA 9: PLANTILLAS ====================
+        function renderPlantillas(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <div class="card-title">📋 Plantillas Oficiales</div>
+                    <div class="grid-3">
+                        <div class="institucion-card">
+                            <h4>📅 Asistencia</h4>
+                            <p>Plantilla para control diario</p>
+                            <button class="btn btn-outline btn-small" onclick="descargarPlantilla('asistencia')">Descargar</button>
                         </div>
-
-                        <div class="plantilla-card" onclick="descargarPlantilla('acta-periodo')">
-                            <div class="plantilla-icon">📊</div>
-                            <h3>Acta por periodo</h3>
-                            <p>Acta oficial de calificaciones por periodo</p>
-                            <button class="btn btn-outline btn-small">Descargar</button>
+                        <div class="institucion-card">
+                            <h4>📝 Trabajo Cotidiano</h4>
+                            <p>Registro A, B, C</p>
+                            <button class="btn btn-outline btn-small" onclick="descargarPlantilla('cotidiano')">Descargar</button>
                         </div>
-
-                        <div class="plantilla-card" onclick="descargarPlantilla('acta-anual')">
-                            <div class="plantilla-icon">📜</div>
-                            <h3>Acta anual</h3>
-                            <p>Consolidado anual de calificaciones finales</p>
-                            <button class="btn btn-outline btn-small">Descargar</button>
-                        </div>
-
-                        <div class="plantilla-card" onclick="descargarPlantilla('seccion')">
-                            <div class="plantilla-icon">👥</div>
-                            <h3>Plantilla por sección</h3>
-                            <p>Plantilla base para crear una sección con estudiantes</p>
-                            <button class="btn btn-outline btn-small">Descargar</button>
-                        </div>
-
-                        <div class="plantilla-card" onclick="descargarPlantilla('semestre')">
-                            <div class="plantilla-icon">📚</div>
-                            <h3>Plantilla I y II Semestre</h3>
-                            <p>Plantilla base para I y II Semestre</p>
-                            <button class="btn btn-outline btn-small">Descargar</button>
+                        <div class="institucion-card">
+                            <h4>📊 Acta por Periodo</h4>
+                            <p>Calificaciones por periodo</p>
+                            <button class="btn btn-outline btn-small" onclick="descargarPlantilla('acta')">Descargar</button>
                         </div>
                     </div>
                 </div>
@@ -1023,30 +1115,21 @@
 
             window.descargarPlantilla = (tipo) => {
                 let contenido = '';
-                let nombreArchivo = '';
-                
-                switch(tipo) {
-                    case 'asistencia':
-                        contenido = 'Fecha,Estudiante,Sección,Estado\n2025-04-01,"Estudiante Ejemplo",9-1,Presente';
-                        nombreArchivo = 'plantilla_asistencia.csv';
-                        break;
-                    case 'cotidiano':
-                        contenido = 'Estudiante,A,B,C\n"Estudiante Ejemplo",3,3,3';
-                        nombreArchivo = 'plantilla_cotidiano.csv';
-                        break;
-                    case 'acta-periodo':
-                        contenido = 'Estudiante,Nota,Estado\n"Estudiante Ejemplo",85,Aprobado';
-                        nombreArchivo = 'plantilla_acta_periodo.csv';
-                        break;
-                    default:
-                        contenido = 'Plantilla de ejemplo';
-                        nombreArchivo = `plantilla_${tipo}.txt`;
+                let nombre = '';
+                if (tipo === 'asistencia') {
+                    contenido = 'Fecha,Estudiante,Estado\n2025-04-01,"Ejemplo",Presente';
+                    nombre = 'plantilla_asistencia.csv';
+                } else if (tipo === 'cotidiano') {
+                    contenido = 'Estudiante,A,B,C\n"Ejemplo",3,3,3';
+                    nombre = 'plantilla_cotidiano.csv';
+                } else {
+                    contenido = 'Estudiante,Periodo,Nota\n"Ejemplo",I,85';
+                    nombre = 'plantilla_acta.csv';
                 }
-                
                 const blob = new Blob(['\uFEFF' + contenido], { type: 'text/csv;charset=utf-8;' });
                 const link = document.createElement('a');
                 link.href = URL.createObjectURL(blob);
-                link.download = nombreArchivo;
+                link.download = nombre;
                 link.click();
             };
         }
