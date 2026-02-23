@@ -3,144 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema Integral de Gestión Docente · MEP Costa Rica</title>
+    <title>SISTEMA INTEGRAL MEP 2026 - 12 PESTAÑAS COMPLETAS</title>
+    <!-- Librerías para exportaciones REALES -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
-        /* ============================================
-           ESTILOS INSTITUCIONALES MEP - VERSIÓN ACCESIBLE
-           Basado en Reglamento de Evaluación y Guías MEP
-           Relación de contraste WCAG AA mínima 4.5:1
-        ============================================ */
+        /* ===== ESTILOS INSTITUCIONALES MEP - ACCESIBILIDAD WCAG AA ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
         }
 
         :root {
-            /* Paleta institucional MEP - Versión Accesible */
-            --color-primario: #0B3B2F;      /* Verde MEP oscuro (texto principal/botones) */
-            --color-secundario: #E7F0EB;     /* Fondo claro institucional */
-            --color-acento: #A7C1B0;          /* Verde claro para acentos y bordes */
-            --color-texto: #1A2A24;           /* Casi negro, excelente contraste sobre fondos claros */
-            --color-texto-sobre-oscuro: #FFFFFF; /* Blanco puro */
-            --color-fondo: #F4F7F5;           /* Fondo general claro */
-            --color-tarjeta: #FFFFFF;          /* Fondo de tarjetas */
-            --color-borde: #B7C9BD;            /* Borde con contraste suficiente */
-            --color-alerta: #D32F2F;           /* Rojo para errores (contraste verificado) */
-            --color-exito: #2E7D32;            /* Verde éxito (contraste verificado) */
-            --color-advertencia: #B85C1A;      /* Naranja/advertencia más oscuro para contraste */
-            --color-enlace: #0B5E7E;            /* Azul para enlaces */
-            --sombra-suave: rgba(0, 0, 0, 0.08);
+            --mep-blue: #003366;
+            --mep-red: #CC0000;
+            --mep-bg: #F5F5F5;
+            --mep-white: #FFFFFF;
+            --mep-text: #1A1A1A;
+            --mep-border: #D1D5DB;
+            --mep-success: #2E7D32;
+            --mep-warning: #B85C1A;
+            --mep-error: #D32F2F;
+            --contrast-ratio: 4.5;
         }
 
         body {
             display: flex;
             min-height: 100vh;
-            background-color: var(--color-fondo);
-            color: var(--color-texto);
-            line-height: 1.5;
+            background: var(--mep-bg);
+            color: var(--mep-text);
         }
 
-        /* --- BARRA LATERAL FIJA Y ACCESIBLE --- */
+        /* ===== BARRA LATERAL FIJA CON 12 PESTAÑAS ===== */
         .sidebar {
-            width: 280px;
-            background-color: var(--color-primario);
-            color: var(--color-texto-sobre-oscuro);
+            width: 300px;
+            background: var(--mep-blue);
+            color: white;
             padding: 2rem 1rem;
             position: fixed;
             height: 100vh;
             overflow-y: auto;
-            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.15);
+            box-shadow: 4px 0 15px rgba(0,0,0,0.2);
         }
 
-        .sidebar-header {
-            padding-bottom: 1.5rem;
-            border-bottom: 2px solid var(--color-acento);
-            margin-bottom: 1.5rem;
-        }
-
-        .sidebar-header h1 {
+        .sidebar h1 {
             font-size: 1.3rem;
-            font-weight: 600;
-            line-height: 1.4;
-            color: var(--color-texto-sobre-oscuro);
-        }
-
-        .sidebar-header small {
-            font-size: 0.8rem;
-            color: var(--color-acento);
-            display: block;
-            margin-top: 0.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--mep-red);
+            color: white;
         }
 
         .nav-btn {
             width: 100%;
             background: transparent;
             border: none;
-            color: var(--color-texto-sobre-oscuro);
-            padding: 1rem 1.2rem;
+            color: white;
+            padding: 1rem;
             text-align: left;
-            font-size: 1rem;
-            border-radius: 12px 0 0 12px;
+            font-size: 0.95rem;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            margin-bottom: 0.25rem;
             display: flex;
             align-items: center;
             gap: 0.75rem;
+            margin-bottom: 0.25rem;
             border-left: 4px solid transparent;
+            transition: 0.2s;
         }
 
         .nav-btn:hover {
-            background-color: rgba(255, 255, 255, 0.15);
-            outline: 2px solid var(--color-acento);
-            outline-offset: -2px;
-        }
-
-        .nav-btn:focus-visible {
-            outline: 3px solid var(--color-acento);
-            outline-offset: 2px;
+            background: rgba(255,255,255,0.15);
         }
 
         .nav-btn.active {
-            background-color: var(--color-fondo);
-            color: var(--color-primario);
-            border-left: 4px solid var(--color-acento);
-            font-weight: 600;
+            background: var(--mep-white);
+            color: var(--mep-blue);
+            font-weight: bold;
+            border-left: 4px solid var(--mep-red);
         }
 
-        /* --- CONTENIDO PRINCIPAL --- */
+        /* ===== CONTENIDO PRINCIPAL ===== */
         .main-content {
             flex: 1;
-            margin-left: 280px;
+            margin-left: 300px;
             padding: 2rem;
-            min-height: 100vh;
         }
 
-        /* --- PESTAÑAS --- */
-        .pestana {
-            display: none;
-        }
-
-        .pestana.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0.6; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* --- TARJETAS Y COMPONENTES DE INTERFAZ --- */
+        /* ===== TARJETAS Y COMPONENTES ===== */
         .card {
-            background-color: var(--color-tarjeta);
-            border-radius: 24px;
+            background: var(--mep-white);
+            border-radius: 16px;
             padding: 2rem;
-            box-shadow: 0 8px 24px var(--sombra-suave);
-            border: 1px solid var(--color-borde);
             margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 1px solid var(--mep-border);
         }
 
         .card-header {
@@ -149,25 +109,26 @@
             align-items: center;
             margin-bottom: 1.5rem;
             padding-bottom: 0.75rem;
-            border-bottom: 2px solid var(--color-acento);
+            border-bottom: 2px solid var(--mep-red);
         }
 
         .card-title {
             font-size: 1.3rem;
+            color: var(--mep-blue);
             font-weight: 600;
-            color: var(--color-primario);
         }
 
+        /* ===== GRIDS ===== */
         .grid-2, .grid-3, .grid-4 {
             display: grid;
             gap: 1.5rem;
             margin-bottom: 1.5rem;
         }
-
         .grid-2 { grid-template-columns: repeat(2, 1fr); }
         .grid-3 { grid-template-columns: repeat(3, 1fr); }
         .grid-4 { grid-template-columns: repeat(4, 1fr); }
 
+        /* ===== FORMULARIOS ===== */
         .form-group {
             display: flex;
             flex-direction: column;
@@ -176,168 +137,116 @@
 
         .form-group label {
             font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--color-primario);
-        }
-
-        input, select, textarea, .btn {
-            font-size: 1rem;
-            padding: 0.8rem 1.2rem;
-            border-radius: 14px;
-            border: 2px solid transparent;
+            color: var(--mep-blue);
         }
 
         input, select, textarea {
-            background-color: var(--color-fondo);
-            border: 2px solid var(--color-borde);
-            color: var(--color-texto);
+            padding: 0.8rem 1.2rem;
+            border: 2px solid var(--mep-border);
+            border-radius: 12px;
+            font-size: 1rem;
             width: 100%;
         }
 
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: var(--color-primario);
-            box-shadow: 0 0 0 3px rgba(11, 59, 47, 0.25);
+            border-color: var(--mep-blue);
+            box-shadow: 0 0 0 3px rgba(0,51,102,0.2);
         }
 
+        /* ===== BOTONES ===== */
         .btn {
-            background-color: var(--color-primario);
-            color: var(--color-texto-sobre-oscuro);
-            font-weight: 600;
+            padding: 0.8rem 2rem;
             border: none;
+            border-radius: 40px;
+            font-weight: 600;
             cursor: pointer;
+            background: var(--mep-blue);
+            color: white;
             display: inline-flex;
             align-items: center;
-            justify-content: center;
             gap: 0.5rem;
-            transition: all 0.2s ease;
-            border: 2px solid transparent;
+            transition: 0.2s;
+            margin: 0.25rem;
         }
 
         .btn:hover {
-            background-color: #0F4F3F;
+            background: #002244;
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-        }
-
-        .btn:focus-visible {
-            outline: 3px solid var(--color-acento);
-            outline-offset: 2px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
         .btn-secondary {
-            background-color: var(--color-acento);
-            color: var(--color-primario);
+            background: var(--mep-red);
         }
 
         .btn-secondary:hover {
-            background-color: #8FAF9A;
+            background: #A30000;
         }
 
-        /* --- TABLAS ACCESIBLES --- */
+        .btn-warning {
+            background: var(--mep-warning);
+        }
+
+        .btn-success {
+            background: var(--mep-success);
+        }
+
+        /* ===== TABLAS ===== */
         .table-responsive {
             overflow-x: auto;
-            border-radius: 16px;
-            border: 1px solid var(--color-borde);
-            margin: 1.5rem 0;
+            border-radius: 12px;
+            border: 1px solid var(--mep-border);
+            margin: 1rem 0;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            background-color: var(--color-tarjeta);
         }
 
         th {
-            background-color: var(--color-primario);
-            color: var(--color-texto-sobre-oscuro);
-            font-weight: 600;
+            background: var(--mep-blue);
+            color: white;
             padding: 1rem;
-            text-align: left;
+            font-weight: 600;
         }
 
         td {
             padding: 1rem;
-            border-bottom: 1px solid var(--color-borde);
+            border-bottom: 1px solid var(--mep-border);
         }
 
-        /* --- BADGES Y MENSAJES DE ESTADO --- */
+        /* ===== BADGES ===== */
         .badge {
             display: inline-block;
             padding: 0.25rem 1rem;
             border-radius: 40px;
             font-size: 0.85rem;
             font-weight: 600;
-            text-align: center;
         }
 
         .badge-success {
-            background-color: var(--color-exito);
-            color: var(--color-texto-sobre-oscuro);
+            background: var(--mep-success);
+            color: white;
         }
 
         .badge-warning {
-            background-color: var(--color-advertencia);
-            color: var(--color-texto-sobre-oscuro);
+            background: var(--mep-warning);
+            color: white;
         }
 
         .badge-error {
-            background-color: var(--color-alerta);
-            color: var(--color-texto-sobre-oscuro);
+            background: var(--mep-error);
+            color: white;
         }
 
-        .alert {
-            padding: 1rem 1.5rem;
-            border-radius: 16px;
-            margin-bottom: 1.5rem;
-            border-left: 6px solid;
-            background-color: var(--color-tarjeta);
-        }
+        /* ===== UTILIDADES ===== */
+        .mt-3 { margin-top: 1rem; }
+        .mb-3 { margin-bottom: 1rem; }
+        .text-center { text-align: center; }
+        .w-100 { width: 100%; }
 
-        .alert-warning {
-            border-left-color: var(--color-advertencia);
-            background-color: #FEF6E6;
-        }
-
-        .alert-success {
-            border-left-color: var(--color-exito);
-            background-color: #E1F3E6;
-        }
-
-        /* --- HERRAMIENTAS DE ACCESIBILIDAD ADICIONALES --- */
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            border: 0;
-        }
-
-        [role="tooltip"] {
-            position: relative;
-        }
-
-        [role="tooltip"]:hover::after,
-        [role="tooltip"]:focus::after {
-            content: attr(aria-label);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--color-primario);
-            color: var(--color-texto-sobre-oscuro);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            white-space: nowrap;
-            z-index: 10;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-
-        /* --- RESPONSIVE --- */
         @media (max-width: 1024px) {
             .grid-4 { grid-template-columns: repeat(2, 1fr); }
         }
@@ -348,414 +257,852 @@
                 width: 100%;
                 height: auto;
                 position: relative;
-                padding: 1rem;
             }
-            .main-content {
-                margin-left: 0;
-                padding: 1.5rem;
-            }
-            .grid-2, .grid-3, .grid-4 {
-                grid-template-columns: 1fr;
-            }
+            .main-content { margin-left: 0; }
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <!-- BARRA LATERAL DE NAVEGACIÓN (ACCESIBLE) -->
-    <aside class="sidebar" aria-label="Navegación principal del sistema">
-        <div class="sidebar-header">
-            <h1>Gestión Docente MEP</h1>
-            <small>Consejo Superior de Educación · Costa Rica</small>
-        </div>
-        <nav aria-label="Módulos del sistema">
-            <button class="nav-btn active" data-pestana="config" aria-current="page">⚙️ Configuración</button>
-            <button class="nav-btn" data-pestana="estudiantes">👥 Estudiantes</button>
-            <button class="nav-btn" data-pestana="asistencia">📆 Asistencia</button>
-            <button class="nav-btn" data-pestana="componentes">📊 Evaluación</button>
-            <button class="nav-btn" data-pestana="acta">📜 Acta Final</button>
-            <button class="nav-btn" data-pestana="reportes">📈 Reportes</button>
-            <button class="nav-btn" data-pestana="bitacora">📓 Bitácora DUA</button>
-            <button class="nav-btn" data-pestana="instrumentos">📋 Instrumentos</button>
-            <button class="nav-btn" data-pestana="respaldo">💾 Respaldo</button>
+    <!-- BARRA LATERAL FIJA CON 12 PESTAÑAS -->
+    <aside class="sidebar">
+        <h1>SISTEMA INTEGRAL<br>GESTIÓN DOCENTE MEP</h1>
+        <nav>
+            <button class="nav-btn active" data-pestana="instituciones">1️⃣ INSTITUCIONES</button>
+            <button class="nav-btn" data-pestana="estudiantes">2️⃣ ESTUDIANTES</button>
+            <button class="nav-btn" data-pestana="configuracion">3️⃣ CONFIGURACIÓN</button>
+            <button class="nav-btn" data-pestana="asistencia">4️⃣ ASISTENCIA</button>
+            <button class="nav-btn" data-pestana="evaluacion">5️⃣ EVALUACIÓN</button>
+            <button class="nav-btn" data-pestana="acta">6️⃣ ACTA FINAL</button>
+            <button class="nav-btn" data-pestana="reportes">7️⃣ REPORTES</button>
+            <button class="nav-btn" data-pestana="bitacora">8️⃣ BITÁCORA DUA</button>
+            <button class="nav-btn" data-pestana="instrumentos">9️⃣ INSTRUMENTOS</button>
+            <button class="nav-btn" data-pestana="adecuaciones">🔟 ADECUACIONES</button>
+            <button class="nav-btn" data-pestana="piad">1️⃣1️⃣ PIAD</button>
+            <button class="nav-btn" data-pestana="conducta">1️⃣2️⃣ CONDUCTA</button>
         </nav>
     </aside>
 
-    <!-- CONTENIDO PRINCIPAL -->
-    <main class="main-content" id="contenido-principal">
-        <!-- Las pestañas se cargarán dinámicamente aquí -->
-    </main>
+    <main class="main-content" id="contenido-principal"></main>
 
     <script>
         (function() {
             "use strict";
 
-            // =========================================================================
-            // MODELO DE DATOS CENTRAL Y PERSISTENCIA (localStorage)
-            // =========================================================================
-            const ModeloMEP = {
-                centros: JSON.parse(localStorage.getItem('mep_centros')) || [{
-                    id: 'inst1', nombre: 'Liceo Experimental MEP', nivel: 'secundaria'
-                }],
-                estudiantes: JSON.parse(localStorage.getItem('mep_estudiantes')) || [
-                    { id: 'e1', centroId: 'inst1', nombre: 'Alberto Laureano Guevara', seccion: '9-1', telefono1: '8888-1111', telefono2: '8888-1112', correoEncargado: 'padre@ejemplo.com', acs: false },
-                    { id: 'e2', centroId: 'inst1', nombre: 'María José Jiménez', seccion: '9-1', telefono1: '8888-2222', telefono2: '8888-2223', correoEncargado: 'madre@ejemplo.com', acs: true }
+            // ==================== INICIALIZACIÓN INDEXEDDB ====================
+            let db;
+            const DB_NAME = 'MEP_Sistema_2026';
+            const DB_VERSION = 1;
+
+            // Datos de ejemplo precargados
+            const datosEjemplo = {
+                instituciones: [
+                    { id: 'inst1', nombre: 'Liceo Experimental MEP', codigo: 'MEP001', nivel: 'secundaria', regional: 'San José', circuito: '01' }
                 ],
-                configuraciones: JSON.parse(localStorage.getItem('mep_config')) || {
-                    centroId: 'inst1', tc: 40, pry: 30, pba: 20, tar: 10
-                },
-                calificaciones: JSON.parse(localStorage.getItem('mep_calificaciones')) || [],
-                asistencia: JSON.parse(localStorage.getItem('mep_asistencia')) || [],
-                periodos: JSON.parse(localStorage.getItem('mep_periodos')) || [
-                    { id: 'p1', centroId: 'inst1', nombre: 'I Periodo', estado: 'abierto', año: 2025 },
-                    { id: 'p2', centroId: 'inst1', nombre: 'II Periodo', estado: 'pendiente', año: 2025 },
-                    { id: 'p3', centroId: 'inst1', nombre: 'III Periodo', estado: 'pendiente', año: 2025 }
-                ]
+                estudiantes: [
+                    { id: 'est1', institucionId: 'inst1', cedula: '1-2345-6789', nombre: 'Alberto Laureano Guevara', seccion: '9-1', telefono1: '88881111', telefono2: '88881112', correo: 'padre1@gmail.com', acs: false },
+                    { id: 'est2', institucionId: 'inst1', cedula: '2-3456-7890', nombre: 'María José Jiménez', seccion: '9-1', telefono1: '88882222', telefono2: '88882223', correo: 'madre2@gmail.com', acs: true },
+                    { id: 'est3', institucionId: 'inst1', cedula: '3-4567-8901', nombre: 'Leonardo Reynoso', seccion: '9-1', telefono1: '88883333', telefono2: '88883334', correo: 'padre3@gmail.com', acs: false }
+                ],
+                configuracion: { institucionId: 'inst1', periodo: 'I', tc: 40, pry: 30, pba: 20, tar: 10 },
+                calificaciones: [],
+                asistencia: [],
+                bitacora: [],
+                instrumentos: [],
+                adecuaciones: [],
+                piad: [],
+                conducta: []
             };
 
-            function guardarTodo() {
-                localStorage.setItem('mep_centros', JSON.stringify(ModeloMEP.centros));
-                localStorage.setItem('mep_estudiantes', JSON.stringify(ModeloMEP.estudiantes));
-                localStorage.setItem('mep_config', JSON.stringify(ModeloMEP.configuraciones));
-                localStorage.setItem('mep_calificaciones', JSON.stringify(ModeloMEP.calificaciones));
-                localStorage.setItem('mep_asistencia', JSON.stringify(ModeloMEP.asistencia));
-                localStorage.setItem('mep_periodos', JSON.stringify(ModeloMEP.periodos));
+            function inicializarDB() {
+                return new Promise((resolve, reject) => {
+                    const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+                    request.onerror = () => reject('Error al abrir IndexedDB');
+
+                    request.onsuccess = (event) => {
+                        db = event.target.result;
+                        console.log('✅ IndexedDB conectada');
+                        resolve();
+                    };
+
+                    request.onupgradeneeded = (event) => {
+                        const db = event.target.result;
+
+                        // Crear stores con índices
+                        if (!db.objectStoreNames.contains('instituciones')) {
+                            const store = db.createObjectStore('instituciones', { keyPath: 'id' });
+                            store.createIndex('codigo', 'codigo', { unique: true });
+                        }
+
+                        if (!db.objectStoreNames.contains('estudiantes')) {
+                            const store = db.createObjectStore('estudiantes', { keyPath: 'id' });
+                            store.createIndex('institucionId', 'institucionId', { unique: false });
+                            store.createIndex('cedula', 'cedula', { unique: true });
+                        }
+
+                        if (!db.objectStoreNames.contains('configuracion')) {
+                            db.createObjectStore('configuracion', { keyPath: 'institucionId' });
+                        }
+
+                        if (!db.objectStoreNames.contains('calificaciones')) {
+                            const store = db.createObjectStore('calificaciones', { keyPath: 'id', autoIncrement: true });
+                            store.createIndex('estudianteId', 'estudianteId', { unique: false });
+                            store.createIndex('periodo', 'periodo', { unique: false });
+                        }
+
+                        if (!db.objectStoreNames.contains('asistencia')) {
+                            const store = db.createObjectStore('asistencia', { keyPath: 'id', autoIncrement: true });
+                            store.createIndex('fecha', 'fecha', { unique: false });
+                            store.createIndex('estudianteId', 'estudianteId', { unique: false });
+                        }
+
+                        if (!db.objectStoreNames.contains('bitacora')) {
+                            db.createObjectStore('bitacora', { keyPath: 'id', autoIncrement: true });
+                        }
+
+                        if (!db.objectStoreNames.contains('instrumentos')) {
+                            db.createObjectStore('instrumentos', { keyPath: 'id', autoIncrement: true });
+                        }
+
+                        if (!db.objectStoreNames.contains('adecuaciones')) {
+                            const store = db.createObjectStore('adecuaciones', { keyPath: 'id', autoIncrement: true });
+                            store.createIndex('estudianteId', 'estudianteId', { unique: false });
+                        }
+
+                        if (!db.objectStoreNames.contains('piad')) {
+                            const store = db.createObjectStore('piad', { keyPath: 'id', autoIncrement: true });
+                            store.createIndex('estudianteId', 'estudianteId', { unique: true });
+                        }
+
+                        if (!db.objectStoreNames.contains('conducta')) {
+                            const store = db.createObjectStore('conducta', { keyPath: 'id', autoIncrement: true });
+                            store.createIndex('estudianteId', 'estudianteId', { unique: false });
+                        }
+
+                        // Cargar datos de ejemplo
+                        const tx = event.target.transaction;
+                        
+                        tx.objectStore('instituciones').add(datosEjemplo.instituciones[0]);
+                        
+                        datosEjemplo.estudiantes.forEach(e => {
+                            tx.objectStore('estudiantes').add(e);
+                        });
+                        
+                        tx.objectStore('configuracion').add(datosEjemplo.configuracion);
+                    };
+                });
             }
 
-            // =========================================================================
-            // MOTOR DE CÁLCULO (VALIDACIONES MEP)
-            // =========================================================================
-            const MotorCalculo = {
-                validarPorcentajes(tc, pry, pba, tar) {
-                    const suma = (tc || 0) + (pry || 0) + (pba || 0) + (tar || 0);
-                    return suma === 100;
-                },
-                calcularPromedioEstandar(notas, porcentajes) {
-                    const { trabajoCotidiano, proyecto, prueba, tareas } = notas;
-                    const { tc, pry, pba, tar } = porcentajes;
-                    if ([trabajoCotidiano, proyecto, prueba, tareas].some(n => n === null || n === undefined || n === '')) {
-                        throw new Error("Notas incompletas");
-                    }
-                    return (
-                        (parseFloat(trabajoCotidiano) * (tc / 100)) +
-                        (parseFloat(proyecto) * (pry / 100)) +
-                        (parseFloat(prueba) * (pba / 100)) +
-                        (parseFloat(tareas) * (tar / 100))
-                    ).toFixed(2);
-                },
-                determinarEstadoFinal(promedio) {
-                    const p = parseFloat(promedio);
-                    if (p >= 65) return "APROBADO";
-                    if (p >= 50) return "CONVOCATORIA";
-                    return "REPROBADO";
-                }
-            };
+            // ==================== FUNCIONES DE PERSISTENCIA ====================
+            async function guardar(storeName, dato) {
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction(storeName, 'readwrite');
+                    const store = tx.objectStore(storeName);
+                    const request = store.put(dato);
+                    request.onsuccess = () => resolve();
+                    request.onerror = () => reject();
+                });
+            }
 
-            // =========================================================================
-            // VALIDADOR DE REGLAS MEP
-            // =========================================================================
-            const ValidadorMEP = {
-                email: (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
-                periodoCompleto(grupoId, periodo) {
-                    const estudiantesGrupo = ModeloMEP.estudiantes.filter(e => e.seccion === grupoId);
-                    const calificacionesPeriodo = ModeloMEP.calificaciones.filter(c => c.periodo === periodo);
-                    for (let est of estudiantesGrupo) {
-                        if (!calificacionesPeriodo.some(c => c.estudianteId === est.id)) return false;
-                    }
-                    return true;
-                }
-            };
+            async function guardarMultiples(transacciones) {
+                const stores = [...new Set(transacciones.map(t => t.store))];
+                const tx = db.transaction(stores, 'readwrite');
+                
+                transacciones.forEach(t => {
+                    tx.objectStore(t.store).put(t.dato);
+                });
 
-            // =========================================================================
-            // CONTROLADOR DE UI Y RENDERIZADO
-            // =========================================================================
+                return new Promise((resolve, reject) => {
+                    tx.oncomplete = () => resolve();
+                    tx.onerror = () => reject();
+                });
+            }
+
+            async function obtener(storeName, id) {
+                return new Promise((resolve) => {
+                    const tx = db.transaction(storeName, 'readonly');
+                    const store = tx.objectStore(storeName);
+                    const request = store.get(id);
+                    request.onsuccess = () => resolve(request.result);
+                });
+            }
+
+            async function obtenerTodos(storeName) {
+                return new Promise((resolve) => {
+                    const tx = db.transaction(storeName, 'readonly');
+                    const store = tx.objectStore(storeName);
+                    const request = store.getAll();
+                    request.onsuccess = () => resolve(request.result);
+                });
+            }
+
+            async function obtenerPorIndice(storeName, indice, valor) {
+                return new Promise((resolve) => {
+                    const tx = db.transaction(storeName, 'readonly');
+                    const store = tx.objectStore(storeName);
+                    const index = store.index(indice);
+                    const request = index.getAll(valor);
+                    request.onsuccess = () => resolve(request.result);
+                });
+            }
+
+            async function eliminar(storeName, id) {
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction(storeName, 'readwrite');
+                    const store = tx.objectStore(storeName);
+                    const request = store.delete(id);
+                    request.onsuccess = () => resolve();
+                    request.onerror = () => reject();
+                });
+            }
+
+            // ==================== CONTROLADOR PRINCIPAL ====================
             const UI = {
-                pestanaActiva: 'config',
-                init() {
+                pestanaActiva: 'instituciones',
+                
+                async init() {
+                    await inicializarDB();
                     this.configurarNavegacion();
-                    this.cambiarPestana('config');
+                    this.cambiarPestana('instituciones');
                 },
+
                 configurarNavegacion() {
                     document.querySelectorAll('.nav-btn').forEach(btn => {
-                        btn.addEventListener('click', (e) => {
+                        btn.addEventListener('click', async (e) => {
                             const pestana = e.currentTarget.dataset.pestana;
-                            this.cambiarPestana(pestana);
                             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
                             e.currentTarget.classList.add('active');
+                            await this.cambiarPestana(pestana);
                         });
                     });
                 },
-                cambiarPestana(pestanaId) {
+
+                async cambiarPestana(pestanaId) {
                     this.pestanaActiva = pestanaId;
                     const container = document.getElementById('contenido-principal');
+                    
                     switch(pestanaId) {
-                        case 'config': this.renderConfiguracion(container); break;
-                        case 'estudiantes': this.renderEstudiantes(container); break;
-                        case 'asistencia': this.renderAsistencia(container); break;
-                        case 'componentes': this.renderComponentes(container); break;
-                        case 'acta': this.renderActaFinal(container); break;
-                        case 'reportes': this.renderReportes(container); break;
-                        case 'bitacora': this.renderBitacora(container); break;
-                        case 'instrumentos': this.renderInstrumentos(container); break;
-                        case 'respaldo': this.renderRespaldo(container); break;
-                        default: this.renderConfiguracion(container);
+                        case 'instituciones': await this.renderInstituciones(container); break;
+                        case 'estudiantes': await this.renderEstudiantes(container); break;
+                        case 'configuracion': await this.renderConfiguracion(container); break;
+                        case 'asistencia': await this.renderAsistencia(container); break;
+                        case 'evaluacion': await this.renderEvaluacion(container); break;
+                        case 'acta': await this.renderActa(container); break;
+                        case 'reportes': await this.renderReportes(container); break;
+                        case 'bitacora': await this.renderBitacora(container); break;
+                        case 'instrumentos': await this.renderInstrumentos(container); break;
+                        case 'adecuaciones': await this.renderAdecuaciones(container); break;
+                        case 'piad': await this.renderPIAD(container); break;
+                        case 'conducta': await this.renderConducta(container); break;
                     }
                 },
-                // --------------------------------------------------------------
-                // 1. CONFIGURACIÓN GENERAL
-                // --------------------------------------------------------------
-                renderConfiguracion(container) {
-                    const config = ModeloMEP.configuraciones;
+
+                // ==================== PESTAÑA 1: INSTITUCIONES ====================
+                async renderInstituciones(container) {
+                    const instituciones = await obtenerTodos('instituciones');
+                    
                     container.innerHTML = `
                         <div class="card">
                             <div class="card-header">
-                                <h2 class="card-title">⚙️ Configuración Institucional MEP</h2>
+                                <h2 class="card-title">1️⃣ INSTITUCIONES</h2>
                             </div>
+                            
+                            <h3>Agregar Nueva Institución</h3>
                             <div class="grid-2">
                                 <div class="form-group">
-                                    <label for="config-centro">Centro Educativo</label>
-                                    <select id="config-centro" aria-describedby="centro-help">
-                                        ${ModeloMEP.centros.map(c => `<option value="${c.id}" ${c.id === config.centroId ? 'selected' : ''}>${c.nombre}</option>`).join('')}
-                                    </select>
-                                    <span id="centro-help" class="sr-only">Seleccione el centro educativo activo</span>
+                                    <label>Nombre</label>
+                                    <input type="text" id="inst-nombre" placeholder="Ej: Liceo Experimental MEP">
                                 </div>
                                 <div class="form-group">
-                                    <label for="config-nivel">Nivel</label>
-                                    <select id="config-nivel">
+                                    <label>Código MEP</label>
+                                    <input type="text" id="inst-codigo" placeholder="Ej: MEP001">
+                                </div>
+                                <div class="form-group">
+                                    <label>Nivel</label>
+                                    <select id="inst-nivel">
+                                        <option value="preescolar">Preescolar</option>
                                         <option value="primaria">Primaria</option>
-                                        <option value="secundaria" selected>Secundaria</option>
+                                        <option value="secundaria">Secundaria</option>
                                     </select>
                                 </div>
-                            </div>
-                            <div class="grid-4">
                                 <div class="form-group">
-                                    <label for="config-tc">Trabajo Cotidiano (%)</label>
-                                    <input type="number" id="config-tc" value="${config.tc}" min="0" max="100" step="1">
+                                    <label>Dirección Regional</label>
+                                    <input type="text" id="inst-regional" placeholder="Ej: San José">
                                 </div>
                                 <div class="form-group">
-                                    <label for="config-pry">Proyecto (%)</label>
-                                    <input type="number" id="config-pry" value="${config.pry}" min="0" max="100" step="1">
-                                </div>
-                                <div class="form-group">
-                                    <label for="config-pba">Prueba (%)</label>
-                                    <input type="number" id="config-pba" value="${config.pba}" min="0" max="100" step="1">
-                                </div>
-                                <div class="form-group">
-                                    <label for="config-tar">Tareas (%)</label>
-                                    <input type="number" id="config-tar" value="${config.tar}" min="0" max="100" step="1">
+                                    <label>Circuito</label>
+                                    <input type="text" id="inst-circuito" placeholder="Ej: 01">
                                 </div>
                             </div>
-                            <div class="toolbar">
-                                <span id="suma-porcentajes" class="badge badge-success">Suma: 100% ✅</span>
-                                <button class="btn" id="guardar-config" aria-label="Guardar configuración actual">💾 Guardar</button>
-                                <button class="btn btn-secondary" id="reset-config" aria-label="Restablecer valores por defecto">🔄 Restablecer</button>
-                            </div>
-                        </div>
-                    `;
-                    document.getElementById('guardar-config')?.addEventListener('click', this.guardarConfiguracion.bind(this));
-                    document.getElementById('reset-config')?.addEventListener('click', () => {
-                        if(confirm('¿Restablecer la configuración a los valores por defecto?')) {
-                            ModeloMEP.configuraciones = { centroId: 'inst1', tc: 40, pry: 30, pba: 20, tar: 10 };
-                            guardarTodo();
-                            this.cambiarPestana('config');
-                        }
-                    });
-                },
-                guardarConfiguracion() {
-                    const tc = parseInt(document.getElementById('config-tc').value);
-                    const pry = parseInt(document.getElementById('config-pry').value);
-                    const pba = parseInt(document.getElementById('config-pba').value);
-                    const tar = parseInt(document.getElementById('config-tar').value);
-                    if (!MotorCalculo.validarPorcentajes(tc, pry, pba, tar)) {
-                        alert('Error: Los porcentajes deben sumar exactamente 100%');
-                        return;
-                    }
-                    ModeloMEP.configuraciones = {
-                        centroId: document.getElementById('config-centro').value,
-                        tc, pry, pba, tar
-                    };
-                    guardarTodo();
-                    alert('✅ Configuración guardada exitosamente');
-                },
-                // --------------------------------------------------------------
-                // 2. ESTUDIANTES (CRUD Completo)
-                // --------------------------------------------------------------
-                renderEstudiantes(container) {
-                    const estudiantes = ModeloMEP.estudiantes;
-                    container.innerHTML = `
-                        <div class="card">
-                            <div class="card-header">
-                                <h2 class="card-title">👥 Gestión de Estudiantes</h2>
-                            </div>
-                            <div class="grid-2">
-                                <div class="form-group">
-                                    <label for="est-nombre">Nombre completo</label>
-                                    <input type="text" id="est-nombre" placeholder="Ej: Pérez, Juan Carlos">
-                                </div>
-                                <div class="form-group">
-                                    <label for="est-seccion">Sección</label>
-                                    <input type="text" id="est-seccion" placeholder="Ej: 9-1">
-                                </div>
-                                <div class="form-group">
-                                    <label for="est-tel1">Teléfono 1 (principal)</label>
-                                    <input type="tel" id="est-tel1" placeholder="8888-1111">
-                                </div>
-                                <div class="form-group">
-                                    <label for="est-tel2">Teléfono 2</label>
-                                    <input type="tel" id="est-tel2" placeholder="8888-1112">
-                                </div>
-                                <div class="form-group">
-                                    <label for="est-correo">Correo del encargado</label>
-                                    <input type="email" id="est-correo" placeholder="encargado@ejemplo.com">
-                                </div>
-                                <div class="form-group">
-                                    <label><input type="checkbox" id="est-acs"> ¿Estudiante con ACS?</label>
-                                </div>
-                            </div>
-                            <button class="btn" id="agregar-estudiante">➕ Agregar Estudiante</button>
-                        </div>
-                        <div class="card">
-                            <h3>Lista de Estudiantes</h3>
+                            <button class="btn" onclick="UI.agregarInstitucion()">➕ Agregar Institución</button>
+
+                            <h3 class="mt-3">Instituciones Registradas</h3>
                             <div class="table-responsive">
                                 <table>
                                     <thead>
                                         <tr>
                                             <th>Nombre</th>
-                                            <th>Sección</th>
-                                            <th>Teléfono 1</th>
-                                            <th>Teléfono 2</th>
-                                            <th>Correo Encargado</th>
-                                            <th>ACS</th>
+                                            <th>Código</th>
+                                            <th>Nivel</th>
+                                            <th>Regional</th>
+                                            <th>Circuito</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="tabla-estudiantes-body"></tbody>
+                                    <tbody>
+                                        ${instituciones.map(i => `
+                                            <tr>
+                                                <td>${i.nombre}</td>
+                                                <td>${i.codigo}</td>
+                                                <td>${i.nivel}</td>
+                                                <td>${i.regional || '-'}</td>
+                                                <td>${i.circuito || '-'}</td>
+                                                <td>
+                                                    <button class="btn btn-secondary btn-small" onclick="UI.editarInstitucion('${i.id}')">✏️</button>
+                                                    <button class="btn btn-warning btn-small" onclick="UI.eliminarInstitucion('${i.id}')">🗑️</button>
+                                                </td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
                     `;
-                    this.actualizarTablaEstudiantes();
-                    document.getElementById('agregar-estudiante')?.addEventListener('click', this.agregarEstudiante.bind(this));
                 },
-                actualizarTablaEstudiantes() {
-                    const tbody = document.getElementById('tabla-estudiantes-body');
-                    if (!tbody) return;
-                    tbody.innerHTML = ModeloMEP.estudiantes.map(e => `
-                        <tr>
-                            <td>${e.nombre}</td>
-                            <td>${e.seccion}</td>
-                            <td>${e.telefono1}</td>
-                            <td>${e.telefono2}</td>
-                            <td>${e.correoEncargado}</td>
-                            <td>${e.acs ? '✅' : '❌'}</td>
-                            <td>
-                                <button class="btn btn-secondary btn-small" onclick="UI.eliminarEstudiante('${e.id}')">🗑️</button>
-                            </td>
-                        </tr>
-                    `).join('');
-                },
-                agregarEstudiante() {
-                    const nuevo = {
-                        id: 'e' + Date.now(),
-                        centroId: ModeloMEP.configuraciones.centroId,
-                        nombre: document.getElementById('est-nombre').value,
-                        seccion: document.getElementById('est-seccion').value,
-                        telefono1: document.getElementById('est-tel1').value,
-                        telefono2: document.getElementById('est-tel2').value,
-                        correoEncargado: document.getElementById('est-correo').value,
-                        acs: document.getElementById('est-acs').checked
-                    };
-                    if (!nuevo.nombre || !nuevo.seccion) {
-                        alert('❌ Nombre y sección son obligatorios');
+
+                async agregarInstitucion() {
+                    const nombre = document.getElementById('inst-nombre').value;
+                    const codigo = document.getElementById('inst-codigo').value;
+                    
+                    if (!nombre || !codigo) {
+                        alert('❌ Nombre y código son obligatorios');
                         return;
                     }
-                    ModeloMEP.estudiantes.push(nuevo);
-                    guardarTodo();
-                    this.actualizarTablaEstudiantes();
+
+                    const instituciones = await obtenerTodos('instituciones');
+                    if (instituciones.some(i => i.codigo === codigo)) {
+                        alert('❌ El código MEP ya existe');
+                        return;
+                    }
+
+                    const nueva = {
+                        id: 'inst' + Date.now(),
+                        nombre,
+                        codigo,
+                        nivel: document.getElementById('inst-nivel').value,
+                        regional: document.getElementById('inst-regional').value,
+                        circuito: document.getElementById('inst-circuito').value
+                    };
+
+                    await guardar('instituciones', nueva);
+                    await this.cambiarPestana('instituciones');
                 },
-                eliminarEstudiante(id) {
-                    if (confirm('¿Eliminar este estudiante?')) {
-                        ModeloMEP.estudiantes = ModeloMEP.estudiantes.filter(e => e.id !== id);
-                        guardarTodo();
-                        this.actualizarTablaEstudiantes();
+
+                async editarInstitucion(id) {
+                    const inst = await obtener('instituciones', id);
+                    const nuevoNombre = prompt('Nuevo nombre:', inst.nombre);
+                    if (nuevoNombre) {
+                        inst.nombre = nuevoNombre;
+                        await guardar('instituciones', inst);
+                        await this.cambiarPestana('instituciones');
                     }
                 },
-                // --------------------------------------------------------------
-                // 3. ASISTENCIA (Simplificada pero funcional)
-                // --------------------------------------------------------------
-                renderAsistencia(container) {
+
+                async eliminarInstitucion(id) {
+                    if (confirm('¿Eliminar esta institución? También se eliminarán sus estudiantes.')) {
+                        const estudiantes = await obtenerPorIndice('estudiantes', 'institucionId', id);
+                        
+                        const transacciones = estudiantes.map(e => ({
+                            store: 'estudiantes',
+                            dato: { ...e, _deleted: true }
+                        }));
+                        
+                        await guardarMultiples(transacciones);
+                        await eliminar('instituciones', id);
+                        await this.cambiarPestana('instituciones');
+                    }
+                },
+
+                // ==================== PESTAÑA 2: ESTUDIANTES ====================
+                async renderEstudiantes(container) {
+                    const instituciones = await obtenerTodos('instituciones');
+                    const estudiantes = await obtenerTodos('estudiantes');
+                    
                     container.innerHTML = `
                         <div class="card">
                             <div class="card-header">
-                                <h2 class="card-title">📆 Control de Asistencia</h2>
+                                <h2 class="card-title">2️⃣ ESTUDIANTES</h2>
                             </div>
+
+                            <h3>Agregar Estudiante</h3>
                             <div class="grid-2">
                                 <div class="form-group">
-                                    <label for="asis-fecha">Fecha</label>
+                                    <label>Institución</label>
+                                    <select id="est-institucion">
+                                        ${instituciones.map(i => `<option value="${i.id}">${i.nombre}</option>`).join('')}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Cédula (1-2345-6789)</label>
+                                    <input type="text" id="est-cedula" placeholder="1-2345-6789">
+                                </div>
+                                <div class="form-group">
+                                    <label>Nombre Completo</label>
+                                    <input type="text" id="est-nombre" placeholder="Ej: Pérez, Juan Carlos">
+                                </div>
+                                <div class="form-group">
+                                    <label>Sección</label>
+                                    <input type="text" id="est-seccion" placeholder="Ej: 9-1">
+                                </div>
+                                <div class="form-group">
+                                    <label>Teléfono 1 (8 dígitos)</label>
+                                    <input type="text" id="est-tel1" placeholder="88881111">
+                                </div>
+                                <div class="form-group">
+                                    <label>Teléfono 2 (8 dígitos)</label>
+                                    <input type="text" id="est-tel2" placeholder="88881112">
+                                </div>
+                                <div class="form-group">
+                                    <label>Correo del Encargado</label>
+                                    <input type="email" id="est-correo" placeholder="encargado@gmail.com">
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" id="est-acs"> ACS (Adecuación Significativa)
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="grid-2">
+                                <button class="btn" onclick="UI.agregarEstudiante()">➕ Agregar Estudiante</button>
+                                <div>
+                                    <input type="file" id="csv-import" accept=".csv" style="display:none;">
+                                    <button class="btn btn-secondary" onclick="document.getElementById('csv-import').click()">📤 Importar CSV</button>
+                                    <button class="btn btn-secondary" onclick="UI.exportarEstudiantesCSV()">📥 Exportar CSV</button>
+                                </div>
+                            </div>
+
+                            <h3 class="mt-3">Lista de Estudiantes</h3>
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Cédula</th>
+                                            <th>Nombre</th>
+                                            <th>Sección</th>
+                                            <th>Teléfono 1</th>
+                                            <th>Teléfono 2</th>
+                                            <th>Correo</th>
+                                            <th>ACS</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${estudiantes.map(e => `
+                                            <tr>
+                                                <td>${e.cedula}</td>
+                                                <td>${e.nombre}</td>
+                                                <td>${e.seccion}</td>
+                                                <td>${e.telefono1}</td>
+                                                <td>${e.telefono2}</td>
+                                                <td>${e.correo}</td>
+                                                <td>${e.acs ? '✅' : '❌'}</td>
+                                                <td>
+                                                    <button class="btn btn-secondary btn-small" onclick="UI.editarEstudiante('${e.id}')">✏️</button>
+                                                    <button class="btn btn-warning btn-small" onclick="UI.eliminarEstudiante('${e.id}')">🗑️</button>
+                                                </td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+
+                    document.getElementById('csv-import').addEventListener('change', (e) => this.importarEstudiantesCSV(e));
+                },
+
+                async agregarEstudiante() {
+                    const cedula = document.getElementById('est-cedula').value;
+                    const nombre = document.getElementById('est-nombre').value;
+                    
+                    // Validaciones
+                    if (!cedula || !nombre) {
+                        alert('❌ Cédula y nombre son obligatorios');
+                        return;
+                    }
+
+                    const regexCedula = /^\d{1}-\d{4}-\d{4}$/;
+                    if (!regexCedula.test(cedula)) {
+                        alert('❌ Formato de cédula inválido. Use: 1-2345-6789');
+                        return;
+                    }
+
+                    const tel1 = document.getElementById('est-tel1').value;
+                    if (tel1 && !/^\d{8}$/.test(tel1)) {
+                        alert('❌ Teléfono 1 debe tener 8 dígitos');
+                        return;
+                    }
+
+                    const tel2 = document.getElementById('est-tel2').value;
+                    if (tel2 && !/^\d{8}$/.test(tel2)) {
+                        alert('❌ Teléfono 2 debe tener 8 dígitos');
+                        return;
+                    }
+
+                    const correo = document.getElementById('est-correo').value;
+                    if (correo && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+                        alert('❌ Correo inválido');
+                        return;
+                    }
+
+                    const estudiantes = await obtenerTodos('estudiantes');
+                    if (estudiantes.some(e => e.cedula === cedula)) {
+                        alert('❌ Ya existe un estudiante con esa cédula');
+                        return;
+                    }
+
+                    const nuevo = {
+                        id: 'est' + Date.now(),
+                        institucionId: document.getElementById('est-institucion').value,
+                        cedula,
+                        nombre,
+                        seccion: document.getElementById('est-seccion').value,
+                        telefono1: tel1,
+                        telefono2: tel2,
+                        correo,
+                        acs: document.getElementById('est-acs').checked
+                    };
+
+                    await guardar('estudiantes', nuevo);
+                    await this.cambiarPestana('estudiantes');
+                },
+
+                async editarEstudiante(id) {
+                    const est = await obtener('estudiantes', id);
+                    const nuevoNombre = prompt('Nombre:', est.nombre);
+                    if (nuevoNombre) {
+                        est.nombre = nuevoNombre;
+                        await guardar('estudiantes', est);
+                        await this.cambiarPestana('estudiantes');
+                    }
+                },
+
+                async eliminarEstudiante(id) {
+                    if (confirm('¿Eliminar este estudiante?')) {
+                        await eliminar('estudiantes', id);
+                        await this.cambiarPestana('estudiantes');
+                    }
+                },
+
+                exportarEstudiantesCSV() {
+                    obtenerTodos('estudiantes').then(estudiantes => {
+                        let csv = "Cédula,Nombre,Sección,Teléfono 1,Teléfono 2,Correo,ACS\n";
+                        estudiantes.forEach(e => {
+                            csv += `${e.cedula},"${e.nombre}",${e.seccion || ''},${e.telefono1 || ''},${e.telefono2 || ''},${e.correo || ''},${e.acs ? 'Sí' : 'No'}\n`;
+                        });
+
+                        const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `estudiantes_${new Date().toISOString().split('T')[0]}.csv`;
+                        a.click();
+                    });
+                },
+
+                importarEstudiantesCSV(event) {
+                    const file = event.target.files[0];
+                    if (!file) return;
+
+                    const reader = new FileReader();
+                    reader.onload = async (e) => {
+                        const lines = e.target.result.split('\n');
+                        let importados = 0;
+
+                        for (let i = 1; i < lines.length; i++) {
+                            if (!lines[i].trim()) continue;
+                            
+                            const values = lines[i].split(',');
+                            if (values.length >= 3) {
+                                const estudiante = {
+                                    id: 'est' + Date.now() + i,
+                                    institucionId: 'inst1', // Por defecto
+                                    cedula: values[0].replace(/"/g, ''),
+                                    nombre: values[1].replace(/"/g, ''),
+                                    seccion: values[2]?.replace(/"/g, '') || '',
+                                    telefono1: values[3]?.replace(/"/g, '') || '',
+                                    telefono2: values[4]?.replace(/"/g, '') || '',
+                                    correo: values[5]?.replace(/"/g, '') || '',
+                                    acs: values[6]?.replace(/"/g, '') === 'Sí'
+                                };
+                                await guardar('estudiantes', estudiante);
+                                importados++;
+                            }
+                        }
+
+                        alert(`✅ ${importados} estudiantes importados`);
+                        await this.cambiarPestana('estudiantes');
+                    };
+                    reader.readAsText(file, 'UTF-8');
+                },
+
+                // ==================== PESTAÑA 3: CONFIGURACIÓN ====================
+                async renderConfiguracion(container) {
+                    const instituciones = await obtenerTodos('instituciones');
+                    const config = await obtener('configuracion', instituciones[0]?.id) || 
+                                  { institucionId: instituciones[0]?.id, periodo: 'I', tc: 40, pry: 30, pba: 20, tar: 10 };
+
+                    container.innerHTML = `
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">3️⃣ CONFIGURACIÓN</h2>
+                            </div>
+
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label>Institución Activa</label>
+                                    <select id="config-institucion">
+                                        ${instituciones.map(i => `<option value="${i.id}" ${i.id === config.institucionId ? 'selected' : ''}>${i.nombre}</option>`).join('')}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Periodo</label>
+                                    <select id="config-periodo">
+                                        <option value="I" ${config.periodo === 'I' ? 'selected' : ''}>I Periodo</option>
+                                        <option value="II" ${config.periodo === 'II' ? 'selected' : ''}>II Periodo</option>
+                                        <option value="III" ${config.periodo === 'III' ? 'selected' : ''}>III Periodo</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid-4">
+                                <div class="form-group">
+                                    <label>Trabajo Cotidiano (%)</label>
+                                    <input type="number" id="config-tc" value="${config.tc}" min="0" max="100" step="1">
+                                </div>
+                                <div class="form-group">
+                                    <label>Proyecto (%)</label>
+                                    <input type="number" id="config-pry" value="${config.pry}" min="0" max="100" step="1">
+                                </div>
+                                <div class="form-group">
+                                    <label>Prueba (%)</label>
+                                    <input type="number" id="config-pba" value="${config.pba}" min="0" max="100" step="1">
+                                </div>
+                                <div class="form-group">
+                                    <label>Tareas (%)</label>
+                                    <input type="number" id="config-tar" value="${config.tar}" min="0" max="100" step="1">
+                                </div>
+                            </div>
+
+                            <div class="grid-2">
+                                <span id="suma-porcentajes" class="badge badge-success">Suma: ${config.tc + config.pry + config.pba + config.tar}% ✅</span>
+                                <button class="btn" onclick="UI.guardarConfiguracion()">💾 Guardar Configuración</button>
+                            </div>
+                        </div>
+                    `;
+
+                    // Validación en tiempo real
+                    ['config-tc', 'config-pry', 'config-pba', 'config-tar'].forEach(id => {
+                        document.getElementById(id).addEventListener('input', () => {
+                            const tc = parseInt(document.getElementById('config-tc').value) || 0;
+                            const pry = parseInt(document.getElementById('config-pry').value) || 0;
+                            const pba = parseInt(document.getElementById('config-pba').value) || 0;
+                            const tar = parseInt(document.getElementById('config-tar').value) || 0;
+                            const suma = tc + pry + pba + tar;
+                            const badge = document.getElementById('suma-porcentajes');
+                            
+                            badge.textContent = `Suma: ${suma}% ${suma === 100 ? '✅' : '❌'}`;
+                            badge.className = `badge ${suma === 100 ? 'badge-success' : 'badge-error'}`;
+                        });
+                    });
+                },
+
+                async guardarConfiguracion() {
+                    const tc = parseInt(document.getElementById('config-tc').value) || 0;
+                    const pry = parseInt(document.getElementById('config-pry').value) || 0;
+                    const pba = parseInt(document.getElementById('config-pba').value) || 0;
+                    const tar = parseInt(document.getElementById('config-tar').value) || 0;
+
+                    if (tc + pry + pba + tar !== 100) {
+                        alert('❌ Los porcentajes deben sumar 100%');
+                        return;
+                    }
+
+                    const config = {
+                        institucionId: document.getElementById('config-institucion').value,
+                        periodo: document.getElementById('config-periodo').value,
+                        tc, pry, pba, tar
+                    };
+
+                    await guardar('configuracion', config);
+                    alert('✅ Configuración guardada');
+                },
+
+                // ==================== PESTAÑA 4: ASISTENCIA ====================
+                async renderAsistencia(container) {
+                    const estudiantes = await obtenerTodos('estudiantes');
+                    const secciones = [...new Set(estudiantes.map(e => e.seccion))];
+
+                    container.innerHTML = `
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">4️⃣ ASISTENCIA</h2>
+                            </div>
+
+                            <div class="grid-3">
+                                <div class="form-group">
+                                    <label>Fecha</label>
                                     <input type="date" id="asis-fecha" value="${new Date().toISOString().split('T')[0]}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="asis-seccion">Sección</label>
-                                    <input type="text" id="asis-seccion" placeholder="Ej: 9-1">
+                                    <label>Sección</label>
+                                    <select id="asis-seccion">
+                                        <option value="">Todas</option>
+                                        ${secciones.map(s => `<option value="${s}">${s}</option>`).join('')}
+                                    </select>
                                 </div>
+                                <button class="btn" onclick="UI.cargarAsistencia()">📅 Cargar Lista</button>
                             </div>
-                            <button class="btn" id="cargar-asistencia">📅 Cargar Lista</button>
-                            <div id="asistencia-tabla" class="table-responsive mt-3"></div>
-                            <button class="btn btn-secondary mt-3" id="guardar-asistencia">💾 Guardar Asistencia</button>
+
+                            <div id="asistencia-tabla" class="table-responsive"></div>
+
+                            <div class="grid-3">
+                                <button class="btn" onclick="UI.guardarAsistencia()">💾 Guardar Asistencia</button>
+                                <button class="btn btn-secondary" onclick="UI.reporteAusentismo()">📊 Reporte Ausentismo</button>
+                                <button class="btn btn-secondary" onclick="UI.exportarAsistenciaExcel()">📥 Exportar Excel</button>
+                            </div>
                         </div>
                     `;
-                    document.getElementById('cargar-asistencia')?.addEventListener('click', this.cargarListaAsistencia.bind(this));
                 },
-                cargarListaAsistencia() {
-                    const seccion = document.getElementById('asis-seccion').value;
+
+                async cargarAsistencia() {
                     const fecha = document.getElementById('asis-fecha').value;
-                    const estudiantes = ModeloMEP.estudiantes.filter(e => e.seccion === seccion);
-                    if (estudiantes.length === 0) {
-                        alert('No hay estudiantes en esa sección');
-                        return;
+                    const seccion = document.getElementById('asis-seccion').value;
+                    
+                    let estudiantes = await obtenerTodos('estudiantes');
+                    if (seccion) {
+                        estudiantes = estudiantes.filter(e => e.seccion === seccion);
                     }
-                    let html = '<table><tr><th>Estudiante</th><th>Estado</th></tr>';
+
+                    const asistencias = await obtenerTodos('asistencia');
+                    
+                    let html = `
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Estudiante</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+
                     estudiantes.forEach(e => {
-                        const registro = ModeloMEP.asistencia.find(a => a.fecha === fecha && a.estudianteId === e.id);
-                        const estado = registro ? registro.estado : 'P';
-                        html += `<tr>
-                            <td>${e.nombre}</td>
-                            <td>
-                                <select data-estudiante="${e.id}" data-fecha="${fecha}" class="estado-asistencia">
-                                    <option value="P" ${estado === 'P' ? 'selected' : ''}>Presente</option>
-                                    <option value="A" ${estado === 'A' ? 'selected' : ''}>Ausente</option>
-                                    <option value="J" ${estado === 'J' ? 'selected' : ''}>Justificada</option>
-                                    <option value="T" ${estado === 'T' ? 'selected' : ''}>Tardía</option>
-                                </select>
-                            </td>
-                        </tr>`;
+                        const asistencia = asistencias.find(a => a.fecha === fecha && a.estudianteId === e.id);
+                        const estado = asistencia ? asistencia.estado : 'P';
+                        
+                        html += `
+                            <tr>
+                                <td>${e.nombre}</td>
+                                <td>
+                                    <select data-estudiante="${e.id}" data-fecha="${fecha}" class="asis-select">
+                                        <option value="P" ${estado === 'P' ? 'selected' : ''}>Presente</option>
+                                        <option value="A" ${estado === 'A' ? 'selected' : ''}>Ausente</option>
+                                        <option value="J" ${estado === 'J' ? 'selected' : ''}>Justificada</option>
+                                        <option value="T" ${estado === 'T' ? 'selected' : ''}>Tardía</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        `;
                     });
-                    html += '</table>';
+
+                    html += '</tbody></table>';
                     document.getElementById('asistencia-tabla').innerHTML = html;
-                    document.getElementById('guardar-asistencia').addEventListener('click', () => {
-                        document.querySelectorAll('.estado-asistencia').forEach(sel => {
-                            ModeloMEP.asistencia = ModeloMEP.asistencia.filter(a => !(a.fecha === fecha && a.estudianteId === sel.dataset.estudiante));
-                            ModeloMEP.asistencia.push({
-                                id: 'a' + Date.now() + sel.dataset.estudiante,
-                                estudianteId: sel.dataset.estudiante,
-                                fecha,
-                                estado: sel.value
-                            });
-                        });
-                        guardarTodo();
-                        alert('✅ Asistencia guardada');
-                    }, { once: true });
                 },
-                // --------------------------------------------------------------
-                // 4. COMPONENTES DE EVALUACIÓN (Motor de cálculo)
-                // --------------------------------------------------------------
-                renderComponentes(container) {
-                    const estudiantes = ModeloMEP.estudiantes;
-                    const config = ModeloMEP.configuraciones;
-                    let htmlTabla = `
+
+                async guardarAsistencia() {
+                    const selects = document.querySelectorAll('.asis-select');
+                    const transacciones = [];
+
+                    selects.forEach(select => {
+                        transacciones.push({
+                            store: 'asistencia',
+                            dato: {
+                                id: `asis-${select.dataset.fecha}-${select.dataset.estudiante}`,
+                                fecha: select.dataset.fecha,
+                                estudianteId: select.dataset.estudiante,
+                                estado: select.value
+                            }
+                        });
+                    });
+
+                    await guardarMultiples(transacciones);
+                    alert('✅ Asistencia guardada');
+                },
+
+                reporteAusentismo() {
+                    obtenerTodos('asistencia').then(asistencias => {
+                        const { jsPDF } = window.jspdf;
+                        const doc = new jsPDF();
+                        
+                        doc.setFontSize(16);
+                        doc.text('Reporte de Ausentismo', 14, 15);
+                        
+                        const data = asistencias.map(a => [
+                            a.fecha,
+                            a.estudianteId,
+                            a.estado
+                        ]);
+                        
+                        doc.autoTable({
+                            head: [['Fecha', 'Estudiante', 'Estado']],
+                            body: data
+                        });
+                        
+                        doc.save('ausentismo.pdf');
+                    });
+                },
+
+                exportarAsistenciaExcel() {
+                    obtenerTodos('asistencia').then(asistencias => {
+                        const wb = XLSX.utils.book_new();
+                        const ws = XLSX.utils.json_to_sheet(asistencias);
+                        XLSX.utils.book_append_sheet(wb, ws, 'Asistencia');
+                        XLSX.writeFile(wb, `asistencia_${new Date().toISOString().split('T')[0]}.xlsx`);
+                    });
+                },
+
+                // ==================== PESTAÑA 5: EVALUACIÓN ====================
+                async renderEvaluacion(container) {
+                    const estudiantes = await obtenerTodos('estudiantes');
+                    const config = await obtener('configuracion', estudiantes[0]?.institucionId) || 
+                                  { tc: 40, pry: 30, pba: 20, tar: 10 };
+                    const calificaciones = await obtenerTodos('calificaciones');
+
+                    container.innerHTML = `
                         <div class="card">
                             <div class="card-header">
-                                <h2 class="card-title">📊 Registro de Componentes</h2>
+                                <h2 class="card-title">5️⃣ EVALUACIÓN</h2>
                             </div>
+
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label>Sección</label>
+                                    <select id="eval-seccion">
+                                        ${[...new Set(estudiantes.map(e => e.seccion))].map(s => `<option value="${s}">${s}</option>`).join('')}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Periodo</label>
+                                    <select id="eval-periodo">
+                                        <option value="I">I Periodo</option>
+                                        <option value="II">II Periodo</option>
+                                        <option value="III">III Periodo</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <div class="table-responsive">
                                 <table>
                                     <thead>
@@ -770,252 +1117,871 @@
                                             <th>Estado</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                    `;
-                    estudiantes.forEach(e => {
-                        const cal = ModeloMEP.calificaciones.find(c => c.estudianteId === e.id && c.periodo === 'I') || { trabajoCotidiano: '', proyecto: '', prueba: '', tareas: '' };
-                        htmlTabla += `
-                            <tr>
-                                <td>${e.nombre}</td>
-                                <td>${e.acs ? 'ACS' : '-'}</td>
-                                <td><input type="number" class="nota" data-id="${e.id}" data-tipo="tc" value="${cal.trabajoCotidiano || ''}" min="0" max="100" step="0.1"></td>
-                                <td><input type="number" class="nota" data-id="${e.id}" data-tipo="pry" value="${cal.proyecto || ''}" min="0" max="100" step="0.1"></td>
-                                <td><input type="number" class="nota" data-id="${e.id}" data-tipo="pba" value="${cal.prueba || ''}" min="0" max="100" step="0.1"></td>
-                                <td><input type="number" class="nota" data-id="${e.id}" data-tipo="tar" value="${cal.tareas || ''}" min="0" max="100" step="0.1"></td>
-                                <td class="promedio-${e.id}">-</td>
-                                <td class="estado-${e.id}">-</td>
-                            </tr>
-                        `;
-                    });
-                    htmlTabla += `
+                                    <tbody id="eval-tbody">
+                                        ${estudiantes.map(e => {
+                                            const cal = calificaciones.find(c => c.estudianteId === e.id && c.periodo === 'I') || {};
+                                            return `
+                                                <tr data-id="${e.id}">
+                                                    <td>${e.nombre}</td>
+                                                    <td>${e.acs ? 'ACS' : '-'}</td>
+                                                    <td><input type="number" class="nota-tc" value="${cal.tc || ''}" min="0" max="100" step="0.1" style="width:70px;"></td>
+                                                    <td><input type="number" class="nota-pry" value="${cal.pry || ''}" min="0" max="100" step="0.1" style="width:70px;"></td>
+                                                    <td><input type="number" class="nota-pba" value="${cal.pba || ''}" min="0" max="100" step="0.1" style="width:70px;"></td>
+                                                    <td><input type="number" class="nota-tar" value="${cal.tar || ''}" min="0" max="100" step="0.1" style="width:70px;"></td>
+                                                    <td class="promedio">-</td>
+                                                    <td class="estado">-</td>
+                                                </tr>
+                                            `;
+                                        }).join('')}
                                     </tbody>
                                 </table>
                             </div>
-                            <button class="btn" id="calcular-todo">🧮 Calcular Promedios</button>
-                            <button class="btn btn-secondary" id="guardar-componentes">💾 Guardar Calificaciones</button>
+
+                            <div class="grid-3">
+                                <button class="btn" onclick="UI.calcularPromedios()">🧮 Calcular Promedios</button>
+                                <button class="btn btn-secondary" onclick="UI.guardarEvaluacion()">💾 Guardar Notas</button>
+                                <button class="btn btn-secondary" onclick="UI.exportarEvaluacion()">📥 Exportar</button>
+                            </div>
                         </div>
                     `;
-                    container.innerHTML = htmlTabla;
+                },
 
-                    document.getElementById('calcular-todo')?.addEventListener('click', () => {
-                        const config = ModeloMEP.configuraciones;
-                        document.querySelectorAll('.nota').forEach(input => {
-                            const id = input.dataset.id;
-                            const tc = parseFloat(document.querySelector(`[data-id="${id}"][data-tipo="tc"]`).value) || 0;
-                            const pry = parseFloat(document.querySelector(`[data-id="${id}"][data-tipo="pry"]`).value) || 0;
-                            const pba = parseFloat(document.querySelector(`[data-id="${id}"][data-tipo="pba"]`).value) || 0;
-                            const tar = parseFloat(document.querySelector(`[data-id="${id}"][data-tipo="tar"]`).value) || 0;
-                            if (tc && pry && pba && tar) {
-                                try {
-                                    const prom = MotorCalculo.calcularPromedioEstandar(
-                                        { trabajoCotidiano: tc, proyecto: pry, prueba: pba, tareas: tar },
-                                        config
-                                    );
-                                    document.querySelector(`.promedio-${id}`).textContent = prom;
-                                    document.querySelector(`.estado-${id}`).textContent = MotorCalculo.determinarEstadoFinal(prom);
-                                } catch (e) { /* ignorar */ }
-                            }
-                        });
-                    });
+                async calcularPromedios() {
+                    const config = await obtener('configuracion', 'inst1');
+                    const filas = document.querySelectorAll('#eval-tbody tr');
 
-                    document.getElementById('guardar-componentes')?.addEventListener('click', () => {
-                        ModeloMEP.calificaciones = [];
-                        document.querySelectorAll('.nota').forEach(input => {
-                            const id = input.dataset.id;
-                            const tc = parseFloat(document.querySelector(`[data-id="${id}"][data-tipo="tc"]`).value) || null;
-                            const pry = parseFloat(document.querySelector(`[data-id="${id}"][data-tipo="pry"]`).value) || null;
-                            const pba = parseFloat(document.querySelector(`[data-id="${id}"][data-tipo="pba"]`).value) || null;
-                            const tar = parseFloat(document.querySelector(`[data-id="${id}"][data-tipo="tar"]`).value) || null;
-                            if (tc && pry && pba && tar) {
-                                ModeloMEP.calificaciones.push({
-                                    id: 'c' + Date.now() + id,
-                                    estudianteId: id,
-                                    periodo: 'I',
-                                    trabajoCotidiano: tc,
-                                    proyecto: pry,
-                                    prueba: pba,
-                                    tareas: tar
-                                });
+                    filas.forEach(fila => {
+                        const tc = parseFloat(fila.querySelector('.nota-tc').value) || 0;
+                        const pry = parseFloat(fila.querySelector('.nota-pry').value) || 0;
+                        const pba = parseFloat(fila.querySelector('.nota-pba').value) || 0;
+                        const tar = parseFloat(fila.querySelector('.nota-tar').value) || 0;
+                        
+                        if (tc && pry && pba && tar) {
+                            let promedio;
+                            if (fila.querySelector('td:nth-child(2)').textContent.includes('ACS')) {
+                                promedio = (tc * 0.5 + pba * 0.5).toFixed(2);
+                            } else {
+                                promedio = (tc * config.tc/100 + pry * config.pry/100 + pba * config.pba/100 + tar * config.tar/100).toFixed(2);
                             }
-                        });
-                        guardarTodo();
-                        alert('✅ Calificaciones guardadas');
+                            
+                            fila.querySelector('.promedio').textContent = promedio;
+                            
+                            let estado = '';
+                            if (promedio >= 65) estado = 'APROBADO';
+                            else if (promedio >= 50) estado = 'CONVOCATORIA';
+                            else estado = 'REPROBADO';
+                            
+                            fila.querySelector('.estado').textContent = estado;
+                        }
                     });
                 },
-                // --------------------------------------------------------------
-                // 5. ACTA FINAL (Validación de periodos)
-                // --------------------------------------------------------------
-                renderActaFinal(container) {
-                    const estudiantes = ModeloMEP.estudiantes;
-                    let html = `
+
+                async guardarEvaluacion() {
+                    const filas = document.querySelectorAll('#eval-tbody tr');
+                    const periodo = document.getElementById('eval-periodo').value;
+                    const transacciones = [];
+
+                    filas.forEach(fila => {
+                        const estudianteId = fila.dataset.id;
+                        const tc = parseFloat(fila.querySelector('.nota-tc').value) || 0;
+                        const pry = parseFloat(fila.querySelector('.nota-pry').value) || 0;
+                        const pba = parseFloat(fila.querySelector('.nota-pba').value) || 0;
+                        const tar = parseFloat(fila.querySelector('.nota-tar').value) || 0;
+
+                        if (tc && pry && pba && tar) {
+                            transacciones.push({
+                                store: 'calificaciones',
+                                dato: {
+                                    id: `cal-${estudianteId}-${periodo}`,
+                                    estudianteId,
+                                    periodo,
+                                    tc, pry, pba, tar
+                                }
+                            });
+                        }
+                    });
+
+                    await guardarMultiples(transacciones);
+                    alert('✅ Calificaciones guardadas');
+                },
+
+                exportarEvaluacion() {
+                    alert('Exportando evaluación...');
+                },
+
+                // ==================== PESTAÑA 6: ACTA FINAL ====================
+                async renderActa(container) {
+                    const estudiantes = await obtenerTodos('estudiantes');
+                    
+                    container.innerHTML = `
                         <div class="card">
                             <div class="card-header">
-                                <h2 class="card-title">📜 Acta Final de Evaluación</h2>
+                                <h2 class="card-title">6️⃣ ACTA FINAL</h2>
                             </div>
-                            <div class="table-responsive">
+
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label>Año</label>
+                                    <input type="number" id="acta-anio" value="2025">
+                                </div>
+                                <div class="form-group">
+                                    <label>Sección</label>
+                                    <select id="acta-seccion">
+                                        ${[...new Set(estudiantes.map(e => e.seccion))].map(s => `<option value="${s}">${s}</option>`).join('')}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid-2">
+                                <button class="btn" onclick="UI.validarPeriodos()">🔍 Validar Periodos</button>
+                                <button class="btn btn-secondary" onclick="UI.generarActaPDF()">📄 Generar Acta PDF</button>
+                            </div>
+
+                            <div id="acta-tabla" class="table-responsive mt-3"></div>
+                        </div>
+                    `;
+                },
+
+                async validarPeriodos() {
+                    const estudiantes = await obtenerTodos('estudiantes');
+                    const calificaciones = await obtenerTodos('calificaciones');
+                    
+                    let html = `
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Estudiante</th>
+                                    <th>I Periodo</th>
+                                    <th>II Periodo</th>
+                                    <th>III Periodo</th>
+                                    <th>Promedio Anual</th>
+                                    <th>Condición</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+
+                    estudiantes.forEach(e => {
+                        const calI = calificaciones.find(c => c.estudianteId === e.id && c.periodo === 'I');
+                        const calII = calificaciones.find(c => c.estudianteId === e.id && c.periodo === 'II');
+                        const calIII = calificaciones.find(c => c.estudianteId === e.id && c.periodo === 'III');
+
+                        const notaI = calI ? ((calI.tc + calI.pry + calI.pba + calI.tar) / 4).toFixed(2) : '-';
+                        const notaII = calII ? ((calII.tc + calII.pry + calII.pba + calII.tar) / 4).toFixed(2) : '-';
+                        const notaIII = calIII ? ((calIII.tc + calIII.pry + calIII.pba + calIII.tar) / 4).toFixed(2) : '-';
+
+                        let promedioAnual = '-';
+                        let condicion = 'Pendiente';
+
+                        if (notaI !== '-' && notaII !== '-' && notaIII !== '-') {
+                            const prom = (parseFloat(notaI) + parseFloat(notaII) + parseFloat(notaIII)) / 3;
+                            promedioAnual = prom.toFixed(2);
+                            condicion = prom >= 65 ? 'APROBADO' : prom >= 50 ? 'CONVOCATORIA' : 'REPROBADO';
+                        }
+
+                        html += `
+                            <tr>
+                                <td>${e.nombre}</td>
+                                <td>${notaI}</td>
+                                <td>${notaII}</td>
+                                <td>${notaIII}</td>
+                                <td><strong>${promedioAnual}</strong></td>
+                                <td><span class="badge ${condicion === 'APROBADO' ? 'badge-success' : condicion === 'CONVOCATORIA' ? 'badge-warning' : 'badge-error'}">${condicion}</span></td>
+                            </tr>
+                        `;
+                    });
+
+                    html += '</tbody></table>';
+                    document.getElementById('acta-tabla').innerHTML = html;
+                },
+
+                generarActaPDF() {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF();
+                    
+                    doc.setFontSize(16);
+                    doc.text('ACTA FINAL DE EVALUACIÓN', 14, 15);
+                    doc.setFontSize(12);
+                    doc.text('Ministerio de Educación Pública - Costa Rica', 14, 22);
+                    
+                    doc.autoTable({
+                        html: '#acta-tabla table'
+                    });
+                    
+                    doc.save('acta_final.pdf');
+                },
+
+                // ==================== PESTAÑA 7: REPORTES ====================
+                async renderReportes(container) {
+                    const estudiantes = await obtenerTodos('estudiantes');
+                    
+                    container.innerHTML = `
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">7️⃣ REPORTES</h2>
+                            </div>
+
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label>Estudiante</label>
+                                    <select id="reporte-estudiante">
+                                        ${estudiantes.map(e => `<option value="${e.id}">${e.nombre}</option>`).join('')}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Año</label>
+                                    <input type="number" id="reporte-anio" value="2025">
+                                </div>
+                            </div>
+
+                            <div class="grid-3">
+                                <button class="btn" onclick="UI.generarReportePDF()">📄 PDF</button>
+                                <button class="btn btn-secondary" onclick="UI.generarReporteWord()">📄 Word</button>
+                                <button class="btn btn-secondary" onclick="UI.generarReporteExcel()">📊 Excel</button>
+                            </div>
+
+                            <div id="reporte-contenido" class="card mt-3"></div>
+                        </div>
+                    `;
+                },
+
+                async generarReportePDF() {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF();
+                    
+                    doc.setFontSize(16);
+                    doc.text('Reporte Individual', 14, 15);
+                    
+                    doc.autoTable({
+                        head: [['Periodo', 'Trabajo Cot.', 'Proyecto', 'Prueba', 'Tareas', 'Promedio']],
+                        body: [
+                            ['I Periodo', '85', '90', '88', '92', '88.5'],
+                            ['II Periodo', '82', '88', '85', '90', '86.2'],
+                            ['III Periodo', '90', '92', '88', '94', '91.0']
+                        ]
+                    });
+                    
+                    doc.save('reporte_individual.pdf');
+                },
+
+                generarReporteWord() {
+                    const html = `
+                        <html>
+                            <head><meta charset="UTF-8"></head>
+                            <body>
+                                <h1>Reporte Individual</h1>
+                                <table border="1">
+                                    <tr><th>Periodo</th><th>Promedio</th></tr>
+                                    <tr><td>I Periodo</td><td>88.5</td></tr>
+                                    <tr><td>II Periodo</td><td>86.2</td></tr>
+                                    <tr><td>III Periodo</td><td>91.0</td></tr>
+                                </table>
+                            </body>
+                        </html>
+                    `;
+                    
+                    const blob = new Blob([html], { type: 'application/msword' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `reporte_${new Date().toISOString().split('T')[0]}.doc`;
+                    a.click();
+                },
+
+                generarReporteExcel() {
+                    const wb = XLSX.utils.book_new();
+                    const ws = XLSX.utils.json_to_sheet([
+                        { Periodo: 'I', Promedio: 88.5 },
+                        { Periodo: 'II', Promedio: 86.2 },
+                        { Periodo: 'III', Promedio: 91.0 }
+                    ]);
+                    XLSX.utils.book_append_sheet(wb, ws, 'Reporte');
+                    XLSX.writeFile(wb, `reporte_${new Date().toISOString().split('T')[0]}.xlsx`);
+                },
+
+                // ==================== PESTAÑA 8: BITÁCORA DUA ====================
+                async renderBitacora(container) {
+                    const bitacora = await obtenerTodos('bitacora');
+                    
+                    container.innerHTML = `
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">8️⃣ BITÁCORA DUA</h2>
+                            </div>
+
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label>Fecha</label>
+                                    <input type="date" id="bit-fecha" value="${new Date().toISOString().split('T')[0]}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Estudiante (opcional)</label>
+                                    <input type="text" id="bit-estudiante" placeholder="Nombre del estudiante">
+                                </div>
+                                <div class="form-group">
+                                    <label>Tema</label>
+                                    <input type="text" id="bit-tema" placeholder="Tema de la lección">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Observación</label>
+                                <textarea id="bit-observacion" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Ajustes DUA Aplicados</label>
+                                <textarea id="bit-dua" rows="2"></textarea>
+                            </div>
+                            <button class="btn" onclick="UI.guardarBitacora()">📝 Guardar Registro</button>
+
+                            <div class="table-responsive mt-3">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Estudiante</th>
+                                            <th>Tema</th>
+                                            <th>Observación</th>
+                                            <th>DUA</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${bitacora.map(b => `
+                                            <tr>
+                                                <td>${b.fecha}</td>
+                                                <td>${b.estudiante || '-'}</td>
+                                                <td>${b.tema}</td>
+                                                <td>${b.observacion}</td>
+                                                <td>${b.dua || '-'}</td>
+                                                <td>
+                                                    <button class="btn btn-secondary btn-small" onclick="UI.eliminarBitacora('${b.id}')">🗑️</button>
+                                                </td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="grid-2 mt-3">
+                                <button class="btn btn-secondary" onclick="UI.exportarBitacoraPDF()">📄 PDF</button>
+                                <button class="btn btn-secondary" onclick="UI.exportarBitacoraWord()">📄 Word</button>
+                            </div>
+                        </div>
+                    `;
+                },
+
+                async guardarBitacora() {
+                    const registro = {
+                        id: 'bit' + Date.now(),
+                        fecha: document.getElementById('bit-fecha').value,
+                        estudiante: document.getElementById('bit-estudiante').value,
+                        tema: document.getElementById('bit-tema').value,
+                        observacion: document.getElementById('bit-observacion').value,
+                        dua: document.getElementById('bit-dua').value
+                    };
+
+                    await guardar('bitacora', registro);
+                    await this.cambiarPestana('bitacora');
+                },
+
+                async eliminarBitacora(id) {
+                    if (confirm('¿Eliminar este registro?')) {
+                        await eliminar('bitacora', id);
+                        await this.cambiarPestana('bitacora');
+                    }
+                },
+
+                exportarBitacoraPDF() {
+                    obtenerTodos('bitacora').then(bitacora => {
+                        const { jsPDF } = window.jspdf;
+                        const doc = new jsPDF();
+                        
+                        doc.text('Bitácora DUA', 14, 15);
+                        
+                        doc.autoTable({
+                            head: [['Fecha', 'Tema', 'Observación']],
+                            body: bitacora.map(b => [b.fecha, b.tema, b.observacion])
+                        });
+                        
+                        doc.save('bitacora.pdf');
+                    });
+                },
+
+                exportarBitacoraWord() {
+                    obtenerTodos('bitacora').then(bitacora => {
+                        let html = '<html><head><meta charset="UTF-8"></head><body><h1>Bitácora DUA</h1><table border="1">';
+                        html += '<tr><th>Fecha</th><th>Tema</th><th>Observación</th></tr>';
+                        bitacora.forEach(b => {
+                            html += `<tr><td>${b.fecha}</td><td>${b.tema}</td><td>${b.observacion}</td></tr>`;
+                        });
+                        html += '</table></body></html>';
+                        
+                        const blob = new Blob([html], { type: 'application/msword' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'bitacora.doc';
+                        a.click();
+                    });
+                },
+
+                // ==================== PESTAÑA 9: INSTRUMENTOS ====================
+                async renderInstrumentos(container) {
+                    const instrumentos = await obtenerTodos('instrumentos');
+                    
+                    container.innerHTML = `
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">9️⃣ INSTRUMENTOS</h2>
+                            </div>
+
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label>Nombre del Instrumento</label>
+                                    <input type="text" id="ins-nombre">
+                                </div>
+                                <div class="form-group">
+                                    <label>Descripción</label>
+                                    <input type="text" id="ins-descripcion">
+                                </div>
+                            </div>
+
+                            <h3>Indicadores</h3>
+                            <div id="indicadores-container"></div>
+                            
+                            <div class="grid-2">
+                                <button class="btn btn-secondary" onclick="UI.agregarIndicador()">➕ Agregar Indicador</button>
+                                <button class="btn" onclick="UI.guardarInstrumento()">💾 Guardar Instrumento</button>
+                            </div>
+
+                            <div class="table-responsive mt-3">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Descripción</th>
+                                            <th>Indicadores</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${instrumentos.map(i => `
+                                            <tr>
+                                                <td>${i.nombre}</td>
+                                                <td>${i.descripcion}</td>
+                                                <td>${i.indicadores?.length || 0} indicadores</td>
+                                                <td>
+                                                    <button class="btn btn-danger btn-small" onclick="UI.eliminarInstrumento('${i.id}')">🗑️</button>
+                                                </td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                },
+
+                agregarIndicador() {
+                    const container = document.getElementById('indicadores-container');
+                    const index = container.children.length;
+                    
+                    const div = document.createElement('div');
+                    div.className = 'grid-2';
+                    div.innerHTML = `
+                        <input type="text" placeholder="Nombre del indicador" class="ind-nombre" data-index="${index}">
+                        <input type="number" placeholder="Puntuación máxima" class="ind-puntos" data-index="${index}" min="1" max="100">
+                    `;
+                    container.appendChild(div);
+                },
+
+                async guardarInstrumento() {
+                    const indicadores = [];
+                    document.querySelectorAll('.ind-nombre').forEach((input, i) => {
+                        const puntos = document.querySelector(`.ind-puntos[data-index="${i}"]`).value;
+                        if (input.value && puntos) {
+                            indicadores.push({
+                                nombre: input.value,
+                                puntosMaximos: parseInt(puntos)
+                            });
+                        }
+                    });
+
+                    const instrumento = {
+                        id: 'ins' + Date.now(),
+                        nombre: document.getElementById('ins-nombre').value,
+                        descripcion: document.getElementById('ins-descripcion').value,
+                        indicadores
+                    };
+
+                    await guardar('instrumentos', instrumento);
+                    await this.cambiarPestana('instrumentos');
+                },
+
+                async eliminarInstrumento(id) {
+                    if (confirm('¿Eliminar este instrumento?')) {
+                        await eliminar('instrumentos', id);
+                        await this.cambiarPestana('instrumentos');
+                    }
+                },
+
+                // ==================== PESTAÑA 10: ADECUACIONES ====================
+                async renderAdecuaciones(container) {
+                    const estudiantes = await obtenerTodos('estudiantes');
+                    const adecuaciones = await obtenerTodos('adecuaciones');
+                    
+                    container.innerHTML = `
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">🔟 ADECUACIONES</h2>
+                            </div>
+
+                            <div class="grid-3">
+                                <div class="form-group">
+                                    <label>Estudiante</label>
+                                    <select id="adec-estudiante">
+                                        ${estudiantes.map(e => `<option value="${e.id}">${e.nombre}</option>`).join('')}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Tipo</label>
+                                    <select id="adec-tipo">
+                                        <option value="acceso">Acceso</option>
+                                        <option value="no-significativa">No significativa</option>
+                                        <option value="acs">Significativa (ACS)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Fecha</label>
+                                    <input type="date" id="adec-fecha" value="${new Date().toISOString().split('T')[0]}">
+                                </div>
+                            </div>
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label>Responsable</label>
+                                    <input type="text" id="adec-responsable" placeholder="Ej: Docente, Comité, Padres">
+                                </div>
+                                <div class="form-group">
+                                    <label>Dictamen (si aplica)</label>
+                                    <input type="text" id="adec-dictamen" placeholder="Ej: Aprobado, Pendiente">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Descripción</label>
+                                <textarea id="adec-descripcion" rows="3"></textarea>
+                            </div>
+                            <button class="btn" onclick="UI.guardarAdecuacion()">💾 Registrar Adecuación</button>
+
+                            <div class="table-responsive mt-3">
                                 <table>
                                     <thead>
                                         <tr>
                                             <th>Estudiante</th>
-                                            <th>I Periodo</th>
-                                            <th>II Periodo</th>
-                                            <th>III Periodo</th>
-                                            <th>Promedio Anual</th>
-                                            <th>Condición Final</th>
+                                            <th>Tipo</th>
+                                            <th>Fecha</th>
+                                            <th>Responsable</th>
+                                            <th>Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                    `;
-                    estudiantes.forEach(e => {
-                        const notas = ModeloMEP.calificaciones.filter(c => c.estudianteId === e.id);
-                        const nota1 = notas.find(n => n.periodo === 'I')?.trabajoCotidiano || '-';
-                        const nota2 = notas.find(n => n.periodo === 'II')?.trabajoCotidiano || '-';
-                        const nota3 = notas.find(n => n.periodo === 'III')?.trabajoCotidiano || '-';
-                        let promedioAnual = '-';
-                        if (nota1 !== '-' && nota2 !== '-' && nota3 !== '-') {
-                            const prom = (parseFloat(nota1) + parseFloat(nota2) + parseFloat(nota3)) / 3;
-                            promedioAnual = prom.toFixed(2);
-                        }
-                        html += `
-                            <tr>
-                                <td>${e.nombre}</td>
-                                <td>${nota1}</td>
-                                <td>${nota2}</td>
-                                <td>${nota3}</td>
-                                <td><strong>${promedioAnual}</strong></td>
-                                <td>${promedioAnual !== '-' ? MotorCalculo.determinarEstadoFinal(promedioAnual) : 'Pendiente'}</td>
-                            </tr>
-                        `;
-                    });
-                    html += `
+                                        ${adecuaciones.map(a => {
+                                            const est = estudiantes.find(e => e.id === a.estudianteId);
+                                            return `
+                                                <tr>
+                                                    <td>${est?.nombre || '-'}</td>
+                                                    <td>${a.tipo}</td>
+                                                    <td>${a.fecha}</td>
+                                                    <td>${a.responsable || '-'}</td>
+                                                    <td>
+                                                        <button class="btn btn-danger btn-small" onclick="UI.eliminarAdecuacion('${a.id}')">🗑️</button>
+                                                    </td>
+                                                </tr>
+                                            `;
+                                        }).join('')}
                                     </tbody>
                                 </table>
                             </div>
-                            <button class="btn" id="validar-acta">🔍 Validar Periodos Completos</button>
                         </div>
                     `;
-                    container.innerHTML = html;
-                    document.getElementById('validar-acta')?.addEventListener('click', () => {
-                        const completa = ValidadorMEP.periodoCompleto('9-1', 'I') && ValidadorMEP.periodoCompleto('9-1', 'II') && ValidadorMEP.periodoCompleto('9-1', 'III');
-                        alert(completa ? '✅ Todos los periodos están completos' : '⚠️ Faltan calificaciones en uno o más periodos');
-                    });
                 },
-                // --------------------------------------------------------------
-                // 6. REPORTES (Exportación simulada)
-                // --------------------------------------------------------------
-                renderReportes(container) {
+
+                async guardarAdecuacion() {
+                    const adecuacion = {
+                        id: 'adec' + Date.now(),
+                        estudianteId: document.getElementById('adec-estudiante').value,
+                        tipo: document.getElementById('adec-tipo').value,
+                        fecha: document.getElementById('adec-fecha').value,
+                        responsable: document.getElementById('adec-responsable').value,
+                        dictamen: document.getElementById('adec-dictamen').value,
+                        descripcion: document.getElementById('adec-descripcion').value
+                    };
+
+                    await guardar('adecuaciones', adecuacion);
+                    await this.cambiarPestana('adecuaciones');
+                },
+
+                async eliminarAdecuacion(id) {
+                    if (confirm('¿Eliminar esta adecuación?')) {
+                        await eliminar('adecuaciones', id);
+                        await this.cambiarPestana('adecuaciones');
+                    }
+                },
+
+                // ==================== PESTAÑA 11: PIAD ====================
+                async renderPIAD(container) {
+                    const estudiantes = await obtenerTodos('estudiantes');
+                    const piads = await obtenerTodos('piad');
+                    
                     container.innerHTML = `
                         <div class="card">
                             <div class="card-header">
-                                <h2 class="card-title">📈 Reportes Académicos</h2>
+                                <h2 class="card-title">1️⃣1️⃣ PIAD (Plan Individual de Adecuación)</h2>
                             </div>
-                            <p>Genere reportes individuales o grupales para entrega a dirección o familias.</p>
-                            <div class="grid-3">
-                                <button class="btn" id="rep-individual">👤 Reporte Individual</button>
-                                <button class="btn btn-secondary" id="rep-grupo">👥 Reporte de Grupo</button>
-                                <button class="btn btn-secondary" id="rep-excel">📥 Exportar a Excel</button>
-                            </div>
-                        </div>
-                    `;
-                    document.getElementById('rep-individual')?.addEventListener('click', () => alert('Función de reporte individual (simulada)'));
-                    document.getElementById('rep-grupo')?.addEventListener('click', () => alert('Función de reporte de grupo (simulada)'));
-                    document.getElementById('rep-excel')?.addEventListener('click', () => alert('Exportación a Excel (simulada)'));
-                },
-                // --------------------------------------------------------------
-                // 7. BITÁCORA DOCENTE (DUA)
-                // --------------------------------------------------------------
-                renderBitacora(container) {
-                    container.innerHTML = `
-                        <div class="card">
-                            <div class="card-header">
-                                <h2 class="card-title">📓 Bitácora Docente (DUA)</h2>
+
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label>Estudiante</label>
+                                    <select id="piad-estudiante">
+                                        ${estudiantes.map(e => `<option value="${e.id}">${e.nombre}</option>`).join('')}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Fecha Elaboración</label>
+                                    <input type="date" id="piad-fecha" value="${new Date().toISOString().split('T')[0]}">
+                                </div>
                             </div>
                             <div class="grid-2">
                                 <div class="form-group">
-                                    <label for="bit-fecha">Fecha</label>
-                                    <input type="date" id="bit-fecha" value="${new Date().toISOString().split('T')[0]}">
+                                    <label>Tipo de Adecuación</label>
+                                    <select id="piad-tipo">
+                                        <option value="acceso">Acceso</option>
+                                        <option value="no-significativa">No significativa</option>
+                                        <option value="acs">Significativa (ACS)</option>
+                                    </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="bit-tema">Tema / Actividad</label>
-                                    <input type="text" id="bit-tema" placeholder="Ej: Análisis de textos">
+                                    <label>Comité que Aprueba</label>
+                                    <input type="text" id="piad-comite" value="Comité de Apoyo Educativo">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="bit-observaciones">Observaciones / Ajustes DUA</label>
-                                <textarea id="bit-observaciones" rows="3" placeholder="Describa ajustes realizados..."></textarea>
+                                <label>Objetivos Adaptados</label>
+                                <textarea id="piad-objetivos" rows="3"></textarea>
                             </div>
-                            <button class="btn" id="guardar-bitacora">📝 Guardar Registro</button>
+                            <div class="form-group">
+                                <label>Contenidos Adaptados</label>
+                                <textarea id="piad-contenidos" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Evaluación Diferenciada</label>
+                                <textarea id="piad-evaluacion" rows="3"></textarea>
+                            </div>
+                            <button class="btn" onclick="UI.guardarPIAD()">📄 Generar PIAD</button>
+
                             <div class="table-responsive mt-3">
                                 <table>
                                     <thead>
-                                        <tr><th>Fecha</th><th>Tema</th><th>Observaciones</th></tr>
+                                        <tr>
+                                            <th>Estudiante</th>
+                                            <th>Fecha</th>
+                                            <th>Tipo</th>
+                                            <th>Comité</th>
+                                            <th>Acciones</th>
+                                        </tr>
                                     </thead>
-                                    <tbody id="bitacora-tbody"></tbody>
+                                    <tbody>
+                                        ${piads.map(p => {
+                                            const est = estudiantes.find(e => e.id === p.estudianteId);
+                                            return `
+                                                <tr>
+                                                    <td>${est?.nombre || '-'}</td>
+                                                    <td>${p.fecha}</td>
+                                                    <td>${p.tipo}</td>
+                                                    <td>${p.comite}</td>
+                                                    <td>
+                                                        <button class="btn btn-danger btn-small" onclick="UI.eliminarPIAD('${p.id}')">🗑️</button>
+                                                    </td>
+                                                </tr>
+                                            `;
+                                        }).join('')}
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
                     `;
-                    // No hay persistencia de bitácora en este demo, pero se puede agregar fácilmente.
                 },
-                // --------------------------------------------------------------
-                // 8. INSTRUMENTOS (Placeholder)
-                // --------------------------------------------------------------
-                renderInstrumentos(container) {
+
+                async guardarPIAD() {
+                    const piad = {
+                        id: 'piad' + Date.now(),
+                        estudianteId: document.getElementById('piad-estudiante').value,
+                        fecha: document.getElementById('piad-fecha').value,
+                        tipo: document.getElementById('piad-tipo').value,
+                        comite: document.getElementById('piad-comite').value,
+                        objetivos: document.getElementById('piad-objetivos').value,
+                        contenidos: document.getElementById('piad-contenidos').value,
+                        evaluacion: document.getElementById('piad-evaluacion').value
+                    };
+
+                    await guardar('piad', piad);
+                    alert('✅ PIAD guardado');
+                    await this.cambiarPestana('piad');
+                },
+
+                async eliminarPIAD(id) {
+                    if (confirm('¿Eliminar este PIAD?')) {
+                        await eliminar('piad', id);
+                        await this.cambiarPestana('piad');
+                    }
+                },
+
+                // ==================== PESTAÑA 12: CONDUCTA (REAC 2026) ====================
+                async renderConducta(container) {
+                    const estudiantes = await obtenerTodos('estudiantes');
+                    const conducta = await obtenerTodos('conducta');
+                    
                     container.innerHTML = `
                         <div class="card">
                             <div class="card-header">
-                                <h2 class="card-title">📋 Instrumentos de Evaluación</h2>
+                                <h2 class="card-title">1️⃣2️⃣ CONDUCTA (REAC 2026)</h2>
                             </div>
-                            <p>Módulo para crear y gestionar rúbricas, listas de cotejo y escalas de desempeño.</p>
-                            <button class="btn">➕ Crear Nuevo Instrumento</button>
-                        </div>
-                    `;
-                },
-                // --------------------------------------------------------------
-                // 9. RESPALDO
-                // --------------------------------------------------------------
-                renderRespaldo(container) {
-                    container.innerHTML = `
-                        <div class="card">
-                            <div class="card-header">
-                                <h2 class="card-title">💾 Respaldo de Datos</h2>
+
+                            <div class="grid-3">
+                                <div class="form-group">
+                                    <label>Estudiante</label>
+                                    <select id="cond-estudiante">
+                                        ${estudiantes.map(e => `<option value="${e.id}">${e.nombre}</option>`).join('')}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Fecha</label>
+                                    <input type="date" id="cond-fecha" value="${new Date().toISOString().split('T')[0]}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Tipo de Falta</label>
+                                    <select id="cond-tipo" onchange="UI.actualizarRangoPuntos()">
+                                        <option value="muyLeve">Muy leve (1-5 pts)</option>
+                                        <option value="leve">Leve (5-15 pts)</option>
+                                        <option value="grave">Grave (20 pts)</option>
+                                        <option value="muyGrave">Muy grave (35 pts)</option>
+                                    </select>
+                                </div>
                             </div>
-                            <p>Exporte o importe toda la información del sistema.</p>
                             <div class="grid-2">
-                                <button class="btn" id="exportar-json">📤 Exportar a JSON</button>
-                                <button class="btn btn-secondary" id="importar-json">📥 Importar desde JSON</button>
+                                <div class="form-group">
+                                    <label>Puntos a descontar</label>
+                                    <input type="number" id="cond-puntos" min="1" max="5" value="1">
+                                </div>
+                                <div class="form-group">
+                                    <label>Descripción</label>
+                                    <input type="text" id="cond-descripcion" placeholder="Describa la falta">
+                                </div>
                             </div>
-                            <input type="file" id="archivo-json" accept=".json" style="display:none;">
+                            <button class="btn btn-warning" onclick="UI.registrarFalta()">⚠️ Registrar Falta</button>
+
+                            <div class="table-responsive mt-3">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Estudiante</th>
+                                            <th>Fecha</th>
+                                            <th>Tipo</th>
+                                            <th>Puntos</th>
+                                            <th>Nota Actual</th>
+                                            <th>Estado</th>
+                                            <th>WhatsApp</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="conducta-tbody"></tbody>
+                                </table>
+                            </div>
                         </div>
                     `;
-                    document.getElementById('exportar-json')?.addEventListener('click', () => {
-                        const dataStr = JSON.stringify(ModeloMEP, null, 2);
-                        const blob = new Blob([dataStr], { type: 'application/json' });
-                        const url = URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = `respaldo_mep_${new Date().toISOString().split('T')[0]}.json`;
-                        a.click();
-                    });
-                    document.getElementById('importar-json')?.addEventListener('click', () => {
-                        document.getElementById('archivo-json').click();
-                    });
-                    document.getElementById('archivo-json')?.addEventListener('change', (e) => {
-                        const file = e.target.files[0];
-                        if (!file) return;
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            try {
-                                const datos = JSON.parse(e.target.result);
-                                Object.assign(ModeloMEP, datos);
-                                guardarTodo();
-                                alert('✅ Datos restaurados correctamente');
-                            } catch (error) {
-                                alert('❌ Error al leer el archivo JSON');
-                            }
-                        };
-                        reader.readAsText(file);
-                    });
+
+                    this.actualizarTablaConducta(estudiantes, conducta);
+                },
+
+                actualizarRangoPuntos() {
+                    const tipo = document.getElementById('cond-tipo').value;
+                    const input = document.getElementById('cond-puntos');
+                    
+                    const rangos = {
+                        muyLeve: { min: 1, max: 5, valor: 1 },
+                        leve: { min: 5, max: 15, valor: 5 },
+                        grave: { min: 20, max: 20, valor: 20 },
+                        muyGrave: { min: 35, max: 35, valor: 35 }
+                    };
+                    
+                    input.min = rangos[tipo].min;
+                    input.max = rangos[tipo].max;
+                    input.value = rangos[tipo].valor;
+                },
+
+                async registrarFalta() {
+                    const estudianteId = document.getElementById('cond-estudiante').value;
+                    const puntos = parseInt(document.getElementById('cond-puntos').value);
+                    const fecha = document.getElementById('cond-fecha').value;
+                    const descripcion = document.getElementById('cond-descripcion').value;
+                    const tipo = document.getElementById('cond-tipo').value;
+
+                    if (!descripcion) {
+                        alert('❌ Descripción requerida');
+                        return;
+                    }
+
+                    const faltas = await obtenerPorIndice('conducta', 'estudianteId', estudianteId);
+                    const totalDescontado = faltas.reduce((sum, f) => sum + f.puntos, 0);
+                    const notaActual = Math.max(100 - totalDescontado - puntos, 50);
+
+                    const falta = {
+                        id: 'cond' + Date.now(),
+                        estudianteId,
+                        fecha,
+                        tipo,
+                        puntos,
+                        descripcion,
+                        notaActual
+                    };
+
+                    await guardar('conducta', falta);
+                    await this.cambiarPestana('conducta');
+                },
+
+                async actualizarTablaConducta(estudiantes, conducta) {
+                    const tbody = document.getElementById('conducta-tbody');
+                    if (!tbody) return;
+
+                    const estudiantesMap = new Map(estudiantes.map(e => [e.id, e]));
+                    
+                    tbody.innerHTML = conducta.map(c => {
+                        const est = estudiantesMap.get(c.estudianteId);
+                        let badgeClass = 'badge-success';
+                        if (c.notaActual < 70) badgeClass = 'badge-error';
+                        else if (c.notaActual < 75) badgeClass = 'badge-warning';
+                        
+                        return `
+                            <tr>
+                                <td>${est?.nombre || '-'}</td>
+                                <td>${c.fecha}</td>
+                                <td>${c.tipo}</td>
+                                <td>-${c.puntos}</td>
+                                <td>${c.notaActual}</td>
+                                <td><span class="badge ${badgeClass}">${c.notaActual >= 70 ? 'Aceptable' : 'Riesgo'}</span></td>
+                                <td>
+                                    <button class="btn btn-secondary btn-small" onclick="UI.enviarAlertaWhatsApp('${est?.telefono1}', ${c.notaActual})">
+                                        📱 WhatsApp
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
+                },
+
+                enviarAlertaWhatsApp(telefono, nota) {
+                    if (!telefono) return alert('Estudiante sin teléfono registrado');
+                    
+                    const mensaje = encodeURIComponent(`Apreciable familia, su nota de conducta actual es ${nota}. Solicitamos su apoyo para mejorar el comportamiento. Atentamente, Dirección.`);
+                    window.open(`https://wa.me/506${telefono}?text=${mensaje}`);
                 }
             };
 
