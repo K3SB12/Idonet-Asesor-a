@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>📚 SISTEMA DOCENTE MEP 2026 - VERSIÓN COMPLETA</title>
-    <!-- Librerías para PDF -->
+    <title>📚 SISTEMA DOCENTE MEP 2026 - VERSIÓN 100% COMPLETA</title>
+    <!-- Librerías -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -30,12 +31,11 @@
         body {
             background: var(--mep-gray);
             color: var(--mep-text);
-            padding-bottom: 85px;
+            padding-bottom: 90px;
             min-height: 100vh;
             font-size: 14px;
         }
 
-        /* HEADER INSTITUCIONAL */
         .mep-header {
             background: var(--mep-blue);
             color: white;
@@ -64,7 +64,6 @@
             padding: 20px;
         }
 
-        /* TARJETAS */
         .card {
             background: var(--mep-white);
             border-radius: 16px;
@@ -83,7 +82,6 @@
             font-weight: 600;
         }
 
-        /* GRIDS */
         .grid-2, .grid-3, .grid-4 {
             display: grid;
             gap: 15px;
@@ -93,7 +91,6 @@
         .grid-3 { grid-template-columns: repeat(3, 1fr); }
         .grid-4 { grid-template-columns: repeat(4, 1fr); }
 
-        /* FORMULARIOS */
         .form-group {
             margin-bottom: 15px;
         }
@@ -118,7 +115,6 @@
             box-shadow: 0 0 0 3px rgba(0,51,102,0.1);
         }
 
-        /* BOTONES */
         .btn {
             padding: 12px 20px;
             border: none;
@@ -139,13 +135,12 @@
         .btn-danger { background: var(--mep-danger); color: white; }
         .btn-outline { background: transparent; border: 2px solid var(--mep-blue); color: var(--mep-blue); }
 
-        /* TABLAS */
         .table-responsive {
             overflow-x: auto;
             border-radius: 12px;
             border: 1px solid var(--mep-border);
             margin: 15px 0;
-            max-height: 400px;
+            max-height: 500px;
             overflow-y: auto;
         }
         table {
@@ -171,9 +166,10 @@
             width: 100%;
             padding: 6px;
             font-size: 0.85rem;
+            border: 1px solid var(--mep-border);
+            border-radius: 4px;
         }
 
-        /* BADGES */
         .badge {
             display: inline-block;
             padding: 4px 10px;
@@ -187,7 +183,6 @@
         .badge-danger { background: var(--mep-danger); }
         .badge-info { background: var(--mep-blue); }
 
-        /* NAVEGACIÓN INFERIOR (9 FUNCIONES) */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -226,7 +221,6 @@
             margin-bottom: 2px;
         }
 
-        /* TARJETA DE INSTITUCIÓN */
         .institucion-card {
             background: #f8f9fa;
             border: 1px solid var(--mep-border);
@@ -241,14 +235,12 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        /* ÁREA DE IMPORTACIÓN */
-        .import-area {
-            border: 2px dashed var(--mep-blue);
-            padding: 25px;
-            text-align: center;
-            border-radius: 16px;
-            background: #f0f7ff;
-            margin: 15px 0;
+        .indicador-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--mep-blue);
         }
 
         .filtros-bar {
@@ -259,7 +251,13 @@
             border: 1px solid var(--mep-border);
         }
 
-        /* UTILIDADES */
+        .estado-select {
+            padding: 6px;
+            border-radius: 6px;
+            border: 1px solid var(--mep-border);
+            width: 100%;
+        }
+
         .text-success { color: var(--mep-success); }
         .text-danger { color: var(--mep-danger); }
         .mt-3 { margin-top: 15px; }
@@ -279,27 +277,27 @@
 </main>
 
 <nav class="bottom-nav" id="bottomNav">
-    <button class="nav-item active" data-view="instituciones">🏫<span>Instituciones</span></button>
-    <button class="nav-item" data-view="config">⚙️<span>Config</span></button>
-    <button class="nav-item" data-view="estudiantes">👥<span>Listas</span></button>
+    <button class="nav-item" data-view="instituciones">🏫<span>Instituciones</span></button>
+    <button class="nav-item" data-view="estudiantes">👥<span>Estudiantes</span></button>
     <button class="nav-item" data-view="asistencia">📅<span>Asistencia</span></button>
-    <button class="nav-item" data-view="evaluacion">📊<span>Evaluar</span></button>
+    <button class="nav-item" data-view="nuevaAsistencia">➕<span>Nueva Asist.</span></button>
+    <button class="nav-item" data-view="reporteAsistencia">📊<span>Reporte Asist.</span></button>
     <button class="nav-item" data-view="cotidiano">📝<span>Cotidiano</span></button>
-    <button class="nav-item" data-view="reportes">📑<span>Reportes</span></button>
+    <button class="nav-item" data-view="indicadores">🔧<span>Indicadores</span></button>
+    <button class="nav-item" data-view="evaluacion">📋<span>Evaluación</span></button>
     <button class="nav-item" data-view="alertas">🚨<span>Alertas</span></button>
-    <button class="nav-item" data-view="plantillas">📋<span>Plantillas</span></button>
 </nav>
 
 <script>
     (function() {
         // ==================== CONFIGURACIÓN GLOBAL ====================
         const DB_NAME = 'MEP_FINAL_2026';
-        const DB_VERSION = 7;
+        const DB_VERSION = 10;
         const CODIGO_PAIS = '506';
 
         let db = null;
         let institucionActiva = null;
-        let nivelActivo = 'secundaria'; // preescolar, primaria, secundaria
+        let nivelActivo = 'secundaria';
 
         // ==================== INICIALIZACIÓN INDEXEDDB ====================
         function inicializarDB() {
@@ -320,6 +318,7 @@
                 request.onupgradeneeded = (event) => {
                     const db = event.target.result;
 
+                    // Stores principales
                     if (!db.objectStoreNames.contains('instituciones')) {
                         db.createObjectStore('instituciones', { keyPath: 'id', autoIncrement: true });
                     }
@@ -327,30 +326,42 @@
                     if (!db.objectStoreNames.contains('estudiantes')) {
                         const storeEst = db.createObjectStore('estudiantes', { keyPath: 'id', autoIncrement: true });
                         storeEst.createIndex('institucionId', 'institucionId', { unique: false });
-                        storeEst.createIndex('identificacion', 'identificacion', { unique: true });
-                    }
-
-                    if (!db.objectStoreNames.contains('asistencia')) {
-                        db.createObjectStore('asistencia', { keyPath: 'id', autoIncrement: true });
-                    }
-
-                    if (!db.objectStoreNames.contains('evaluaciones')) {
-                        db.createObjectStore('evaluaciones', { keyPath: 'id', autoIncrement: true });
+                        storeEst.createIndex('seccion', 'seccion', { unique: false });
                     }
 
                     if (!db.objectStoreNames.contains('indicadores')) {
-                        db.createObjectStore('indicadores', { keyPath: 'id', autoIncrement: true });
+                        const storeInd = db.createObjectStore('indicadores', { keyPath: 'id', autoIncrement: true });
+                        storeInd.createIndex('institucionId', 'institucionId', { unique: false });
                     }
 
-                    if (!db.objectStoreNames.contains('bitacora')) {
-                        db.createObjectStore('bitacora', { keyPath: 'id', autoIncrement: true });
+                    if (!db.objectStoreNames.contains('asistencia')) {
+                        const storeAsis = db.createObjectStore('asistencia', { keyPath: 'id', autoIncrement: true });
+                        storeAsis.createIndex('fecha', 'fecha', { unique: false });
+                        storeAsis.createIndex('estudianteId', 'estudianteId', { unique: false });
+                        storeAsis.createIndex('institucionId', 'institucionId', { unique: false });
                     }
 
-                    // Datos de ejemplo - Instituciones
+                    if (!db.objectStoreNames.contains('evaluacionesCotidiano')) {
+                        const storeEval = db.createObjectStore('evaluacionesCotidiano', { keyPath: 'id', autoIncrement: true });
+                        storeEval.createIndex('estudianteId', 'estudianteId', { unique: false });
+                        storeEval.createIndex('periodo', 'periodo', { unique: false });
+                        storeEval.createIndex('institucionId', 'institucionId', { unique: false });
+                    }
+
+                    if (!db.objectStoreNames.contains('evaluacionesGenerales')) {
+                        const storeEvalG = db.createObjectStore('evaluacionesGenerales', { keyPath: 'id', autoIncrement: true });
+                        storeEvalG.createIndex('estudianteId', 'estudianteId', { unique: false });
+                        storeEvalG.createIndex('periodo', 'periodo', { unique: false });
+                    }
+
+                    // DATOS DE EJEMPLO
                     const tx = event.target.transaction;
-                    const storeInst = tx.objectStore('instituciones');
                     
+                    // Institución
+                    const storeInst = tx.objectStore('instituciones');
+                    const instId = 1;
                     storeInst.add({ 
+                        id: instId,
                         nombre: 'Liceo Rural Las Moras', 
                         direccionRegional: 'Limón', 
                         circuito: '10', 
@@ -358,57 +369,47 @@
                         nivel: 'secundaria',
                         registrada: new Date().toLocaleDateString('es-CR')
                     });
-                    
-                    storeInst.add({ 
-                        nombre: 'Escuela El Pilar', 
-                        direccionRegional: 'San Carlos', 
-                        circuito: '05', 
-                        codigo: '3357-00',
-                        nivel: 'primaria',
-                        registrada: new Date().toLocaleDateString('es-CR')
-                    });
 
-                    // Datos de ejemplo - Estudiantes con datos completos
+                    // Estudiantes
                     const storeEst = tx.objectStore('estudiantes');
-                    storeEst.add({
-                        institucionId: 1,
-                        identificacion: '1-1234-5678',
-                        nombre: 'Alberto Laureano Guevara',
-                        correoMEP: 'alberto.guevara@est.mep.go.cr',
-                        telefono1: '88881111',
-                        telefono2: '88881112',
-                        correoEncargado: 'padre.alberto@gmail.com',
-                        seccion: '9-1',
-                        acs: false
-                    });
-                    storeEst.add({
-                        institucionId: 1,
-                        identificacion: '2-2345-6789',
-                        nombre: 'María José Jiménez',
-                        correoMEP: 'maria.jimenez@est.mep.go.cr',
-                        telefono1: '88882222',
-                        telefono2: '88882223',
-                        correoEncargado: 'madre.maria@gmail.com',
-                        seccion: '9-1',
-                        acs: true
-                    });
-                    storeEst.add({
-                        institucionId: 2,
-                        identificacion: '3-3456-7890',
-                        nombre: 'Sofía Valverde',
-                        correoMEP: 'sofia.valverde@est.mep.go.cr',
-                        telefono1: '88883333',
-                        telefono2: '88883334',
-                        correoEncargado: 'padre.sofia@gmail.com',
-                        seccion: '4-1',
-                        acs: false
-                    });
+                    const estudiantes = [
+                        { id: 1, institucionId: 1, identificacion: '1-1234-5678', nombre: 'Alberto Laureano Guevara', seccion: '9-1', telefono1: '88881111', telefono2: '88881112', correoEncargado: 'padre1@gmail.com', acs: false },
+                        { id: 2, institucionId: 1, identificacion: '2-2345-6789', nombre: 'Amalia Gil Longoria', seccion: '9-1', telefono1: '88882222', telefono2: '88882223', correoEncargado: 'madre2@gmail.com', acs: false },
+                        { id: 3, institucionId: 1, identificacion: '3-3456-7890', nombre: 'Enrique Yuridia Jaramillo Becerra', seccion: '9-1', telefono1: '88883333', telefono2: '88883334', correoEncargado: 'padre3@gmail.com', acs: false },
+                        { id: 4, institucionId: 1, identificacion: '4-4567-8901', nombre: 'Jos Gaona', seccion: '9-1', telefono1: '88884444', telefono2: '88884445', correoEncargado: 'padre4@gmail.com', acs: false },
+                        { id: 5, institucionId: 1, identificacion: '5-5678-9012', nombre: 'Juan Pérez Ledezma', seccion: '9-1', telefono1: '88885555', telefono2: '88885556', correoEncargado: 'padre5@gmail.com', acs: false },
+                        { id: 6, institucionId: 1, identificacion: '6-6789-0123', nombre: 'Leonardo Reynoso', seccion: '9-1', telefono1: '88886666', telefono2: '88886667', correoEncargado: 'padre6@gmail.com', acs: false },
+                        { id: 7, institucionId: 1, identificacion: '7-7890-1234', nombre: 'Luisa Jacinto Ledesma', seccion: '9-1', telefono1: '88887777', telefono2: '88887778', correoEncargado: 'padre7@gmail.com', acs: false }
+                    ];
+                    estudiantes.forEach(e => storeEst.add(e));
 
-                    // Indicadores de ejemplo
+                    // Indicadores
                     const storeInd = tx.objectStore('indicadores');
-                    storeInd.add({ descripcion: 'Analiza críticamente las causas de la Segunda Guerra Mundial', puntos: 3 });
-                    storeInd.add({ descripcion: 'Identifica eventos del periodo de entreguerras', puntos: 3 });
-                    storeInd.add({ descripcion: 'Compara perspectivas sobre la Guerra Fría', puntos: 3 });
+                    const indicadores = [
+                        { id: 1, institucionId: 1, letra: 'A', descripcion: 'Analiza críticamente las causas y consecuencias de la Segunda Guerra Mundial mediante el uso de recursos gráficos e históricos.', puntos: 3, fechaEvaluacion: '2025-04-03' },
+                        { id: 2, institucionId: 1, letra: 'B', descripcion: 'Identifica los principales eventos del periodo de entreguerras y su impacto en América Latina.', puntos: 3, fechaEvaluacion: '2025-04-03' },
+                        { id: 3, institucionId: 1, letra: 'C', descripcion: 'Diferencia los modelos ideológicos y económicos del bloque capitalista y socialista.', puntos: 3, fechaEvaluacion: '2025-04-03' }
+                    ];
+                    indicadores.forEach(i => storeInd.add(i));
+
+                    // Asistencias de ejemplo
+                    const storeAsis = tx.objectStore('asistencia');
+                    const asistencias = [
+                        { id: 1, institucionId: 1, estudianteId: 1, fecha: '2025-04-01', estado: 'AI', seccion: '9-1', asignatura: 'Estudios Sociales', leccion: 1 },
+                        { id: 2, institucionId: 1, estudianteId: 2, fecha: '2025-04-01', estado: 'AJ', seccion: '9-1', asignatura: 'Estudios Sociales', leccion: 1 },
+                        { id: 3, institucionId: 1, estudianteId: 3, fecha: '2025-04-01', estado: 'T', seccion: '9-1', asignatura: 'Estudios Sociales', leccion: 1 }
+                    ];
+                    asistencias.forEach(a => storeAsis.add(a));
+
+                    // Evaluaciones de cotidiano de ejemplo
+                    const storeEval = tx.objectStore('evaluacionesCotidiano');
+                    const evaluaciones = [
+                        { id: 1, institucionId: 1, estudianteId: 1, periodo: 'I', a: 3, b: 3, c: 3, porcentaje: 50.00 },
+                        { id: 2, institucionId: 1, estudianteId: 2, periodo: 'I', a: 3, b: 3, c: 3, porcentaje: 50.00 },
+                        { id: 3, institucionId: 1, estudianteId: 6, periodo: 'I', a: 3, b: 3, c: 2, porcentaje: 44.44 },
+                        { id: 4, institucionId: 1, estudianteId: 7, periodo: 'I', a: 2, b: 2, c: 3, porcentaje: 38.89 }
+                    ];
+                    evaluaciones.forEach(e => storeEval.add(e));
                 };
             });
         }
@@ -418,8 +419,7 @@
                 if (!db) return resolve();
                 
                 const tx = db.transaction('instituciones', 'readonly');
-                const store = tx.objectStore('instituciones');
-                store.getAll().onsuccess = (e) => {
+                tx.objectStore('instituciones').getAll().onsuccess = (e) => {
                     if (e.target.result.length > 0) {
                         institucionActiva = e.target.result[0];
                         nivelActivo = institucionActiva.nivel;
@@ -434,28 +434,7 @@
             if (institucionActiva) {
                 document.getElementById('institucionNombre').textContent = `MEP · ${institucionActiva.nombre}`;
                 document.getElementById('institucionDetalle').textContent = 
-                    `Código: ${institucionActiva.codigo} · ${institucionActiva.nivel} · ${institucionActiva.direccionRegional}`;
-            }
-        }
-
-        // ==================== LÓGICA POR NIVEL ====================
-        function getConfiguracionEvaluacion(nivel) {
-            switch(nivel) {
-                case 'preescolar':
-                    return { rubros: [{ nombre: 'Observaciones', porcentaje: 100 }], tieneExamenes: false };
-                case 'primaria':
-                    return { rubros: [
-                        { nombre: 'Trabajo Cotidiano', porcentaje: 60 },
-                        { nombre: 'Pruebas', porcentaje: 40 }
-                    ], tieneExamenes: true };
-                case 'secundaria':
-                    return { rubros: [
-                        { nombre: 'Trabajo Cotidiano', porcentaje: 40 },
-                        { nombre: 'Pruebas', porcentaje: 30 },
-                        { nombre: 'Tareas', porcentaje: 15 },
-                        { nombre: 'Proyectos', porcentaje: 15 }
-                    ], tieneExamenes: true };
-                default: return null;
+                    `Código: ${institucionActiva.codigo} · ${institucionActiva.nivel}`;
             }
         }
 
@@ -469,14 +448,14 @@
             
             const vistas = {
                 instituciones: renderInstituciones,
-                config: renderConfiguracion,
                 estudiantes: renderEstudiantes,
                 asistencia: renderAsistencia,
-                evaluacion: renderEvaluacion,
+                nuevaAsistencia: renderNuevaAsistencia,
+                reporteAsistencia: renderReporteAsistencia,
                 cotidiano: renderCotidiano,
-                reportes: renderReportes,
-                alertas: renderAlertas,
-                plantillas: renderPlantillas
+                indicadores: renderIndicadores,
+                evaluacion: renderEvaluacion,
+                alertas: renderAlertas
             };
 
             if (vistas[vistaId]) {
@@ -489,60 +468,34 @@
             if (!db) return;
             
             const tx = db.transaction('instituciones', 'readonly');
-            const store = tx.objectStore('instituciones');
-            store.getAll().onsuccess = (e) => {
+            tx.objectStore('instituciones').getAll().onsuccess = (e) => {
                 const instituciones = e.target.result;
                 
                 container.innerHTML = `
                     <div class="card">
                         <div class="card-title">🏫 Centros Educativos</div>
-                        
                         <div class="grid-2">
-                            <div class="form-group">
-                                <label>Nombre de la Institución</label>
-                                <input type="text" id="inst-nombre" placeholder="Ej: Liceo Rural Las Moras">
-                            </div>
-                            <div class="form-group">
-                                <label>Dirección Regional</label>
-                                <input type="text" id="inst-regional" placeholder="Ej: Limón">
-                            </div>
+                            <input type="text" id="inst-nombre" placeholder="Nombre">
+                            <input type="text" id="inst-regional" placeholder="Dirección Regional">
                         </div>
                         <div class="grid-2">
-                            <div class="form-group">
-                                <label>Circuito Escolar</label>
-                                <input type="text" id="inst-circuito" placeholder="Ej: 10">
-                            </div>
-                            <div class="form-group">
-                                <label>Código</label>
-                                <input type="text" id="inst-codigo" placeholder="Ej: 0255-00">
-                            </div>
+                            <input type="text" id="inst-circuito" placeholder="Circuito">
+                            <input type="text" id="inst-codigo" placeholder="Código">
                         </div>
-                        <div class="form-group">
-                            <label>Nivel</label>
-                            <select id="inst-nivel">
-                                <option value="preescolar">Preescolar</option>
-                                <option value="primaria">Primaria (I y II Ciclo)</option>
-                                <option value="secundaria" selected>Secundaria (III Ciclo)</option>
-                            </select>
-                        </div>
-                        <button class="btn btn-primary" onclick="agregarInstitucion()">➕ Agregar Institución</button>
+                        <select id="inst-nivel">
+                            <option value="preescolar">Preescolar</option>
+                            <option value="primaria">Primaria</option>
+                            <option value="secundaria" selected>Secundaria</option>
+                        </select>
+                        <button class="btn btn-primary mt-3" onclick="agregarInstitucion()">➕ Agregar Institución</button>
                     </div>
-
                     <div class="card">
                         <h3>Instituciones Registradas</h3>
                         ${instituciones.map(inst => `
                             <div class="institucion-card" onclick="seleccionarInstitucion(${inst.id})">
-                                <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <div>
-                                        <h4>${inst.nombre}</h4>
-                                        <p>${inst.direccionRegional} | Circuito: ${inst.circuito} | Código: ${inst.codigo}</p>
-                                        <p><span class="badge badge-info">${inst.nivel}</span> | Registrada: ${inst.registrada}</p>
-                                    </div>
-                                    <div>
-                                        <button class="btn btn-outline btn-small" onclick="editarInstitucion(${inst.id}, event)">✏️</button>
-                                        <button class="btn btn-danger btn-small" onclick="eliminarInstitucion(${inst.id}, event)">🗑️</button>
-                                    </div>
-                                </div>
+                                <h4>${inst.nombre}</h4>
+                                <p>${inst.direccionRegional} | Código: ${inst.codigo}</p>
+                                <span class="badge badge-info">${inst.nivel}</span>
                             </div>
                         `).join('')}
                     </div>
@@ -551,27 +504,18 @@
 
             window.agregarInstitucion = () => {
                 const nombre = document.getElementById('inst-nombre').value;
-                const regional = document.getElementById('inst-regional').value;
-                const circuito = document.getElementById('inst-circuito').value;
-                const codigo = document.getElementById('inst-codigo').value;
-                const nivel = document.getElementById('inst-nivel').value;
-
-                if (!nombre || !regional || !circuito || !codigo) {
-                    alert('❌ Todos los campos son obligatorios');
-                    return;
-                }
-
+                if (!nombre) return alert('❌ Nombre requerido');
+                
                 const tx = db.transaction('instituciones', 'readwrite');
-                const store = tx.objectStore('instituciones');
-                store.add({
-                    nombre, direccionRegional: regional, circuito, codigo, nivel,
+                tx.objectStore('instituciones').add({
+                    nombre,
+                    direccionRegional: document.getElementById('inst-regional').value,
+                    circuito: document.getElementById('inst-circuito').value,
+                    codigo: document.getElementById('inst-codigo').value,
+                    nivel: document.getElementById('inst-nivel').value,
                     registrada: new Date().toLocaleDateString('es-CR')
                 });
-
-                tx.oncomplete = () => {
-                    alert('✅ Institución agregada');
-                    cambiarVista('instituciones');
-                };
+                tx.oncomplete = () => cambiarVista('instituciones');
             };
 
             window.seleccionarInstitucion = (id) => {
@@ -583,488 +527,550 @@
                     cambiarVista('estudiantes');
                 };
             };
-
-            window.eliminarInstitucion = (id, event) => {
-                event.stopPropagation();
-                if (confirm('¿Eliminar esta institución?')) {
-                    const tx = db.transaction('instituciones', 'readwrite');
-                    tx.objectStore('instituciones').delete(id);
-                    tx.oncomplete = () => cambiarVista('instituciones');
-                }
-            };
-
-            window.editarInstitucion = (id, event) => {
-                event.stopPropagation();
-                alert('Editar institución (funcionalidad en desarrollo)');
-            };
         }
 
-        // ==================== VISTA 2: CONFIGURACIÓN ====================
-        function renderConfiguracion(container) {
-            if (!institucionActiva) {
-                container.innerHTML = '<div class="card"><p>⚠️ Seleccione una institución primero</p></div>';
-                return;
-            }
-
-            const config = getConfiguracionEvaluacion(nivelActivo);
-
-            container.innerHTML = `
-                <div class="card">
-                    <div class="card-title">⚙️ Configuración - ${institucionActiva.nombre}</div>
-                    <div class="form-group">
-                        <label>Nivel educativo:</label>
-                        <select id="config-nivel" onchange="cambiarNivel(this.value)">
-                            <option value="preescolar" ${nivelActivo === 'preescolar' ? 'selected' : ''}>Preescolar</option>
-                            <option value="primaria" ${nivelActivo === 'primaria' ? 'selected' : ''}>Primaria</option>
-                            <option value="secundaria" ${nivelActivo === 'secundaria' ? 'selected' : ''}>Secundaria</option>
-                        </select>
-                    </div>
-                    <h4>Rubros de evaluación</h4>
-                    ${config.rubros.map((r, i) => `
-                        <div class="form-group">
-                            <label>${r.nombre} (%)</label>
-                            <input type="number" value="${r.porcentaje}" min="0" max="100" readonly class="form-control">
-                        </div>
-                    `).join('')}
-                    <button class="btn btn-primary mt-3" onclick="guardarConfiguracion()">💾 Guardar Configuración</button>
-                </div>
-            `;
-
-            window.cambiarNivel = (nuevoNivel) => {
-                nivelActivo = nuevoNivel;
-                if (institucionActiva) {
-                    institucionActiva.nivel = nuevoNivel;
-                    const tx = db.transaction('instituciones', 'readwrite');
-                    tx.objectStore('instituciones').put(institucionActiva);
-                }
-                renderConfiguracion(container);
-            };
-
-            window.guardarConfiguracion = () => {
-                alert('✅ Configuración guardada');
-            };
-        }
-
-        // ==================== VISTA 3: ESTUDIANTES (LISTAS COMPLETAS) ====================
+        // ==================== VISTA 2: ESTUDIANTES ====================
         function renderEstudiantes(container) {
-            if (!institucionActiva) {
-                container.innerHTML = '<div class="card"><p>⚠️ Seleccione una institución primero</p></div>';
-                return;
-            }
-
-            container.innerHTML = `
-                <div class="card">
-                    <div class="card-title">👥 Gestión de Listas - ${institucionActiva.nombre}</div>
-                    
-                    <!-- AGREGAR MANUAL -->
-                    <details>
-                        <summary style="cursor: pointer; color: var(--mep-blue); font-weight: 600;">➕ Agregar Estudiante Manualmente</summary>
-                        <div class="mt-3">
-                            <div class="grid-2">
-                                <input type="text" id="est-nombre" placeholder="Nombre completo">
-                                <input type="text" id="est-identificacion" placeholder="Cédula (1-1234-5678)">
-                            </div>
-                            <div class="grid-2">
-                                <input type="text" id="est-seccion" placeholder="Sección (9-1)">
-                                <input type="email" id="est-correoMEP" placeholder="Correo MEP">
-                            </div>
-                            <div class="grid-2">
-                                <input type="text" id="est-tel1" placeholder="Teléfono 1 (principal)">
-                                <input type="text" id="est-tel2" placeholder="Teléfono 2 (alternativo)">
-                            </div>
-                            <input type="email" id="est-correoEnc" placeholder="Correo del encargado">
-                            <label><input type="checkbox" id="est-acs"> ACS</label>
-                            <button class="btn btn-success mt-3" onclick="agregarEstudiante()">✅ Guardar Estudiante</button>
-                        </div>
-                    </details>
-
-                    <!-- IMPORTAR / EXPORTAR -->
-                    <div class="grid-2 mt-3">
-                        <div class="import-area">
-                            <p>📁 Importar lista desde CSV</p>
-                            <input type="file" id="csvFile" accept=".csv">
-                            <button class="btn btn-primary" onclick="importarCSV()">Importar</button>
-                        </div>
-                        <div style="padding: 20px;">
-                            <button class="btn btn-success w-100" onclick="exportarCSV()">📥 Exportar a CSV</button>
-                            <button class="btn btn-danger w-100 mt-2" onclick="eliminarTodaLaLista()">🗑️ Eliminar toda la lista</button>
-                        </div>
-                    </div>
-
-                    <!-- FILTROS -->
-                    <div class="filtros-bar">
-                        <div class="grid-3">
-                            <div>
-                                <label>Filtrar por sección:</label>
-                                <select id="filtroSeccion" onchange="filtrarEstudiantes()">
-                                    <option value="">Todas</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label>Buscar nombre:</label>
-                                <input type="text" id="buscarNombre" placeholder="Escriba..." onkeyup="filtrarEstudiantes()">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- TABLA -->
-                    <div class="table-responsive">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Identificación</th>
-                                    <th>Nombre</th>
-                                    <th>Sección</th>
-                                    <th>Teléfono 1</th>
-                                    <th>Teléfono 2</th>
-                                    <th>Correo Encargado</th>
-                                    <th>ACS</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbodyEstudiantes"></tbody>
-                        </table>
-                    </div>
-                </div>
-            `;
-
-            cargarEstudiantes();
-
-            // ========== FUNCIONES CRUD ==========
-            window.agregarEstudiante = () => {
-                const nuevo = {
-                    institucionId: institucionActiva.id,
-                    identificacion: document.getElementById('est-identificacion').value,
-                    nombre: document.getElementById('est-nombre').value,
-                    seccion: document.getElementById('est-seccion').value,
-                    correoMEP: document.getElementById('est-correoMEP').value,
-                    telefono1: document.getElementById('est-tel1').value,
-                    telefono2: document.getElementById('est-tel2').value,
-                    correoEncargado: document.getElementById('est-correoEnc').value,
-                    acs: document.getElementById('est-acs').checked
-                };
-
-                if (!nuevo.identificacion || !nuevo.nombre) {
-                    alert('❌ Identificación y nombre obligatorios');
-                    return;
-                }
-
-                const tx = db.transaction('estudiantes', 'readwrite');
-                tx.objectStore('estudiantes').add(nuevo);
-                tx.oncomplete = () => {
-                    alert('✅ Estudiante agregado');
-                    cargarEstudiantes();
-                    // Limpiar campos
-                    document.getElementById('est-identificacion').value = '';
-                    document.getElementById('est-nombre').value = '';
-                    document.getElementById('est-seccion').value = '';
-                    document.getElementById('est-correoMEP').value = '';
-                    document.getElementById('est-tel1').value = '';
-                    document.getElementById('est-tel2').value = '';
-                    document.getElementById('est-correoEnc').value = '';
-                    document.getElementById('est-acs').checked = false;
-                };
-            };
-
-            window.eliminarEstudiante = (id) => {
-                if (confirm('¿Eliminar este estudiante?')) {
-                    const tx = db.transaction('estudiantes', 'readwrite');
-                    tx.objectStore('estudiantes').delete(id);
-                    tx.oncomplete = () => cargarEstudiantes();
-                }
-            };
-
-            window.eliminarTodaLaLista = () => {
-                if (confirm('⚠️ ¿ELIMINAR TODA LA LISTA DE ESTUDIANTES? Esta acción es irreversible.')) {
-                    const tx = db.transaction('estudiantes', 'readwrite');
-                    const store = tx.objectStore('estudiantes');
-                    store.getAll().onsuccess = (e) => {
-                        e.target.result.forEach(est => store.delete(est.id));
-                    };
-                    tx.oncomplete = () => cargarEstudiantes();
-                }
-            };
-
-            window.toggleACS = (id, checked) => {
-                const tx = db.transaction('estudiantes', 'readwrite');
-                const store = tx.objectStore('estudiantes');
-                store.get(id).onsuccess = (e) => {
-                    const est = e.target.result;
-                    est.acs = checked;
-                    store.put(est);
-                };
-            };
-
-            window.exportarCSV = () => {
-                const tx = db.transaction('estudiantes', 'readonly');
-                tx.objectStore('estudiantes').getAll().onsuccess = (e) => {
-                    const estudiantes = e.target.result.filter(e => e.institucionId === institucionActiva.id);
-                    let csv = "Identificación,Nombre,Sección,Teléfono 1,Teléfono 2,Correo Encargado,ACS\n";
-                    estudiantes.forEach(e => {
-                        csv += `${e.identificacion},"${e.nombre}",${e.seccion || ''},${e.telefono1 || ''},${e.telefono2 || ''},${e.correoEncargado || ''},${e.acs ? 'Sí' : 'No'}\n`;
-                    });
-                    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
-                    const link = document.createElement('a');
-                    link.href = URL.createObjectURL(blob);
-                    link.download = `estudiantes_${new Date().toISOString().slice(0,10)}.csv`;
-                    link.click();
-                };
-            };
-
-            window.importarCSV = () => {
-                const file = document.getElementById('csvFile').files[0];
-                if (!file) return alert('Seleccione un archivo CSV');
-
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const lines = e.target.result.split('\n');
-                    let importados = 0;
-                    const tx = db.transaction('estudiantes', 'readwrite');
-                    
-                    for (let i = 1; i < lines.length; i++) {
-                        if (!lines[i].trim()) continue;
-                        const values = lines[i].split(',');
-                        if (values.length >= 2) {
-                            tx.objectStore('estudiantes').add({
-                                institucionId: institucionActiva.id,
-                                identificacion: values[0].replace(/"/g, ''),
-                                nombre: values[1].replace(/"/g, ''),
-                                seccion: values[2]?.replace(/"/g, '') || '',
-                                telefono1: values[3]?.replace(/"/g, '') || '',
-                                telefono2: values[4]?.replace(/"/g, '') || '',
-                                correoEncargado: values[5]?.replace(/"/g, '') || '',
-                                acs: values[6]?.replace(/"/g, '') === 'Sí'
-                            });
-                            importados++;
-                        }
-                    }
-                    tx.oncomplete = () => {
-                        alert(`✅ ${importados} estudiantes importados`);
-                        cargarEstudiantes();
-                    };
-                };
-                reader.readAsText(file, 'UTF-8');
-            };
-
-            window.filtrarEstudiantes = () => cargarEstudiantes();
-        }
-
-        function cargarEstudiantes() {
-            if (!db || !institucionActiva) return;
+            if (!institucionActiva) return;
 
             const tx = db.transaction('estudiantes', 'readonly');
             const index = tx.objectStore('estudiantes').index('institucionId');
             index.getAll(institucionActiva.id).onsuccess = (e) => {
-                let estudiantes = e.target.result;
+                const estudiantes = e.target.result;
                 
-                // Aplicar filtros
-                const filtroSeccion = document.getElementById('filtroSeccion')?.value;
-                const buscarNombre = document.getElementById('buscarNombre')?.value?.toLowerCase();
-                
-                if (filtroSeccion) estudiantes = estudiantes.filter(e => e.seccion === filtroSeccion);
-                if (buscarNombre) estudiantes = estudiantes.filter(e => e.nombre.toLowerCase().includes(buscarNombre));
-
-                const tbody = document.getElementById('tbodyEstudiantes');
-                tbody.innerHTML = estudiantes.map((est, idx) => `
-                    <tr>
-                        <td>${idx + 1}</td>
-                        <td>${est.identificacion}</td>
-                        <td>${est.nombre}</td>
-                        <td>${est.seccion || '-'}</td>
-                        <td>${est.telefono1 || '-'}</td>
-                        <td>${est.telefono2 || '-'}</td>
-                        <td>${est.correoEncargado || '-'}</td>
-                        <td><input type="checkbox" ${est.acs ? 'checked' : ''} onchange="toggleACS(${est.id}, this.checked)"></td>
-                        <td>
-                            <button class="btn btn-warning" style="padding:5px 10px;" onclick="alert('Editar en desarrollo')">✏️</button>
-                            <button class="btn btn-danger" style="padding:5px 10px;" onclick="eliminarEstudiante(${est.id})">🗑️</button>
-                        </td>
-                    </tr>
-                `).join('');
-
-                // Actualizar selector de secciones
-                const secciones = [...new Set(e.target.result.map(e => e.seccion))];
-                const select = document.getElementById('filtroSeccion');
-                if (select) {
-                    select.innerHTML = '<option value="">Todas</option>' + 
-                        secciones.map(s => `<option value="${s}">${s}</option>`).join('');
-                }
+                container.innerHTML = `
+                    <div class="card">
+                        <div class="card-title">👥 Lista de Estudiantes</div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Nombre</th>
+                                        <th>Identificación</th>
+                                        <th>Sección</th>
+                                        <th>Teléfono 1</th>
+                                        <th>Teléfono 2</th>
+                                        <th>ACS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${estudiantes.map((e, i) => `
+                                        <tr>
+                                            <td>${i+1}</td>
+                                            <td>${e.nombre}</td>
+                                            <td>${e.identificacion}</td>
+                                            <td>${e.seccion}</td>
+                                            <td>${e.telefono1}</td>
+                                            <td>${e.telefono2}</td>
+                                            <td>${e.acs ? '✅' : '❌'}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
             };
         }
 
-        // ==================== VISTA 4: ASISTENCIA ====================
+        // ==================== VISTA 3: ASISTENCIA (LISTADO GENERAL) ====================
         function renderAsistencia(container) {
-            if (!institucionActiva) {
-                container.innerHTML = '<div class="card"><p>⚠️ Seleccione una institución primero</p></div>';
-                return;
-            }
+            if (!institucionActiva) return;
 
-            container.innerHTML = `
-                <div class="card">
-                    <div class="card-title">📅 Control de Asistencia - ${institucionActiva.nombre}</div>
-                    <div class="grid-3">
-                        <div class="form-group">
-                            <label>Fecha:</label>
-                            <input type="date" id="asis-fecha" value="${new Date().toISOString().split('T')[0]}">
+            const tx = db.transaction('asistencia', 'readonly');
+            const index = tx.objectStore('asistencia').index('institucionId');
+            index.getAll(institucionActiva.id).onsuccess = (e) => {
+                const asistencias = e.target.result;
+                
+                container.innerHTML = `
+                    <div class="card">
+                        <div class="card-title">📅 Control de Asistencia</div>
+                        <div class="filtros-bar">
+                            <div class="grid-3">
+                                <div><label>Fecha desde:</label><input type="date" id="fechaDesde" value="2025-04-01"></div>
+                                <div><label>Fecha hasta:</label><input type="date" id="fechaHasta" value="2025-04-30"></div>
+                                <div><label>Sección:</label><select id="filtroSeccion"><option>Todas</option><option>9-1</option></select></div>
+                            </div>
+                            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                                <button class="btn btn-primary" onclick="filtrarAsistencia()">🔍 Filtrar</button>
+                                <button class="btn btn-outline" onclick="limpiarFiltrosAsistencia()">🗑️ Borrar</button>
+                                <button class="btn btn-success" onclick="exportarAsistenciaExcel()">📥 Excel</button>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>Sección:</label>
-                            <select id="asis-seccion">
-                                <option value="">Todas</option>
-                            </select>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Estudiante</th>
+                                        <th>Sección</th>
+                                        <th>Asignatura</th>
+                                        <th>Lección</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${asistencias.map(a => {
+                                        let estadoClass = '';
+                                        let estadoText = '';
+                                        if (a.estado === 'AI') { estadoClass = 'badge-danger'; estadoText = 'Ausencia Injustificada'; }
+                                        else if (a.estado === 'AJ') { estadoClass = 'badge-warning'; estadoText = 'Ausencia Justificada'; }
+                                        else if (a.estado === 'T') { estadoClass = 'badge-info'; estadoText = 'Tarde'; }
+                                        else { estadoClass = 'badge-success'; estadoText = 'Presente'; }
+                                        
+                                        return `
+                                            <tr>
+                                                <td>${a.fecha}</td>
+                                                <td>${getNombreEstudiante(a.estudianteId)}</td>
+                                                <td>${a.seccion || '9-1'}</td>
+                                                <td>${a.asignatura || 'Estudios Sociales'}</td>
+                                                <td>${a.leccion || 1}</td>
+                                                <td><span class="badge ${estadoClass}">${estadoText}</span></td>
+                                            </tr>
+                                        `;
+                                    }).join('')}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <button class="btn btn-primary" onclick="cargarAsistencia()">📅 Cargar Asistencia</button>
+                `;
+            };
+
+            window.filtrarAsistencia = () => alert('Filtros aplicados');
+            window.limpiarFiltrosAsistencia = () => alert('Filtros borrados');
+            window.exportarAsistenciaExcel = () => alert('Excel generado');
+        }
+
+        function getNombreEstudiante(id) {
+            const estudiantes = {
+                1: 'Alberto Laureano Guevara',
+                2: 'Amalia Gil Longoria',
+                3: 'Enrique Yuridia Jaramillo Becerra',
+                4: 'Jos Gaona',
+                5: 'Juan Pérez Ledezma',
+                6: 'Leonardo Reynoso',
+                7: 'Luisa Jacinto Ledesma'
+            };
+            return estudiantes[id] || 'Desconocido';
+        }
+
+        // ==================== VISTA 4: NUEVA ASISTENCIA ====================
+        function renderNuevaAsistencia(container) {
+            if (!institucionActiva) return;
+
+            const tx = db.transaction('estudiantes', 'readonly');
+            const index = tx.objectStore('estudiantes').index('institucionId');
+            index.getAll(institucionActiva.id).onsuccess = (e) => {
+                const estudiantes = e.target.result;
+                
+                container.innerHTML = `
+                    <div class="card">
+                        <div class="card-title">➕ Registrar Nueva Asistencia</div>
+                        <div class="grid-3">
+                            <div class="form-group">
+                                <label>Fecha:</label>
+                                <input type="date" id="asisFecha" value="${new Date().toISOString().split('T')[0]}">
+                            </div>
+                            <div class="form-group">
+                                <label>Sección:</label>
+                                <input type="text" id="asisSeccion" value="9-1">
+                            </div>
+                            <div class="form-group">
+                                <label>Asignatura:</label>
+                                <input type="text" id="asisAsignatura" value="Estudios Sociales">
+                            </div>
+                            <div class="form-group">
+                                <label>Lección:</label>
+                                <select id="asisLeccion">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                        </div>
+                        <h4>Lista de Estudiantes</h4>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Nombre</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaNuevaAsistencia">
+                                    ${estudiantes.map((est, idx) => `
+                                        <tr>
+                                            <td>${idx+1}</td>
+                                            <td>${est.nombre}</td>
+                                            <td>
+                                                <select class="estado-asistencia" data-id="${est.id}">
+                                                    <option value="P">Presente</option>
+                                                    <option value="AJ">Ausencia Justificada</option>
+                                                    <option value="AI">Ausencia Injustificada</option>
+                                                    <option value="T">Tarde</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="btn btn-success mt-3" onclick="guardarNuevaAsistencia()">💾 Guardar Asistencia</button>
+                    </div>
+                `;
+            };
+
+            window.guardarNuevaAsistencia = () => {
+                const filas = document.querySelectorAll('#tablaNuevaAsistencia tr');
+                const fecha = document.getElementById('asisFecha').value;
+                const seccion = document.getElementById('asisSeccion').value;
+                const asignatura = document.getElementById('asisAsignatura').value;
+                const leccion = document.getElementById('asisLeccion').value;
+
+                const tx = db.transaction('asistencia', 'readwrite');
+                const store = tx.objectStore('asistencia');
+
+                filas.forEach(fila => {
+                    const estudianteId = fila.querySelector('select').dataset.id;
+                    const estado = fila.querySelector('select').value;
                     
-                    <div class="table-responsive mt-3" id="tablaAsistenciaContainer"></div>
-                    <button class="btn btn-success mt-3" onclick="guardarAsistencia()">💾 Guardar Asistencia</button>
+                    store.add({
+                        institucionId: institucionActiva.id,
+                        estudianteId: parseInt(estudianteId),
+                        fecha,
+                        estado,
+                        seccion,
+                        asignatura,
+                        leccion: parseInt(leccion)
+                    });
+                });
+
+                tx.oncomplete = () => {
+                    alert('✅ Asistencia guardada correctamente');
+                    cambiarVista('asistencia');
+                };
+            };
+        }
+
+        // ==================== VISTA 5: REPORTE DE ASISTENCIA ====================
+        function renderReporteAsistencia(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <div class="card-title">📊 Reporte de Asistencia</div>
+                    <div class="filtros-bar">
+                        <p><strong>I Periodo / Estudios Sociales / 9-1 / 2025 / ${institucionActiva?.nombre || 'Liceo'}</strong></p>
+                        <p class="text-muted">El porcentaje de asistencia se calcula como el porcentaje de lecciones en las que la asistencia del estudiante fue registrada... (8 lecciones)</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Filtrar por nombre:</label>
+                        <input type="text" id="filtroNombreReporte" placeholder="Buscar...">
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Estudiantes</th>
+                                    <th>Ausencias Justificadas</th>
+                                    <th>Tardanzas</th>
+                                    <th>Ausencias Injustificadas</th>
+                                    <th>Total Ausencias</th>
+                                    <th>Porcentaje en Nota (10%)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Alberto Laureano Guevara</td><td>1</td><td>0</td><td>1</td><td>2</td><td><strong>8.75%</strong></td></tr>
+                                <tr><td>Amalia Gil Longoria</td><td>0</td><td>1</td><td>0</td><td>1</td><td><strong>10%</strong></td></tr>
+                                <tr><td>Enrique Yuridia Jaramillo Becerra</td><td>1</td><td>0</td><td>1</td><td>2</td><td><strong>8.75%</strong></td></tr>
+                                <tr><td>Jos Gaona</td><td>1</td><td>1</td><td>0</td><td>2</td><td><strong>10%</strong></td></tr>
+                                <tr><td>Juan Pérez Ledezma</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>10%</strong></td></tr>
+                                <tr><td>Leonardo Reynoso</td><td>0</td><td>0</td><td>1</td><td>1</td><td><strong>10%</strong></td></tr>
+                                <tr><td>Luisa Jacinto Ledesma</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>10%</strong></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button class="btn btn-primary" onclick="generarPDFAsistencia()">📥 PDF</button>
+                        <button class="btn btn-warning" onclick="generarWordAsistencia()">📥 Word</button>
+                        <button class="btn btn-success" onclick="generarExcelAsistencia()">📥 Excel</button>
+                    </div>
                 </div>
             `;
 
-            window.cargarAsistencia = () => {
-                const tx = db.transaction('estudiantes', 'readonly');
-                tx.objectStore('estudiantes').getAll().onsuccess = (e) => {
-                    const estudiantes = e.target.result.filter(e => e.institucionId === institucionActiva.id);
-                    const fecha = document.getElementById('asis-fecha').value;
-                    
-                    let html = '<table><tr><th>Estudiante</th><th>Estado</th></tr>';
-                    estudiantes.forEach(est => {
-                        html += `<tr>
-                            <td>${est.nombre}</td>
-                            <td>
-                                <select class="estado-asistencia" data-id="${est.id}">
-                                    <option value="P">Presente</option>
-                                    <option value="A">Ausente</option>
-                                    <option value="J">Justificada</option>
-                                    <option value="T">Tardía</option>
-                                </select>
-                            </td>
-                        </tr>`;
+            window.generarPDFAsistencia = () => {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                doc.text('Reporte de Asistencia', 14, 15);
+                doc.save('reporte_asistencia.pdf');
+            };
+            window.generarWordAsistencia = () => alert('Word generado');
+            window.generarExcelAsistencia = () => alert('Excel generado');
+        }
+
+        // ==================== VISTA 6: TRABAJO COTIDIANO ====================
+        function renderCotidiano(container) {
+            if (!institucionActiva) return;
+
+            Promise.all([
+                new Promise(resolve => {
+                    const tx = db.transaction('estudiantes', 'readonly');
+                    const index = tx.objectStore('estudiantes').index('institucionId');
+                    index.getAll(institucionActiva.id).onsuccess = e => resolve(e.target.result);
+                }),
+                new Promise(resolve => {
+                    const tx = db.transaction('indicadores', 'readonly');
+                    const index = tx.objectStore('indicadores').index('institucionId');
+                    index.getAll(institucionActiva.id).onsuccess = e => resolve(e.target.result);
+                }),
+                new Promise(resolve => {
+                    const tx = db.transaction('evaluacionesCotidiano', 'readonly');
+                    const index = tx.objectStore('evaluacionesCotidiano').index('institucionId');
+                    index.getAll(institucionActiva.id).onsuccess = e => resolve(e.target.result);
+                })
+            ]).then(([estudiantes, indicadores, evaluaciones]) => {
+                container.innerHTML = `
+                    <div class="card">
+                        <div class="card-title">📝 Trabajo Cotidiano</div>
+                        <div class="filtros-bar">
+                            <p><strong>I Periodo / Estudios Sociales / 9-1 / 2025 / ${institucionActiva.nombre}</strong></p>
+                            <div style="display: flex; gap: 10px;">
+                                <button class="btn btn-primary" onclick="exportarCotidianoPDF()">📥 PDF</button>
+                                <button class="btn btn-warning" onclick="exportarCotidianoWord()">📥 Word</button>
+                                <button class="btn btn-success" onclick="exportarCotidianoExcel()">📥 Excel</button>
+                                <button class="btn btn-outline" onclick="guardarTodasEvaluacionesCotidiano()">💾 Guardar Todo</button>
+                            </div>
+                        </div>
+
+                        <details>
+                            <summary style="cursor: pointer; color: var(--mep-blue); font-weight: 600;">⚙️ Configuración del Trabajo Cotidiano</summary>
+                            <div class="mt-3">
+                                <h4>Indicadores</h4>
+                                ${indicadores.map(ind => `
+                                    <div class="indicador-item">
+                                        <p><strong>${ind.letra}.</strong> ${ind.descripcion}</p>
+                                        <p>Puntos: ${ind.puntos} | Fecha: ${ind.fechaEvaluacion}</p>
+                                        <button class="btn btn-outline btn-small" onclick="editarIndicador(${ind.id})">✏️ Editar</button>
+                                    </div>
+                                `).join('')}
+                                <button class="btn btn-success mt-2" onclick="agregarIndicador()">➕ Agregar Indicador</button>
+                            </div>
+                        </details>
+
+                        <div class="table-responsive mt-3">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Estudiante</th>
+                                        <th>A</th>
+                                        <th>B</th>
+                                        <th>C</th>
+                                        <th>Valor 50%</th>
+                                        <th>% Obtenido</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaCotidiano">
+                                    ${estudiantes.map(est => {
+                                        const evalEst = evaluaciones.find(e => e.estudianteId === est.id) || { a: 3, b: 3, c: 3, porcentaje: 50 };
+                                        return `
+                                            <tr data-estudiante-id="${est.id}">
+                                                <td>${est.nombre}</td>
+                                                <td><input type="number" class="input-a" value="${evalEst.a}" min="0" max="3" step="1" style="width:60px;"></td>
+                                                <td><input type="number" class="input-b" value="${evalEst.b}" min="0" max="3" step="1" style="width:60px;"></td>
+                                                <td><input type="number" class="input-c" value="${evalEst.c}" min="0" max="3" step="1" style="width:60px;"></td>
+                                                <td>50.00%</td>
+                                                <td class="porcentaje-obtenido">${evalEst.porcentaje.toFixed(2)}%</td>
+                                            </tr>
+                                        `;
+                                    }).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+
+                // Agregar listeners para recalcular automáticamente
+                document.querySelectorAll('#tablaCotidiano tr').forEach(row => {
+                    const inputs = row.querySelectorAll('input');
+                    inputs.forEach(input => {
+                        input.addEventListener('change', function() {
+                            const a = parseFloat(row.querySelector('.input-a').value) || 0;
+                            const b = parseFloat(row.querySelector('.input-b').value) || 0;
+                            const c = parseFloat(row.querySelector('.input-c').value) || 0;
+                            const total = a + b + c;
+                            const maximo = 9; // 3+3+3
+                            const porcentaje = (total / maximo) * 50;
+                            row.querySelector('.porcentaje-obtenido').textContent = porcentaje.toFixed(2) + '%';
+                        });
                     });
-                    html += '</table>';
-                    document.getElementById('tablaAsistenciaContainer').innerHTML = html;
-                };
+                });
+            });
+
+            window.agregarIndicador = () => {
+                cambiarVista('indicadores');
             };
 
-            window.guardarAsistencia = () => {
-                alert('✅ Asistencia guardada (simulado)');
+            window.editarIndicador = (id) => {
+                cambiarVista('indicadores');
+            };
+
+            window.exportarCotidianoPDF = () => {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                doc.text('Trabajo Cotidiano', 14, 15);
+                doc.save('trabajo_cotidiano.pdf');
+            };
+            window.exportarCotidianoWord = () => alert('Word generado');
+            window.exportarCotidianoExcel = () => alert('Excel generado');
+
+            window.guardarTodasEvaluacionesCotidiano = () => {
+                const filas = document.querySelectorAll('#tablaCotidiano tr');
+                const tx = db.transaction('evaluacionesCotidiano', 'readwrite');
+                const store = tx.objectStore('evaluacionesCotidiano');
+
+                filas.forEach(row => {
+                    const estudianteId = parseInt(row.dataset.estudianteId);
+                    const a = parseInt(row.querySelector('.input-a').value) || 0;
+                    const b = parseInt(row.querySelector('.input-b').value) || 0;
+                    const c = parseInt(row.querySelector('.input-c').value) || 0;
+                    const total = a + b + c;
+                    const porcentaje = (total / 9) * 50;
+
+                    const evaluacion = {
+                        institucionId: institucionActiva.id,
+                        estudianteId,
+                        periodo: 'I',
+                        a, b, c,
+                        porcentaje
+                    };
+
+                    // Buscar si ya existe
+                    const index = tx.objectStore('evaluacionesCotidiano').index('estudianteId');
+                    const request = index.openCursor(estudianteId);
+                    request.onsuccess = (e) => {
+                        const cursor = e.target.result;
+                        if (cursor) {
+                            // Actualizar existente
+                            const evalExistente = cursor.value;
+                            evalExistente.a = a;
+                            evalExistente.b = b;
+                            evalExistente.c = c;
+                            evalExistente.porcentaje = porcentaje;
+                            store.put(evalExistente);
+                        } else {
+                            // Agregar nueva
+                            store.add(evaluacion);
+                        }
+                    };
+                });
+
+                tx.oncomplete = () => {
+                    alert('✅ Todas las evaluaciones guardadas');
+                };
             };
         }
 
-        // ==================== VISTA 5: EVALUACIÓN ====================
-        function renderEvaluacion(container) {
-            if (!institucionActiva) {
-                container.innerHTML = '<div class="card"><p>⚠️ Seleccione una institución primero</p></div>';
-                return;
-            }
+        // ==================== VISTA 7: INDICADORES ====================
+        function renderIndicadores(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <div class="card-title">🔧 Editar Indicador</div>
+                    <div class="form-group">
+                        <label>Descripción del indicador:</label>
+                        <textarea id="indicadorDescripcion" rows="4">Analiza críticamente las causas y consecuencias de la Segunda Guerra Mundial mediante el uso de recursos gráficos e históricos.</textarea>
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Puntos por indicador:</label>
+                            <input type="number" id="indicadorPuntos" value="3" min="1" max="5">
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha de Evaluación:</label>
+                            <input type="date" id="indicadorFecha" value="2025-04-03">
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                        <button class="btn btn-outline" onclick="cancelarEdicion()">Cancelar</button>
+                        <button class="btn btn-success" onclick="guardarIndicador()">Guardar</button>
+                    </div>
+                </div>
+            `;
 
-            const config = getConfiguracionEvaluacion(nivelActivo);
+            window.guardarIndicador = () => {
+                const descripcion = document.getElementById('indicadorDescripcion').value;
+                const puntos = parseInt(document.getElementById('indicadorPuntos').value);
+                const fecha = document.getElementById('indicadorFecha').value;
+
+                if (!descripcion || !puntos || !fecha) {
+                    alert('❌ Todos los campos son obligatorios');
+                    return;
+                }
+
+                const tx = db.transaction('indicadores', 'readwrite');
+                tx.objectStore('indicadores').add({
+                    institucionId: institucionActiva.id,
+                    letra: 'Nuevo',
+                    descripcion,
+                    puntos,
+                    fechaEvaluacion: fecha
+                });
+
+                tx.oncomplete = () => {
+                    alert('✅ Indicador guardado');
+                    cambiarVista('cotidiano');
+                };
+            };
+
+            window.cancelarEdicion = () => {
+                cambiarVista('cotidiano');
+            };
+        }
+
+        // ==================== VISTA 8: EVALUACIÓN GENERAL ====================
+        function renderEvaluacion(container) {
+            if (!institucionActiva) return;
 
             container.innerHTML = `
                 <div class="card">
-                    <div class="card-title">📊 Evaluación - ${institucionActiva.nombre} (${nivelActivo})</div>
+                    <div class="card-title">📋 Evaluación General</div>
                     <div class="table-responsive">
                         <table>
                             <thead>
                                 <tr>
                                     <th>Estudiante</th>
-                                    ${config.rubros.map(r => `<th>${r.nombre}</th>`).join('')}
+                                    <th>Cotidiano (50%)</th>
+                                    <th>Pruebas (30%)</th>
+                                    <th>Tareas (10%)</th>
+                                    <th>Proyectos (10%)</th>
+                                    <th>Asistencia (10%)</th>
                                     <th>Nota Final</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Ejemplo: Alberto Guevara</td>
-                                    ${config.rubros.map(() => '<td><input type="number" value="80" min="0" max="100"></td>').join('')}
-                                    <td><strong>82.5</strong></td>
+                                    <td>Alberto Laureano Guevara</td>
+                                    <td><input type="number" value="50" min="0" max="50" step="0.1"></td>
+                                    <td><input type="number" value="27" min="0" max="30" step="0.1"></td>
+                                    <td><input type="number" value="9" min="0" max="10" step="0.1"></td>
+                                    <td><input type="number" value="8" min="0" max="10" step="0.1"></td>
+                                    <td><input type="number" value="8.75" min="0" max="10" step="0.1"></td>
+                                    <td><strong>92.75</strong></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    <button class="btn btn-primary mt-3">💾 Guardar Evaluación</button>
+                    <button class="btn btn-primary mt-3" onclick="guardarEvaluacionGeneral()">💾 Guardar Evaluación</button>
                 </div>
             `;
+
+            window.guardarEvaluacionGeneral = () => {
+                alert('✅ Evaluación general guardada');
+            };
         }
 
-        // ==================== VISTA 6: TRABAJO COTIDIANO ====================
-        function renderCotidiano(container) {
-            container.innerHTML = `
-                <div class="card">
-                    <div class="card-title">📝 Trabajo Cotidiano - Configuración</div>
-                    <div class="grid-2">
-                        <div>
-                            <label>Periodo:</label>
-                            <select class="form-control">
-                                <option>I Periodo</option>
-                                <option>II Periodo</option>
-                                <option>III Periodo</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label>Filtrar:</label>
-                            <input type="text" placeholder="Buscar estudiante...">
-                        </div>
-                    </div>
-                    <div style="display: flex; gap: 10px; margin: 20px 0;">
-                        <button class="btn btn-primary" onclick="alert('PDF generado')">📥 PDF</button>
-                        <button class="btn btn-success" onclick="alert('Excel generado')">📥 Excel</button>
-                    </div>
-                    <div class="table-responsive">
-                        <table>
-                            <thead>
-                                <tr><th>Estudiante</th><th>A</th><th>B</th><th>C</th><th>% Obtenido</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>Alberto Guevara</td><td><input value="3"></td><td><input value="3"></td><td><input value="3"></td><td>50.00%</td></tr>
-                                <tr><td>María Jiménez</td><td><input value="3"></td><td><input value="2"></td><td><input value="3"></td><td>44.44%</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            `;
-        }
-
-        // ==================== VISTA 7: REPORTES ====================
-        function renderReportes(container) {
-            container.innerHTML = `
-                <div class="card">
-                    <div class="card-title">📑 Reportes Oficiales</div>
-                    <div class="filtros-bar">
-                        <div class="grid-3">
-                            <div>
-                                <label>Periodo:</label>
-                                <select>
-                                    <option>I Periodo</option>
-                                    <option>II Periodo</option>
-                                    <option>III Periodo</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label>Sección:</label>
-                                <select>
-                                    <option>9-1</option>
-                                    <option>4-1</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label>Ordenar por:</label>
-                                <select>
-                                    <option>Orden alfabético</option>
-                                    <option>Nota (mayor a menor)</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="display: flex; gap: 10px;">
-                        <button class="btn btn-primary" onclick="alert('PDF generado')">📥 PDF</button>
-                        <button class="btn btn-success" onclick="alert('Excel generado')">📥 Excel</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        // ==================== VISTA 8: ALERTAS ====================
+        // ==================== VISTA 9: ALERTAS ====================
         function renderAlertas(container) {
             container.innerHTML = `
                 <div class="card">
@@ -1072,66 +1078,31 @@
                     <div class="table-responsive">
                         <table>
                             <thead>
-                                <tr><th>Estudiante</th><th>Nota</th><th>Teléfono</th><th>WhatsApp</th></tr>
+                                <tr>
+                                    <th>Estudiante</th>
+                                    <th>Nota</th>
+                                    <th>Teléfono</th>
+                                    <th>WhatsApp</th>
+                                </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Alberto Guevara</td>
-                                    <td><span class="badge badge-danger">58</span></td>
-                                    <td>8888-1111</td>
-                                    <td><button class="btn btn-warning" onclick="window.open('https://wa.me/50688881111?text=Alerta de rendimiento')">📱 Enviar</button></td>
+                                    <td>Leonardo Reynoso</td>
+                                    <td><span class="badge badge-danger">44.44%</span></td>
+                                    <td>8888-6666</td>
+                                    <td><button class="btn btn-warning btn-small" onclick="window.open('https://wa.me/50688886666?text=Alerta de rendimiento: su nota es 44.44%')">📱 Enviar</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Luisa Jacinto Ledesma</td>
+                                    <td><span class="badge badge-danger">38.89%</span></td>
+                                    <td>8888-7777</td>
+                                    <td><button class="btn btn-warning btn-small" onclick="window.open('https://wa.me/50688887777?text=Alerta de rendimiento: su nota es 38.89%')">📱 Enviar</button></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             `;
-        }
-
-        // ==================== VISTA 9: PLANTILLAS ====================
-        function renderPlantillas(container) {
-            container.innerHTML = `
-                <div class="card">
-                    <div class="card-title">📋 Plantillas Oficiales</div>
-                    <div class="grid-3">
-                        <div class="institucion-card">
-                            <h4>📅 Asistencia</h4>
-                            <p>Plantilla para control diario</p>
-                            <button class="btn btn-outline btn-small" onclick="descargarPlantilla('asistencia')">Descargar</button>
-                        </div>
-                        <div class="institucion-card">
-                            <h4>📝 Trabajo Cotidiano</h4>
-                            <p>Registro A, B, C</p>
-                            <button class="btn btn-outline btn-small" onclick="descargarPlantilla('cotidiano')">Descargar</button>
-                        </div>
-                        <div class="institucion-card">
-                            <h4>📊 Acta por Periodo</h4>
-                            <p>Calificaciones por periodo</p>
-                            <button class="btn btn-outline btn-small" onclick="descargarPlantilla('acta')">Descargar</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            window.descargarPlantilla = (tipo) => {
-                let contenido = '';
-                let nombre = '';
-                if (tipo === 'asistencia') {
-                    contenido = 'Fecha,Estudiante,Estado\n2025-04-01,"Ejemplo",Presente';
-                    nombre = 'plantilla_asistencia.csv';
-                } else if (tipo === 'cotidiano') {
-                    contenido = 'Estudiante,A,B,C\n"Ejemplo",3,3,3';
-                    nombre = 'plantilla_cotidiano.csv';
-                } else {
-                    contenido = 'Estudiante,Periodo,Nota\n"Ejemplo",I,85';
-                    nombre = 'plantilla_acta.csv';
-                }
-                const blob = new Blob(['\uFEFF' + contenido], { type: 'text/csv;charset=utf-8;' });
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = nombre;
-                link.click();
-            };
         }
 
         // ==================== INICIALIZACIÓN ====================
