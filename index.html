@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-CR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>📚 SISTEMA INTEGRAL MEP 2026 - ARQUITECTURA COMPLETA (12 PESTAÑAS)</title>
-    <!-- Librerías esenciales -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Integral de Gestión Docente · MEP Costa Rica</title>
     <style>
-        /* ==================== SISTEMA DE DISEÑO INSTITUCIONAL MEP ==================== */
+        /* ============================================
+           ESTILOS INSTITUCIONALES MEP - VERSIÓN ACCESIBLE
+           Basado en Reglamento de Evaluación y Guías MEP
+           Relación de contraste WCAG AA mínima 4.5:1
+        ============================================ */
         * {
             margin: 0;
             padding: 0;
@@ -17,87 +18,58 @@
         }
 
         :root {
-            /* Paleta institucional MEP */
-            --mep-verde-profundo: #0B3B2F;
-            --mep-verde-claro: #A7C1B0;
-            --mep-gris-fondo: #F4F7F5;
-            --mep-texto-oscuro: #1E2B28;
-            --mep-borde: #C0CFC5;
-            --mep-sombra: rgba(11, 59, 47, 0.12);
-            --mep-alerta: #D32F2F;
-            --mep-exito: #2E7D32;
-            --mep-advertencia: #ED6C02;
-            --mep-azul: #003366;
-            --mep-rojo: #CC0000;
-            --mep-acceso: #9b59b6;
-            --mep-nosig: #3498db;
-            --mep-acs: #e67e22;
-            --mep-planeamiento: #2c3e50;
-            --mep-diagnostico: #16a085;
-            --mep-comunidad: #8e44ad;
-            
-            /* Modo claro (default) */
-            --bg-primary: var(--mep-gris-fondo);
-            --bg-sidebar: var(--mep-verde-profundo);
-            --text-primary: var(--mep-texto-oscuro);
-            --text-sidebar: #FFFFFF;
-            --card-bg: #FFFFFF;
-            --border-color: var(--mep-borde);
-            --button-primary: var(--mep-verde-profundo);
-            --button-secondary: var(--mep-verde-claro);
-            --hover-overlay: rgba(255, 255, 255, 0.1);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-primary: #1A2A24;
-                --bg-sidebar: #0F2A20;
-                --text-primary: #E0EDE7;
-                --text-sidebar: #FFFFFF;
-                --card-bg: #26362F;
-                --border-color: #3D5E51;
-                --button-primary: #1F5E4F;
-                --button-secondary: #3D5E51;
-                --hover-overlay: rgba(255, 255, 255, 0.15);
-            }
+            /* Paleta institucional MEP - Versión Accesible */
+            --color-primario: #0B3B2F;      /* Verde MEP oscuro (texto principal/botones) */
+            --color-secundario: #E7F0EB;     /* Fondo claro institucional */
+            --color-acento: #A7C1B0;          /* Verde claro para acentos y bordes */
+            --color-texto: #1A2A24;           /* Casi negro, excelente contraste sobre fondos claros */
+            --color-texto-sobre-oscuro: #FFFFFF; /* Blanco puro */
+            --color-fondo: #F4F7F5;           /* Fondo general claro */
+            --color-tarjeta: #FFFFFF;          /* Fondo de tarjetas */
+            --color-borde: #B7C9BD;            /* Borde con contraste suficiente */
+            --color-alerta: #D32F2F;           /* Rojo para errores (contraste verificado) */
+            --color-exito: #2E7D32;            /* Verde éxito (contraste verificado) */
+            --color-advertencia: #B85C1A;      /* Naranja/advertencia más oscuro para contraste */
+            --color-enlace: #0B5E7E;            /* Azul para enlaces */
+            --sombra-suave: rgba(0, 0, 0, 0.08);
         }
 
         body {
             display: flex;
             min-height: 100vh;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            transition: background-color 0.3s, color 0.3s;
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+            line-height: 1.5;
         }
 
-        /* ==================== BARRA LATERAL FIJA ==================== */
+        /* --- BARRA LATERAL FIJA Y ACCESIBLE --- */
         .sidebar {
             width: 280px;
-            background: var(--bg-sidebar);
-            color: var(--text-sidebar);
+            background-color: var(--color-primario);
+            color: var(--color-texto-sobre-oscuro);
             padding: 2rem 1rem;
             position: fixed;
             height: 100vh;
             overflow-y: auto;
-            box-shadow: 4px 0 20px var(--mep-sombra);
-            z-index: 100;
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.15);
         }
 
         .sidebar-header {
-            padding-bottom: 2rem;
-            border-bottom: 2px solid var(--mep-verde-claro);
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--color-acento);
             margin-bottom: 1.5rem;
         }
 
         .sidebar-header h1 {
-            font-size: 1.4rem;
-            font-weight: 500;
+            font-size: 1.3rem;
+            font-weight: 600;
             line-height: 1.4;
+            color: var(--color-texto-sobre-oscuro);
         }
 
         .sidebar-header small {
-            font-size: 0.85rem;
-            opacity: 0.8;
+            font-size: 0.8rem;
+            color: var(--color-acento);
             display: block;
             margin-top: 0.5rem;
         }
@@ -106,13 +78,13 @@
             width: 100%;
             background: transparent;
             border: none;
-            color: var(--text-sidebar);
+            color: var(--color-texto-sobre-oscuro);
             padding: 1rem 1.2rem;
             text-align: left;
-            font-size: 0.95rem;
+            font-size: 1rem;
             border-radius: 12px 0 0 12px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
             margin-bottom: 0.25rem;
             display: flex;
             align-items: center;
@@ -121,18 +93,24 @@
         }
 
         .nav-btn:hover {
-            background: var(--hover-overlay);
+            background-color: rgba(255, 255, 255, 0.15);
+            outline: 2px solid var(--color-acento);
+            outline-offset: -2px;
+        }
+
+        .nav-btn:focus-visible {
+            outline: 3px solid var(--color-acento);
+            outline-offset: 2px;
         }
 
         .nav-btn.active {
-            background: var(--bg-primary);
-            color: var(--mep-verde-profundo);
-            border-left: 4px solid var(--mep-verde-claro);
+            background-color: var(--color-fondo);
+            color: var(--color-primario);
+            border-left: 4px solid var(--color-acento);
             font-weight: 600;
-            box-shadow: -4px 0 10px rgba(0,0,0,0.05);
         }
 
-        /* ==================== CONTENIDO PRINCIPAL ==================== */
+        /* --- CONTENIDO PRINCIPAL --- */
         .main-content {
             flex: 1;
             margin-left: 280px;
@@ -140,28 +118,28 @@
             min-height: 100vh;
         }
 
-        /* ==================== PESTAÑAS ==================== */
+        /* --- PESTAÑAS --- */
         .pestana {
             display: none;
-            animation: fadeIn 0.3s ease;
         }
 
         .pestana.active {
             display: block;
+            animation: fadeIn 0.3s ease;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0.5; transform: translateY(5px); }
+            from { opacity: 0.6; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ==================== COMPONENTES UI ==================== */
+        /* --- TARJETAS Y COMPONENTES DE INTERFAZ --- */
         .card {
-            background: var(--card-bg);
+            background-color: var(--color-tarjeta);
             border-radius: 24px;
             padding: 2rem;
-            box-shadow: 0 8px 24px var(--mep-sombra);
-            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 24px var(--sombra-suave);
+            border: 1px solid var(--color-borde);
             margin-bottom: 2rem;
         }
 
@@ -171,18 +149,19 @@
             align-items: center;
             margin-bottom: 1.5rem;
             padding-bottom: 0.75rem;
-            border-bottom: 2px solid var(--mep-verde-claro);
+            border-bottom: 2px solid var(--color-acento);
         }
 
         .card-title {
             font-size: 1.3rem;
             font-weight: 600;
-            color: var(--mep-verde-profundo);
+            color: var(--color-primario);
         }
 
         .grid-2, .grid-3, .grid-4 {
             display: grid;
             gap: 1.5rem;
+            margin-bottom: 1.5rem;
         }
 
         .grid-2 { grid-template-columns: repeat(2, 1fr); }
@@ -196,90 +175,82 @@
         }
 
         .form-group label {
-            font-weight: 500;
+            font-weight: 600;
             font-size: 0.9rem;
-            opacity: 0.9;
+            color: var(--color-primario);
+        }
+
+        input, select, textarea, .btn {
+            font-size: 1rem;
+            padding: 0.8rem 1.2rem;
+            border-radius: 14px;
+            border: 2px solid transparent;
         }
 
         input, select, textarea {
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 0.8rem 1.2rem;
-            color: var(--text-primary);
-            font-size: 0.95rem;
-            transition: border-color 0.2s;
+            background-color: var(--color-fondo);
+            border: 2px solid var(--color-borde);
+            color: var(--color-texto);
+            width: 100%;
         }
 
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: var(--mep-verde-profundo);
-            box-shadow: 0 0 0 3px rgba(11, 59, 47, 0.1);
+            border-color: var(--color-primario);
+            box-shadow: 0 0 0 3px rgba(11, 59, 47, 0.25);
         }
 
         .btn {
-            background: var(--button-primary);
-            color: white;
-            border: none;
-            border-radius: 40px;
-            padding: 0.8rem 2rem;
+            background-color: var(--color-primario);
+            color: var(--color-texto-sobre-oscuro);
             font-weight: 600;
+            border: none;
             cursor: pointer;
-            transition: all 0.2s;
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
             justify-content: center;
-            border: 1px solid transparent;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
         }
 
         .btn:hover {
-            filter: brightness(1.1);
+            background-color: #0F4F3F;
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn:focus-visible {
+            outline: 3px solid var(--color-acento);
+            outline-offset: 2px;
         }
 
         .btn-secondary {
-            background: var(--button-secondary);
-            color: var(--mep-texto-oscuro);
+            background-color: var(--color-acento);
+            color: var(--color-primario);
         }
 
-        .btn-outline {
-            background: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
+        .btn-secondary:hover {
+            background-color: #8FAF9A;
         }
 
-        .btn-acceso { background: var(--mep-acceso); color: white; }
-        .btn-nosig { background: var(--mep-nosig); color: white; }
-        .btn-acs { background: var(--mep-acs); color: white; }
-        .btn-planeamiento { background: var(--mep-planeamiento); color: white; }
-        .btn-diagnostico { background: var(--mep-diagnostico); color: white; }
-        .btn-comunidad { background: var(--mep-comunidad); color: white; }
-
-        .toolbar {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin: 1.5rem 0;
-        }
-
-        /* ==================== TABLAS ==================== */
-        .table-container {
+        /* --- TABLAS ACCESIBLES --- */
+        .table-responsive {
             overflow-x: auto;
             border-radius: 16px;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--color-borde);
+            margin: 1.5rem 0;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            background: var(--card-bg);
+            background-color: var(--color-tarjeta);
         }
 
         th {
-            background: var(--mep-verde-claro);
-            color: var(--mep-texto-oscuro);
+            background-color: var(--color-primario);
+            color: var(--color-texto-sobre-oscuro);
             font-weight: 600;
             padding: 1rem;
             text-align: left;
@@ -287,1256 +258,768 @@
 
         td {
             padding: 1rem;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--color-borde);
         }
 
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        /* ==================== BADGES Y ALERTAS ==================== */
+        /* --- BADGES Y MENSAJES DE ESTADO --- */
         .badge {
             display: inline-block;
             padding: 0.25rem 1rem;
             border-radius: 40px;
             font-size: 0.85rem;
             font-weight: 600;
+            text-align: center;
         }
 
         .badge-success {
-            background: var(--mep-exito);
-            color: white;
+            background-color: var(--color-exito);
+            color: var(--color-texto-sobre-oscuro);
         }
 
         .badge-warning {
-            background: var(--mep-advertencia);
-            color: white;
+            background-color: var(--color-advertencia);
+            color: var(--color-texto-sobre-oscuro);
         }
 
         .badge-error {
-            background: var(--mep-alerta);
-            color: white;
+            background-color: var(--color-alerta);
+            color: var(--color-texto-sobre-oscuro);
         }
-
-        .badge-acceso { background: var(--mep-acceso); color: white; }
-        .badge-nosig { background: var(--mep-nosig); color: white; }
-        .badge-acs { background: var(--mep-acs); color: white; }
 
         .alert {
             padding: 1rem 1.5rem;
             border-radius: 16px;
             margin-bottom: 1.5rem;
             border-left: 6px solid;
+            background-color: var(--color-tarjeta);
         }
 
         .alert-warning {
-            background: rgba(237, 108, 2, 0.1);
-            border-left-color: var(--mep-advertencia);
+            border-left-color: var(--color-advertencia);
+            background-color: #FEF6E6;
         }
 
         .alert-success {
-            background: rgba(46, 125, 80, 0.1);
-            border-left-color: var(--mep-exito);
+            border-left-color: var(--color-exito);
+            background-color: #E1F3E6;
         }
 
-        .ayuda-pedagogica {
-            background: #e8f4fd;
-            border-left: 6px solid #17a2b8;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            font-size: 0.95rem;
+        /* --- HERRAMIENTAS DE ACCESIBILIDAD ADICIONALES --- */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
         }
 
-        .unidad-card, .foro-mensaje {
-            background: #f8f9fa;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 12px;
+        [role="tooltip"] {
+            position: relative;
         }
 
-        /* ==================== RESPONSIVE ==================== */
+        [role="tooltip"]:hover::after,
+        [role="tooltip"]:focus::after {
+            content: attr(aria-label);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--color-primario);
+            color: var(--color-texto-sobre-oscuro);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            z-index: 10;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* --- RESPONSIVE --- */
         @media (max-width: 1024px) {
             .grid-4 { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 768px) {
-            body {
-                flex-direction: column;
-            }
-            
+            body { flex-direction: column; }
             .sidebar {
                 width: 100%;
                 height: auto;
                 position: relative;
                 padding: 1rem;
             }
-            
             .main-content {
                 margin-left: 0;
                 padding: 1.5rem;
             }
-            
             .grid-2, .grid-3, .grid-4 {
                 grid-template-columns: 1fr;
-            }
-            
-            .nav-btn {
-                border-radius: 12px;
-            }
-            
-            .nav-btn.active {
-                border-left: 4px solid var(--mep-verde-claro);
             }
         }
     </style>
 </head>
 <body>
-    <!-- ==================== BARRA LATERAL FIJA CON 12 PESTAÑAS ==================== -->
-    <aside class="sidebar">
+    <!-- BARRA LATERAL DE NAVEGACIÓN (ACCESIBLE) -->
+    <aside class="sidebar" aria-label="Navegación principal del sistema">
         <div class="sidebar-header">
-            <h1>Sistema Integral<br>Gestión Docente</h1>
-            <small>Ministerio de Educación Pública · Costa Rica</small>
+            <h1>Gestión Docente MEP</h1>
+            <small>Consejo Superior de Educación · Costa Rica</small>
         </div>
-        <nav>
-            <button class="nav-btn active" data-pestana="config">🏫 1. INSTITUCIONES</button>
-            <button class="nav-btn" data-pestana="estudiantes">👥 2. ESTUDIANTES</button>
-            <button class="nav-btn" data-pestana="adecuaciones">⚕️ 3. ADECUACIONES</button>
-            <button class="nav-btn" data-pestana="piad">📋 4. PIAD</button>
-            <button class="nav-btn" data-pestana="conducta">⚖️ 5. CONDUCTA</button>
-            <button class="nav-btn" data-pestana="asistencia">📅 6. ASISTENCIA</button>
-            <button class="nav-btn" data-pestana="cotidiano">📝 7. COTIDIANO</button>
-            <button class="nav-btn" data-pestana="indicadores">🔧 8. INDICADORES</button>
-            <button class="nav-btn" data-pestana="reportes">📑 9. REPORTES</button>
-            <button class="nav-btn" data-pestana="planeamiento">📐 10. PLANEAMIENTO</button>
-            <button class="nav-btn" data-pestana="diagnostico">🔍 11. DIAGNÓSTICO</button>
-            <button class="nav-btn" data-pestana="comunidad">👥 12. COMUNIDAD</button>
+        <nav aria-label="Módulos del sistema">
+            <button class="nav-btn active" data-pestana="config" aria-current="page">⚙️ Configuración</button>
+            <button class="nav-btn" data-pestana="estudiantes">👥 Estudiantes</button>
+            <button class="nav-btn" data-pestana="asistencia">📆 Asistencia</button>
+            <button class="nav-btn" data-pestana="componentes">📊 Evaluación</button>
+            <button class="nav-btn" data-pestana="acta">📜 Acta Final</button>
+            <button class="nav-btn" data-pestana="reportes">📈 Reportes</button>
+            <button class="nav-btn" data-pestana="bitacora">📓 Bitácora DUA</button>
+            <button class="nav-btn" data-pestana="instrumentos">📋 Instrumentos</button>
+            <button class="nav-btn" data-pestana="respaldo">💾 Respaldo</button>
         </nav>
     </aside>
 
-    <!-- ==================== CONTENIDO PRINCIPAL ==================== -->
-    <main class="main-content" id="contenido-principal"></main>
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main-content" id="contenido-principal">
+        <!-- Las pestañas se cargarán dinámicamente aquí -->
+    </main>
 
     <script>
         (function() {
             "use strict";
 
-            // ==================== MODELO DE DATOS CENTRAL ====================
+            // =========================================================================
+            // MODELO DE DATOS CENTRAL Y PERSISTENCIA (localStorage)
+            // =========================================================================
             const ModeloMEP = {
-                version: "3.0",
-                centros: [],
-                configuraciones: [],
-                grupos: [],
-                estudiantes: [],
-                calificaciones: [],
-                instrumentos: [],
-                asistencia: [],
-                bitacora: [],
-                periodos: [],
-                adecuaciones: [],
-                piad: [],
-                conducta: [],
-                indicadores: [],
-                unidades: [],
-                minutas: [],
-                diagnosticos: [],
-                anecdotario: [],
-                foro: [],
-                recursos: [],
-                eventos: []
+                centros: JSON.parse(localStorage.getItem('mep_centros')) || [{
+                    id: 'inst1', nombre: 'Liceo Experimental MEP', nivel: 'secundaria'
+                }],
+                estudiantes: JSON.parse(localStorage.getItem('mep_estudiantes')) || [
+                    { id: 'e1', centroId: 'inst1', nombre: 'Alberto Laureano Guevara', seccion: '9-1', telefono1: '8888-1111', telefono2: '8888-1112', correoEncargado: 'padre@ejemplo.com', acs: false },
+                    { id: 'e2', centroId: 'inst1', nombre: 'María José Jiménez', seccion: '9-1', telefono1: '8888-2222', telefono2: '8888-2223', correoEncargado: 'madre@ejemplo.com', acs: true }
+                ],
+                configuraciones: JSON.parse(localStorage.getItem('mep_config')) || {
+                    centroId: 'inst1', tc: 40, pry: 30, pba: 20, tar: 10
+                },
+                calificaciones: JSON.parse(localStorage.getItem('mep_calificaciones')) || [],
+                asistencia: JSON.parse(localStorage.getItem('mep_asistencia')) || [],
+                periodos: JSON.parse(localStorage.getItem('mep_periodos')) || [
+                    { id: 'p1', centroId: 'inst1', nombre: 'I Periodo', estado: 'abierto', año: 2025 },
+                    { id: 'p2', centroId: 'inst1', nombre: 'II Periodo', estado: 'pendiente', año: 2025 },
+                    { id: 'p3', centroId: 'inst1', nombre: 'III Periodo', estado: 'pendiente', año: 2025 }
+                ]
             };
 
-            // ==================== REPOSITORIO (PERSISTENCIA) ====================
-            const Repositorio = {
-                KEYS: {
-                    CENTROS: 'mep_centros_v3',
-                    CONFIG: 'mep_config_v3',
-                    GRUPOS: 'mep_grupos_v3',
-                    ESTUDIANTES: 'mep_estudiantes_v3',
-                    CALIFICACIONES: 'mep_calificaciones_v3',
-                    INSTRUMENTOS: 'mep_instrumentos_v3',
-                    ASISTENCIA: 'mep_asistencia_v3',
-                    BITACORA: 'mep_bitacora_v3',
-                    PERIODOS: 'mep_periodos_v3',
-                    ADECUACIONES: 'mep_adecuaciones_v3',
-                    PIAD: 'mep_piad_v3',
-                    CONDUCTA: 'mep_conducta_v3',
-                    INDICADORES: 'mep_indicadores_v3',
-                    UNIDADES: 'mep_unidades_v3',
-                    MINUTAS: 'mep_minutas_v3',
-                    DIAGNOSTICOS: 'mep_diagnosticos_v3',
-                    ANECDOTARIO: 'mep_anecdotario_v3',
-                    FORO: 'mep_foro_v3',
-                    RECURSOS: 'mep_recursos_v3',
-                    EVENTOS: 'mep_eventos_v3'
-                },
+            function guardarTodo() {
+                localStorage.setItem('mep_centros', JSON.stringify(ModeloMEP.centros));
+                localStorage.setItem('mep_estudiantes', JSON.stringify(ModeloMEP.estudiantes));
+                localStorage.setItem('mep_config', JSON.stringify(ModeloMEP.configuraciones));
+                localStorage.setItem('mep_calificaciones', JSON.stringify(ModeloMEP.calificaciones));
+                localStorage.setItem('mep_asistencia', JSON.stringify(ModeloMEP.asistencia));
+                localStorage.setItem('mep_periodos', JSON.stringify(ModeloMEP.periodos));
+            }
 
-                cargarTodo: function() {
-                    try {
-                        ModeloMEP.centros = JSON.parse(localStorage.getItem(this.KEYS.CENTROS)) || [];
-                        ModeloMEP.configuraciones = JSON.parse(localStorage.getItem(this.KEYS.CONFIG)) || [];
-                        ModeloMEP.grupos = JSON.parse(localStorage.getItem(this.KEYS.GRUPOS)) || [];
-                        ModeloMEP.estudiantes = JSON.parse(localStorage.getItem(this.KEYS.ESTUDIANTES)) || [];
-                        ModeloMEP.calificaciones = JSON.parse(localStorage.getItem(this.KEYS.CALIFICACIONES)) || [];
-                        ModeloMEP.instrumentos = JSON.parse(localStorage.getItem(this.KEYS.INSTRUMENTOS)) || [];
-                        ModeloMEP.asistencia = JSON.parse(localStorage.getItem(this.KEYS.ASISTENCIA)) || [];
-                        ModeloMEP.bitacora = JSON.parse(localStorage.getItem(this.KEYS.BITACORA)) || [];
-                        ModeloMEP.periodos = JSON.parse(localStorage.getItem(this.KEYS.PERIODOS)) || [];
-                        ModeloMEP.adecuaciones = JSON.parse(localStorage.getItem(this.KEYS.ADECUACIONES)) || [];
-                        ModeloMEP.piad = JSON.parse(localStorage.getItem(this.KEYS.PIAD)) || [];
-                        ModeloMEP.conducta = JSON.parse(localStorage.getItem(this.KEYS.CONDUCTA)) || [];
-                        ModeloMEP.indicadores = JSON.parse(localStorage.getItem(this.KEYS.INDICADORES)) || [];
-                        ModeloMEP.unidades = JSON.parse(localStorage.getItem(this.KEYS.UNIDADES)) || [];
-                        ModeloMEP.minutas = JSON.parse(localStorage.getItem(this.KEYS.MINUTAS)) || [];
-                        ModeloMEP.diagnosticos = JSON.parse(localStorage.getItem(this.KEYS.DIAGNOSTICOS)) || [];
-                        ModeloMEP.anecdotario = JSON.parse(localStorage.getItem(this.KEYS.ANECDOTARIO)) || [];
-                        ModeloMEP.foro = JSON.parse(localStorage.getItem(this.KEYS.FORO)) || [];
-                        ModeloMEP.recursos = JSON.parse(localStorage.getItem(this.KEYS.RECURSOS)) || [];
-                        ModeloMEP.eventos = JSON.parse(localStorage.getItem(this.KEYS.EVENTOS)) || [];
-
-                        if (ModeloMEP.centros.length === 0) {
-                            this.inicializarDatosDemo();
-                        }
-                    } catch (e) {
-                        console.error("Error cargando datos:", e);
-                        this.inicializarDatosDemo();
-                    }
-                },
-
-                inicializarDatosDemo: function() {
-                    const centroId = this.generarId();
-                    ModeloMEP.centros = [{
-                        id: centroId,
-                        nombre: 'Liceo Rural Las Moras',
-                        direccionRegional: 'Limón',
-                        circuito: '10',
-                        codigo: '0255-00',
-                        nivel: 'secundaria',
-                        leccionesSemanales: 4,
-                        registrada: new Date().toLocaleDateString('es-CR')
-                    }];
-
-                    ModeloMEP.estudiantes = [
-                        { id: this.generarId(), institucionId: centroId, identificacion: '1-1234-5678', nombre: 'Alberto Laureano Guevara', seccion: '9-1', telefono1: '88881111', telefono2: '88881112', correoEncargado: 'padre1@gmail.com' },
-                        { id: this.generarId(), institucionId: centroId, identificacion: '2-2345-6789', nombre: 'María José Jiménez', seccion: '9-1', telefono1: '88882222', telefono2: '88882223', correoEncargado: 'madre2@gmail.com' },
-                        { id: this.generarId(), institucionId: centroId, identificacion: '3-3456-7890', nombre: 'Leonardo Reynoso', seccion: '9-1', telefono1: '88883333', telefono2: '88883334', correoEncargado: 'padre3@gmail.com' }
-                    ];
-
-                    ModeloMEP.indicadores = [
-                        { id: this.generarId(), institucionId: centroId, letra: 'A', descripcion: 'Acentúa correctamente las palabras en la producción escrita', puntos: 3 },
-                        { id: this.generarId(), institucionId: centroId, letra: 'B', descripcion: 'Identifica ideas principales en textos expositivos', puntos: 3 },
-                        { id: this.generarId(), institucionId: centroId, letra: 'C', descripcion: 'Utiliza vocabulario acorde al nivel en sus intervenciones', puntos: 3 }
-                    ];
-
-                    this.guardarTodo();
-                },
-
-                guardarTodo: function() {
-                    localStorage.setItem(this.KEYS.CENTROS, JSON.stringify(ModeloMEP.centros));
-                    localStorage.setItem(this.KEYS.CONFIG, JSON.stringify(ModeloMEP.configuraciones));
-                    localStorage.setItem(this.KEYS.GRUPOS, JSON.stringify(ModeloMEP.grupos));
-                    localStorage.setItem(this.KEYS.ESTUDIANTES, JSON.stringify(ModeloMEP.estudiantes));
-                    localStorage.setItem(this.KEYS.CALIFICACIONES, JSON.stringify(ModeloMEP.calificaciones));
-                    localStorage.setItem(this.KEYS.INSTRUMENTOS, JSON.stringify(ModeloMEP.instrumentos));
-                    localStorage.setItem(this.KEYS.ASISTENCIA, JSON.stringify(ModeloMEP.asistencia));
-                    localStorage.setItem(this.KEYS.BITACORA, JSON.stringify(ModeloMEP.bitacora));
-                    localStorage.setItem(this.KEYS.PERIODOS, JSON.stringify(ModeloMEP.periodos));
-                    localStorage.setItem(this.KEYS.ADECUACIONES, JSON.stringify(ModeloMEP.adecuaciones));
-                    localStorage.setItem(this.KEYS.PIAD, JSON.stringify(ModeloMEP.piad));
-                    localStorage.setItem(this.KEYS.CONDUCTA, JSON.stringify(ModeloMEP.conducta));
-                    localStorage.setItem(this.KEYS.INDICADORES, JSON.stringify(ModeloMEP.indicadores));
-                    localStorage.setItem(this.KEYS.UNIDADES, JSON.stringify(ModeloMEP.unidades));
-                    localStorage.setItem(this.KEYS.MINUTAS, JSON.stringify(ModeloMEP.minutas));
-                    localStorage.setItem(this.KEYS.DIAGNOSTICOS, JSON.stringify(ModeloMEP.diagnosticos));
-                    localStorage.setItem(this.KEYS.ANECDOTARIO, JSON.stringify(ModeloMEP.anecdotario));
-                    localStorage.setItem(this.KEYS.FORO, JSON.stringify(ModeloMEP.foro));
-                    localStorage.setItem(this.KEYS.RECURSOS, JSON.stringify(ModeloMEP.recursos));
-                    localStorage.setItem(this.KEYS.EVENTOS, JSON.stringify(ModeloMEP.eventos));
-                },
-
-                generarId: function() {
-                    return Date.now().toString(36) + Math.random().toString(36).substr(2);
-                },
-
-                getEstudiantesPorInstitucion: function(institucionId) {
-                    return ModeloMEP.estudiantes.filter(e => e.institucionId === institucionId);
-                }
-            };
-
-            // ==================== MOTOR DE CÁLCULO ====================
+            // =========================================================================
+            // MOTOR DE CÁLCULO (VALIDACIONES MEP)
+            // =========================================================================
             const MotorCalculo = {
-                validarPorcentajes: function(tc, proy, pru, tar) {
-                    const suma = (tc || 0) + (proy || 0) + (pru || 0) + (tar || 0);
+                validarPorcentajes(tc, pry, pba, tar) {
+                    const suma = (tc || 0) + (pry || 0) + (pba || 0) + (tar || 0);
                     return suma === 100;
                 },
-
-                calcularPromedio: function(notas, porcentajes) {
-                    if (Object.values(notas).some(n => n === null || n === undefined || n === '')) {
-                        throw new Error('Todas las notas son requeridas');
+                calcularPromedioEstandar(notas, porcentajes) {
+                    const { trabajoCotidiano, proyecto, prueba, tareas } = notas;
+                    const { tc, pry, pba, tar } = porcentajes;
+                    if ([trabajoCotidiano, proyecto, prueba, tareas].some(n => n === null || n === undefined || n === '')) {
+                        throw new Error("Notas incompletas");
                     }
                     return (
-                        (parseFloat(notas.trabajoCotidiano) * porcentajes.trabajoCotidiano / 100) +
-                        (parseFloat(notas.proyecto) * porcentajes.proyecto / 100) +
-                        (parseFloat(notas.prueba) * porcentajes.prueba / 100) +
-                        (parseFloat(notas.tareas) * porcentajes.tareas / 100)
+                        (parseFloat(trabajoCotidiano) * (tc / 100)) +
+                        (parseFloat(proyecto) * (pry / 100)) +
+                        (parseFloat(prueba) * (pba / 100)) +
+                        (parseFloat(tareas) * (tar / 100))
                     ).toFixed(2);
                 },
-
-                calcularNotaConducta: function(estudianteId) {
-                    const faltas = ModeloMEP.conducta.filter(c => c.estudianteId === estudianteId);
-                    const totalDescontado = faltas.reduce((sum, f) => sum + f.puntosDescontar, 0);
-                    return Math.max(100 - totalDescontado, 50);
-                },
-
-                determinarEstado: function(promedio) {
+                determinarEstadoFinal(promedio) {
                     const p = parseFloat(promedio);
-                    if (p >= 65) return 'APROBADO';
-                    if (p >= 50) return 'CONVOCATORIA';
-                    return 'REPROBADO';
+                    if (p >= 65) return "APROBADO";
+                    if (p >= 50) return "CONVOCATORIA";
+                    return "REPROBADO";
                 }
             };
 
-            // ==================== VALIDADOR ====================
-            const Validador = {
-                email: function(email) {
-                    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-                },
-
-                telefono: function(tel) {
-                    return /^[0-9+\-\s]{8,}$/.test(tel);
-                },
-
-                antesDeCerrarPeriodo: function(grupoId, periodo, año) {
-                    const estudiantes = ModeloMEP.estudiantes.filter(e => e.seccion === grupoId);
-                    const pendientes = estudiantes.filter(est => {
-                        const cal = ModeloMEP.calificaciones.find(c => 
-                            c.estudianteId === est.id && c.periodo === periodo && c.año === año
-                        );
-                        return !cal || Object.values(cal.notas || {}).some(n => n === null);
-                    });
-                    return pendientes.length === 0;
-                }
-            };
-
-            // ==================== CONTROLADOR DE UI ====================
-            const UI = {
-                pestanaActual: 'config',
-                institucionActiva: null,
-
-                init: function() {
-                    Repositorio.cargarTodo();
-                    if (ModeloMEP.centros.length > 0) {
-                        this.institucionActiva = ModeloMEP.centros[0];
+            // =========================================================================
+            // VALIDADOR DE REGLAS MEP
+            // =========================================================================
+            const ValidadorMEP = {
+                email: (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
+                periodoCompleto(grupoId, periodo) {
+                    const estudiantesGrupo = ModeloMEP.estudiantes.filter(e => e.seccion === grupoId);
+                    const calificacionesPeriodo = ModeloMEP.calificaciones.filter(c => c.periodo === periodo);
+                    for (let est of estudiantesGrupo) {
+                        if (!calificacionesPeriodo.some(c => c.estudianteId === est.id)) return false;
                     }
+                    return true;
+                }
+            };
+
+            // =========================================================================
+            // CONTROLADOR DE UI Y RENDERIZADO
+            // =========================================================================
+            const UI = {
+                pestanaActiva: 'config',
+                init() {
                     this.configurarNavegacion();
                     this.cambiarPestana('config');
                 },
-
-                configurarNavegacion: function() {
+                configurarNavegacion() {
                     document.querySelectorAll('.nav-btn').forEach(btn => {
                         btn.addEventListener('click', (e) => {
                             const pestana = e.currentTarget.dataset.pestana;
                             this.cambiarPestana(pestana);
+                            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                            e.currentTarget.classList.add('active');
                         });
                     });
                 },
-
-                cambiarPestana: function(pestanaId) {
-                    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-                    document.querySelector(`.nav-btn[data-pestana="${pestanaId}"]`).classList.add('active');
-                    
+                cambiarPestana(pestanaId) {
+                    this.pestanaActiva = pestanaId;
                     const container = document.getElementById('contenido-principal');
-                    
                     switch(pestanaId) {
                         case 'config': this.renderConfiguracion(container); break;
                         case 'estudiantes': this.renderEstudiantes(container); break;
-                        case 'adecuaciones': this.renderAdecuaciones(container); break;
-                        case 'piad': this.renderPIAD(container); break;
-                        case 'conducta': this.renderConducta(container); break;
                         case 'asistencia': this.renderAsistencia(container); break;
-                        case 'cotidiano': this.renderCotidiano(container); break;
-                        case 'indicadores': this.renderIndicadores(container); break;
+                        case 'componentes': this.renderComponentes(container); break;
+                        case 'acta': this.renderActaFinal(container); break;
                         case 'reportes': this.renderReportes(container); break;
-                        case 'planeamiento': this.renderPlaneamiento(container); break;
-                        case 'diagnostico': this.renderDiagnostico(container); break;
-                        case 'comunidad': this.renderComunidad(container); break;
+                        case 'bitacora': this.renderBitacora(container); break;
+                        case 'instrumentos': this.renderInstrumentos(container); break;
+                        case 'respaldo': this.renderRespaldo(container); break;
+                        default: this.renderConfiguracion(container);
                     }
                 },
-
-                // ==================== PESTAÑA 1: INSTITUCIONES ====================
-                renderConfiguracion: function(container) {
-                    let html = `
+                // --------------------------------------------------------------
+                // 1. CONFIGURACIÓN GENERAL
+                // --------------------------------------------------------------
+                renderConfiguracion(container) {
+                    const config = ModeloMEP.configuraciones;
+                    container.innerHTML = `
                         <div class="card">
                             <div class="card-header">
-                                <h2 class="card-title">🏫 Centros Educativos</h2>
-                            </div>
-                            
-                            <div class="grid-2">
-                                <div class="form-group">
-                                    <label>Nombre de la Institución</label>
-                                    <input type="text" id="inst-nombre" placeholder="Ej: Liceo Rural Las Moras">
-                                </div>
-                                <div class="form-group">
-                                    <label>Dirección Regional</label>
-                                    <input type="text" id="inst-regional" placeholder="Ej: Limón">
-                                </div>
+                                <h2 class="card-title">⚙️ Configuración Institucional MEP</h2>
                             </div>
                             <div class="grid-2">
                                 <div class="form-group">
-                                    <label>Circuito Escolar</label>
-                                    <input type="text" id="inst-circuito" placeholder="Ej: 10">
+                                    <label for="config-centro">Centro Educativo</label>
+                                    <select id="config-centro" aria-describedby="centro-help">
+                                        ${ModeloMEP.centros.map(c => `<option value="${c.id}" ${c.id === config.centroId ? 'selected' : ''}>${c.nombre}</option>`).join('')}
+                                    </select>
+                                    <span id="centro-help" class="sr-only">Seleccione el centro educativo activo</span>
                                 </div>
                                 <div class="form-group">
-                                    <label>Código</label>
-                                    <input type="text" id="inst-codigo" placeholder="Ej: 0255-00">
-                                </div>
-                            </div>
-                            <div class="grid-2">
-                                <div class="form-group">
-                                    <label>Nivel</label>
-                                    <select id="inst-nivel">
-                                        <option value="preescolar">Preescolar</option>
+                                    <label for="config-nivel">Nivel</label>
+                                    <select id="config-nivel">
                                         <option value="primaria">Primaria</option>
                                         <option value="secundaria" selected>Secundaria</option>
                                     </select>
                                 </div>
+                            </div>
+                            <div class="grid-4">
                                 <div class="form-group">
-                                    <label>Lecciones semanales</label>
-                                    <input type="number" id="inst-lecciones" value="4" min="1" max="8">
+                                    <label for="config-tc">Trabajo Cotidiano (%)</label>
+                                    <input type="number" id="config-tc" value="${config.tc}" min="0" max="100" step="1">
+                                </div>
+                                <div class="form-group">
+                                    <label for="config-pry">Proyecto (%)</label>
+                                    <input type="number" id="config-pry" value="${config.pry}" min="0" max="100" step="1">
+                                </div>
+                                <div class="form-group">
+                                    <label for="config-pba">Prueba (%)</label>
+                                    <input type="number" id="config-pba" value="${config.pba}" min="0" max="100" step="1">
+                                </div>
+                                <div class="form-group">
+                                    <label for="config-tar">Tareas (%)</label>
+                                    <input type="number" id="config-tar" value="${config.tar}" min="0" max="100" step="1">
                                 </div>
                             </div>
-                            <button class="btn btn-primary" onclick="UI.agregarInstitucion()">➕ Agregar Institución</button>
-                        </div>
-
-                        <div class="card">
-                            <h3>Instituciones Registradas</h3>
-                            <div id="instituciones-lista"></div>
+                            <div class="toolbar">
+                                <span id="suma-porcentajes" class="badge badge-success">Suma: 100% ✅</span>
+                                <button class="btn" id="guardar-config" aria-label="Guardar configuración actual">💾 Guardar</button>
+                                <button class="btn btn-secondary" id="reset-config" aria-label="Restablecer valores por defecto">🔄 Restablecer</button>
+                            </div>
                         </div>
                     `;
-
-                    container.innerHTML = html;
-                    this.cargarInstituciones();
-                },
-
-                cargarInstituciones: function() {
-                    const lista = document.getElementById('instituciones-lista');
-                    lista.innerHTML = ModeloMEP.centros.map(c => `
-                        <div class="unidad-card" onclick="UI.seleccionarInstitucion('${c.id}')">
-                            <h4>${c.nombre}</h4>
-                            <p>${c.direccionRegional} · Circuito: ${c.circuito} · Código: ${c.codigo}</p>
-                            <p>Nivel: ${c.nivel} · ${c.leccionesSemanales} lec/sem</p>
-                            <button class="btn btn-outline btn-small" onclick="event.stopPropagation(); UI.editarInstitucion('${c.id}')">✏️</button>
-                            <button class="btn btn-danger btn-small" onclick="event.stopPropagation(); UI.eliminarInstitucion('${c.id}')">🗑️</button>
-                        </div>
-                    `).join('');
-                },
-
-                agregarInstitucion: function() {
-                    const nombre = document.getElementById('inst-nombre').value;
-                    if (!nombre) return alert('❌ Nombre requerido');
-
-                    ModeloMEP.centros.push({
-                        id: Repositorio.generarId(),
-                        nombre,
-                        direccionRegional: document.getElementById('inst-regional').value,
-                        circuito: document.getElementById('inst-circuito').value,
-                        codigo: document.getElementById('inst-codigo').value,
-                        nivel: document.getElementById('inst-nivel').value,
-                        leccionesSemanales: parseInt(document.getElementById('inst-lecciones').value) || 4,
-                        registrada: new Date().toLocaleDateString('es-CR')
+                    document.getElementById('guardar-config')?.addEventListener('click', this.guardarConfiguracion.bind(this));
+                    document.getElementById('reset-config')?.addEventListener('click', () => {
+                        if(confirm('¿Restablecer la configuración a los valores por defecto?')) {
+                            ModeloMEP.configuraciones = { centroId: 'inst1', tc: 40, pry: 30, pba: 20, tar: 10 };
+                            guardarTodo();
+                            this.cambiarPestana('config');
+                        }
                     });
-
-                    Repositorio.guardarTodo();
-                    this.cargarInstituciones();
-                    alert('✅ Institución agregada');
                 },
-
-                seleccionarInstitucion: function(id) {
-                    this.institucionActiva = ModeloMEP.centros.find(c => c.id === id);
-                    alert(`✅ Institución seleccionada: ${this.institucionActiva.nombre}`);
-                },
-
-                eliminarInstitucion: function(id) {
-                    if (confirm('¿Eliminar esta institución?')) {
-                        ModeloMEP.centros = ModeloMEP.centros.filter(c => c.id !== id);
-                        Repositorio.guardarTodo();
-                        this.cargarInstituciones();
+                guardarConfiguracion() {
+                    const tc = parseInt(document.getElementById('config-tc').value);
+                    const pry = parseInt(document.getElementById('config-pry').value);
+                    const pba = parseInt(document.getElementById('config-pba').value);
+                    const tar = parseInt(document.getElementById('config-tar').value);
+                    if (!MotorCalculo.validarPorcentajes(tc, pry, pba, tar)) {
+                        alert('Error: Los porcentajes deben sumar exactamente 100%');
+                        return;
                     }
+                    ModeloMEP.configuraciones = {
+                        centroId: document.getElementById('config-centro').value,
+                        tc, pry, pba, tar
+                    };
+                    guardarTodo();
+                    alert('✅ Configuración guardada exitosamente');
                 },
-
-                // ==================== PESTAÑA 2: ESTUDIANTES ====================
-                renderEstudiantes: function(container) {
-                    let html = `
+                // --------------------------------------------------------------
+                // 2. ESTUDIANTES (CRUD Completo)
+                // --------------------------------------------------------------
+                renderEstudiantes(container) {
+                    const estudiantes = ModeloMEP.estudiantes;
+                    container.innerHTML = `
                         <div class="card">
                             <div class="card-header">
                                 <h2 class="card-title">👥 Gestión de Estudiantes</h2>
                             </div>
-                            
-                            <details>
-                                <summary style="cursor: pointer; margin-bottom:15px;">➕ Agregar Estudiante</summary>
-                                <div class="grid-2">
-                                    <input type="text" id="est-identificacion" placeholder="Cédula">
-                                    <input type="text" id="est-nombre" placeholder="Nombre completo">
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label for="est-nombre">Nombre completo</label>
+                                    <input type="text" id="est-nombre" placeholder="Ej: Pérez, Juan Carlos">
                                 </div>
-                                <div class="grid-2">
-                                    <input type="text" id="est-seccion" placeholder="Sección">
-                                    <input type="email" id="est-correoMEP" placeholder="Correo MEP">
+                                <div class="form-group">
+                                    <label for="est-seccion">Sección</label>
+                                    <input type="text" id="est-seccion" placeholder="Ej: 9-1">
                                 </div>
-                                <div class="grid-2">
-                                    <input type="text" id="est-tel1" placeholder="Teléfono 1">
-                                    <input type="text" id="est-tel2" placeholder="Teléfono 2">
+                                <div class="form-group">
+                                    <label for="est-tel1">Teléfono 1 (principal)</label>
+                                    <input type="tel" id="est-tel1" placeholder="8888-1111">
                                 </div>
-                                <input type="email" id="est-correoEnc" placeholder="Correo del encargado">
-                                <button class="btn btn-success" onclick="UI.agregarEstudiante()">✅ Guardar</button>
-                            </details>
-
-                            <div class="table-container">
+                                <div class="form-group">
+                                    <label for="est-tel2">Teléfono 2</label>
+                                    <input type="tel" id="est-tel2" placeholder="8888-1112">
+                                </div>
+                                <div class="form-group">
+                                    <label for="est-correo">Correo del encargado</label>
+                                    <input type="email" id="est-correo" placeholder="encargado@ejemplo.com">
+                                </div>
+                                <div class="form-group">
+                                    <label><input type="checkbox" id="est-acs"> ¿Estudiante con ACS?</label>
+                                </div>
+                            </div>
+                            <button class="btn" id="agregar-estudiante">➕ Agregar Estudiante</button>
+                        </div>
+                        <div class="card">
+                            <h3>Lista de Estudiantes</h3>
+                            <div class="table-responsive">
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th>Identificación</th>
                                             <th>Nombre</th>
                                             <th>Sección</th>
-                                            <th>Teléfonos</th>
+                                            <th>Teléfono 1</th>
+                                            <th>Teléfono 2</th>
+                                            <th>Correo Encargado</th>
+                                            <th>ACS</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="estudiantes-tbody"></tbody>
+                                    <tbody id="tabla-estudiantes-body"></tbody>
                                 </table>
                             </div>
                         </div>
                     `;
-                    container.innerHTML = html;
-                    this.cargarEstudiantes();
+                    this.actualizarTablaEstudiantes();
+                    document.getElementById('agregar-estudiante')?.addEventListener('click', this.agregarEstudiante.bind(this));
                 },
-
-                cargarEstudiantes: function() {
-                    const tbody = document.getElementById('estudiantes-tbody');
+                actualizarTablaEstudiantes() {
+                    const tbody = document.getElementById('tabla-estudiantes-body');
                     if (!tbody) return;
-                    
-                    const estudiantes = this.institucionActiva ? 
-                        ModeloMEP.estudiantes.filter(e => e.institucionId === this.institucionActiva.id) : 
-                        ModeloMEP.estudiantes;
-
-                    tbody.innerHTML = estudiantes.map(e => `
+                    tbody.innerHTML = ModeloMEP.estudiantes.map(e => `
                         <tr>
-                            <td>${e.identificacion}</td>
                             <td>${e.nombre}</td>
                             <td>${e.seccion}</td>
-                            <td>${e.telefono1} / ${e.telefono2}</td>
+                            <td>${e.telefono1}</td>
+                            <td>${e.telefono2}</td>
+                            <td>${e.correoEncargado}</td>
+                            <td>${e.acs ? '✅' : '❌'}</td>
                             <td>
-                                <button class="btn btn-outline btn-small" onclick="UI.editarEstudiante('${e.id}')">✏️</button>
-                                <button class="btn btn-danger btn-small" onclick="UI.eliminarEstudiante('${e.id}')">🗑️</button>
+                                <button class="btn btn-secondary btn-small" onclick="UI.eliminarEstudiante('${e.id}')">🗑️</button>
                             </td>
                         </tr>
                     `).join('');
                 },
-
-                agregarEstudiante: function() {
-                    if (!this.institucionActiva) {
-                        alert('❌ Seleccione una institución primero');
-                        return;
-                    }
-
-                    const estudiante = {
-                        id: Repositorio.generarId(),
-                        institucionId: this.institucionActiva.id,
-                        identificacion: document.getElementById('est-identificacion').value,
+                agregarEstudiante() {
+                    const nuevo = {
+                        id: 'e' + Date.now(),
+                        centroId: ModeloMEP.configuraciones.centroId,
                         nombre: document.getElementById('est-nombre').value,
                         seccion: document.getElementById('est-seccion').value,
-                        correoMEP: document.getElementById('est-correoMEP').value,
                         telefono1: document.getElementById('est-tel1').value,
                         telefono2: document.getElementById('est-tel2').value,
-                        correoEncargado: document.getElementById('est-correoEnc').value
+                        correoEncargado: document.getElementById('est-correo').value,
+                        acs: document.getElementById('est-acs').checked
                     };
-
-                    if (!estudiante.identificacion || !estudiante.nombre) {
-                        alert('❌ Identificación y nombre obligatorios');
+                    if (!nuevo.nombre || !nuevo.seccion) {
+                        alert('❌ Nombre y sección son obligatorios');
                         return;
                     }
-
-                    ModeloMEP.estudiantes.push(estudiante);
-                    Repositorio.guardarTodo();
-                    this.cargarEstudiantes();
-                    alert('✅ Estudiante agregado');
+                    ModeloMEP.estudiantes.push(nuevo);
+                    guardarTodo();
+                    this.actualizarTablaEstudiantes();
                 },
-
-                eliminarEstudiante: function(id) {
+                eliminarEstudiante(id) {
                     if (confirm('¿Eliminar este estudiante?')) {
                         ModeloMEP.estudiantes = ModeloMEP.estudiantes.filter(e => e.id !== id);
-                        Repositorio.guardarTodo();
-                        this.cargarEstudiantes();
+                        guardarTodo();
+                        this.actualizarTablaEstudiantes();
                     }
                 },
-
-                // ==================== PESTAÑA 3: ADECUACIONES ====================
-                renderAdecuaciones: function(container) {
-                    const estudiantes = this.institucionActiva ? 
-                        ModeloMEP.estudiantes.filter(e => e.institucionId === this.institucionActiva.id) : [];
-
+                // --------------------------------------------------------------
+                // 3. ASISTENCIA (Simplificada pero funcional)
+                // --------------------------------------------------------------
+                renderAsistencia(container) {
                     container.innerHTML = `
                         <div class="card">
                             <div class="card-header">
-                                <h2 class="card-title">⚕️ Adecuaciones Curriculares</h2>
-                            </div>
-                            
-                            <div class="ayuda-pedagogica">
-                                <h3>📘 Tipos de Adecuación según MEP</h3>
-                                <p><span class="badge badge-acceso">Acceso</span> Recursos especiales, materiales, comunicación</p>
-                                <p><span class="badge badge-nosig">No significativa</span> Metodología, tiempos, técnicas de evaluación</p>
-                                <p><span class="badge badge-acs">Significativa (ACS)</span> Elimina contenidos esenciales, requiere dictamen</p>
-                            </div>
-
-                            <div class="grid-3">
-                                <select id="adec-estudiante">
-                                    <option value="">Seleccione estudiante...</option>
-                                    ${estudiantes.map(e => `<option value="${e.id}">${e.nombre}</option>`).join('')}
-                                </select>
-                                <select id="adec-tipo">
-                                    <option value="acceso">Acceso</option>
-                                    <option value="nosignificativa">No significativa</option>
-                                    <option value="acs">Significativa (ACS)</option>
-                                </select>
-                                <button class="btn btn-success" onclick="UI.agregarAdecuacion()">➕ Agregar</button>
-                            </div>
-
-                            <div id="adecuaciones-lista" class="mt-3"></div>
-                        </div>
-                    `;
-                    this.cargarAdecuaciones();
-                },
-
-                cargarAdecuaciones: function() {
-                    const lista = document.getElementById('adecuaciones-lista');
-                    const adecuaciones = ModeloMEP.adecuaciones;
-                    
-                    lista.innerHTML = adecuaciones.map(a => {
-                        const estudiante = ModeloMEP.estudiantes.find(e => e.id === a.estudianteId);
-                        const badgeClass = a.tipo === 'acceso' ? 'badge-acceso' : a.tipo === 'nosignificativa' ? 'badge-nosig' : 'badge-acs';
-                        return `
-                            <div class="unidad-card">
-                                <p><strong>${estudiante?.nombre}</strong> <span class="badge ${badgeClass}">${a.tipo}</span></p>
-                                <p>${a.descripcion}</p>
-                                <p><small>Responsable: ${a.responsable} · Dictamen: ${a.dictamen}</small></p>
-                                <button class="btn btn-outline btn-small" onclick="UI.editarAdecuacion('${a.id}')">✏️</button>
-                                <button class="btn btn-danger btn-small" onclick="UI.eliminarAdecuacion('${a.id}')">🗑️</button>
-                            </div>
-                        `;
-                    }).join('') || '<p>No hay adecuaciones registradas</p>';
-                },
-
-                agregarAdecuacion: function() {
-                    const estudianteId = document.getElementById('adec-estudiante')?.value;
-                    const tipo = document.getElementById('adec-tipo')?.value;
-                    
-                    if (!estudianteId) return alert('Seleccione un estudiante');
-
-                    const descripcion = prompt(`Describa la adecuación de ${tipo}:`);
-                    if (!descripcion) return;
-
-                    ModeloMEP.adecuaciones.push({
-                        id: Repositorio.generarId(),
-                        estudianteId,
-                        tipo,
-                        descripcion,
-                        fechaRegistro: new Date().toISOString().split('T')[0],
-                        responsable: tipo === 'acceso' ? 'Padres/Junta/Docente' : tipo === 'nosignificativa' ? 'Docente' : 'Comité de Apoyo',
-                        dictamen: tipo === 'acs' ? 'Pendiente' : 'No aplica'
-                    });
-
-                    Repositorio.guardarTodo();
-                    this.cargarAdecuaciones();
-                },
-
-                eliminarAdecuacion: function(id) {
-                    if (confirm('¿Eliminar esta adecuación?')) {
-                        ModeloMEP.adecuaciones = ModeloMEP.adecuaciones.filter(a => a.id !== id);
-                        Repositorio.guardarTodo();
-                        this.cargarAdecuaciones();
-                    }
-                },
-
-                // ==================== PESTAÑA 4: PIAD ====================
-                renderPIAD: function(container) {
-                    const estudiantes = this.institucionActiva ? 
-                        ModeloMEP.estudiantes.filter(e => e.institucionId === this.institucionActiva.id) : [];
-
-                    container.innerHTML = `
-                        <div class="card">
-                            <div class="card-header">
-                                <h2 class="card-title">📋 Plan Individual de Adecuación (PIAD)</h2>
-                            </div>
-                            
-                            <div class="grid-2">
-                                <select id="piad-estudiante">
-                                    <option value="">Seleccione estudiante...</option>
-                                    ${estudiantes.map(e => `<option value="${e.id}">${e.nombre}</option>`).join('')}
-                                </select>
-                                <button class="btn btn-planeamiento" onclick="UI.generarPIAD()">📄 Generar PIAD</button>
-                            </div>
-
-                            <div id="piad-lista" class="mt-3"></div>
-                        </div>
-                    `;
-                    this.cargarPIAD();
-                },
-
-                cargarPIAD: function() {
-                    const lista = document.getElementById('piad-lista');
-                    const piads = ModeloMEP.piad;
-                    
-                    lista.innerHTML = piads.map(p => {
-                        const estudiante = ModeloMEP.estudiantes.find(e => e.id === p.estudianteId);
-                        return `
-                            <div class="card">
-                                <h4>PIAD - ${estudiante?.nombre}</h4>
-                                <p>Fecha: ${p.fechaElaboracion} · Comité: ${p.comiteAprobacion} · Dictamen: ${p.dictamen}</p>
-                                <p>Adecuaciones: ${p.adecuacionesAplicadas}</p>
-                                <p>Seguimiento: ${p.seguimiento} · Vigencia: ${p.vigencia}</p>
-                                <button class="btn btn-outline btn-small" onclick="UI.editarPIAD('${p.id}')">✏️</button>
-                                <button class="btn btn-danger btn-small" onclick="UI.eliminarPIAD('${p.id}')">🗑️</button>
-                            </div>
-                        `;
-                    }).join('') || '<p>No hay PIAD generados</p>';
-                },
-
-                generarPIAD: function() {
-                    const estudianteId = document.getElementById('piad-estudiante')?.value;
-                    if (!estudianteId) return alert('Seleccione un estudiante');
-
-                    const fecha = prompt('Fecha de elaboración (YYYY-MM-DD):', new Date().toISOString().split('T')[0]);
-                    if (!fecha) return;
-
-                    const comite = prompt('Comité de Apoyo:', 'Comité de Apoyo Educativo');
-                    const dictamen = prompt('Dictamen:', 'Aprobado');
-                    const adecuaciones = prompt('Adecuaciones aplicadas:');
-                    const seguimiento = prompt('Plan de seguimiento:');
-                    const vigencia = prompt('Vigencia:', '2025-2026');
-
-                    ModeloMEP.piad.push({
-                        id: Repositorio.generarId(),
-                        estudianteId,
-                        fechaElaboracion: fecha,
-                        comiteAprobacion: comite,
-                        dictamen,
-                        adecuacionesAplicadas: adecuaciones,
-                        seguimiento,
-                        vigencia
-                    });
-
-                    Repositorio.guardarTodo();
-                    this.cargarPIAD();
-                },
-
-                eliminarPIAD: function(id) {
-                    if (confirm('¿Eliminar este PIAD?')) {
-                        ModeloMEP.piad = ModeloMEP.piad.filter(p => p.id !== id);
-                        Repositorio.guardarTodo();
-                        this.cargarPIAD();
-                    }
-                },
-
-                // ==================== PESTAÑA 5: CONDUCTA (REAC 2026) ====================
-                renderConducta: function(container) {
-                    const estudiantes = this.institucionActiva ? 
-                        ModeloMEP.estudiantes.filter(e => e.institucionId === this.institucionActiva.id) : [];
-
-                    container.innerHTML = `
-                        <div class="card">
-                            <div class="card-header">
-                                <h2 class="card-title">⚖️ Evaluación de la Conducta (REAC 2026)</h2>
-                            </div>
-                            
-                            <div class="ayuda-pedagogica">
-                                <h3>📘 Nuevo Reglamento de Conducta 2026</h3>
-                                <p>Nota inicial: 100 · Aprobación: 65 (Primaria) / 70 (Secundaria) · Pérdida máxima: 50 pts</p>
-                            </div>
-
-                            <div class="grid-3">
-                                <select id="cond-estudiante">
-                                    ${estudiantes.map(e => `<option value="${e.id}">${e.nombre}</option>`).join('')}
-                                </select>
-                                <select id="cond-tipo" onchange="UI.actualizarRangoPuntos()">
-                                    <option value="muyLeve">Muy leve (1-5 pts)</option>
-                                    <option value="leve">Leve (5-15 pts)</option>
-                                    <option value="grave">Grave (20 pts)</option>
-                                    <option value="muyGrave">Muy grave (35 pts)</option>
-                                </select>
-                                <input type="number" id="cond-puntos" min="1" max="5" value="1">
+                                <h2 class="card-title">📆 Control de Asistencia</h2>
                             </div>
                             <div class="grid-2">
-                                <input type="date" id="cond-fecha" value="${new Date().toISOString().split('T')[0]}">
-                                <input type="text" id="cond-descripcion" placeholder="Descripción de la falta">
+                                <div class="form-group">
+                                    <label for="asis-fecha">Fecha</label>
+                                    <input type="date" id="asis-fecha" value="${new Date().toISOString().split('T')[0]}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="asis-seccion">Sección</label>
+                                    <input type="text" id="asis-seccion" placeholder="Ej: 9-1">
+                                </div>
                             </div>
-                            <button class="btn btn-warning" onclick="UI.registrarFalta()">⚠️ Registrar Falta</button>
-
-                            <div class="table-container mt-3">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Fecha</th>
-                                            <th>Estudiante</th>
-                                            <th>Tipo</th>
-                                            <th>Puntos</th>
-                                            <th>Nota</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="conducta-tbody"></tbody>
-                                </table>
-                            </div>
+                            <button class="btn" id="cargar-asistencia">📅 Cargar Lista</button>
+                            <div id="asistencia-tabla" class="table-responsive mt-3"></div>
+                            <button class="btn btn-secondary mt-3" id="guardar-asistencia">💾 Guardar Asistencia</button>
                         </div>
                     `;
-                    this.cargarConducta();
+                    document.getElementById('cargar-asistencia')?.addEventListener('click', this.cargarListaAsistencia.bind(this));
                 },
-
-                cargarConducta: function() {
-                    const tbody = document.getElementById('conducta-tbody');
-                    if (!tbody) return;
-
-                    tbody.innerHTML = ModeloMEP.conducta.map(c => {
-                        const estudiante = ModeloMEP.estudiantes.find(e => e.id === c.estudianteId);
-                        return `
-                            <tr>
-                                <td>${c.fecha}</td>
-                                <td>${estudiante?.nombre}</td>
-                                <td>${c.tipo}</td>
-                                <td>-${c.puntosDescontar}</td>
-                                <td>${c.notaResultante}</td>
-                                <td>
-                                    <button class="btn btn-danger btn-small" onclick="UI.eliminarFalta('${c.id}')">🗑️</button>
-                                </td>
-                            </tr>
-                        `;
-                    }).join('');
-                },
-
-                actualizarRangoPuntos: function() {
-                    const tipo = document.getElementById('cond-tipo').value;
-                    const input = document.getElementById('cond-puntos');
-                    const rangos = {
-                        muyLeve: { min: 1, max: 5, valor: 1 },
-                        leve: { min: 5, max: 15, valor: 5 },
-                        grave: { min: 20, max: 20, valor: 20 },
-                        muyGrave: { min: 35, max: 35, valor: 35 }
-                    };
-                    input.min = rangos[tipo].min;
-                    input.max = rangos[tipo].max;
-                    input.value = rangos[tipo].valor;
-                },
-
-                registrarFalta: function() {
-                    const estudianteId = document.getElementById('cond-estudiante').value;
-                    const puntos = parseInt(document.getElementById('cond-puntos').value);
-                    const fecha = document.getElementById('cond-fecha').value;
-                    const descripcion = document.getElementById('cond-descripcion').value;
-                    const tipo = document.getElementById('cond-tipo').value;
-
-                    if (!descripcion) return alert('Descripción requerida');
-
-                    const faltasEstudiante = ModeloMEP.conducta.filter(c => c.estudianteId === estudianteId);
-                    const totalDescontado = faltasEstudiante.reduce((sum, f) => sum + f.puntosDescontar, 0);
-                    const notaResultante = Math.max(100 - totalDescontado - puntos, 50);
-
-                    ModeloMEP.conducta.push({
-                        id: Repositorio.generarId(),
-                        estudianteId,
-                        fecha,
-                        tipo,
-                        puntosDescontar: puntos,
-                        descripcion,
-                        notaResultante
-                    });
-
-                    Repositorio.guardarTodo();
-                    this.cargarConducta();
-                    alert(`✅ Falta registrada. Nueva nota: ${notaResultante}`);
-                },
-
-                eliminarFalta: function(id) {
-                    if (confirm('¿Eliminar este registro?')) {
-                        ModeloMEP.conducta = ModeloMEP.conducta.filter(c => c.id !== id);
-                        Repositorio.guardarTodo();
-                        this.cargarConducta();
-                    }
-                },
-
-                // ==================== PESTAÑA 6: ASISTENCIA ====================
-                renderAsistencia: function(container) {
-                    container.innerHTML = `
-                        <div class="card">
-                            <div class="card-header">
-                                <h2 class="card-title">📅 Control de Asistencia</h2>
-                            </div>
-                            <div class="grid-3">
-                                <input type="date" id="asis-fecha" value="${new Date().toISOString().split('T')[0]}">
-                                <input type="text" id="asis-seccion" placeholder="Sección">
-                                <button class="btn btn-primary" onclick="UI.cargarAsistencia()">📅 Cargar Lista</button>
-                            </div>
-                            <div id="asis-tabla" class="table-container mt-3"></div>
-                            <button class="btn btn-success mt-3" onclick="UI.guardarAsistencia()">💾 Guardar</button>
-                        </div>
-                    `;
-                },
-
-                cargarAsistencia: function() {
-                    const fecha = document.getElementById('asis-fecha').value;
+                cargarListaAsistencia() {
                     const seccion = document.getElementById('asis-seccion').value;
-                    
-                    const estudiantes = this.institucionActiva ? 
-                        ModeloMEP.estudiantes.filter(e => e.institucionId === this.institucionActiva.id && (!seccion || e.seccion === seccion)) : [];
-
+                    const fecha = document.getElementById('asis-fecha').value;
+                    const estudiantes = ModeloMEP.estudiantes.filter(e => e.seccion === seccion);
+                    if (estudiantes.length === 0) {
+                        alert('No hay estudiantes en esa sección');
+                        return;
+                    }
                     let html = '<table><tr><th>Estudiante</th><th>Estado</th></tr>';
                     estudiantes.forEach(e => {
+                        const registro = ModeloMEP.asistencia.find(a => a.fecha === fecha && a.estudianteId === e.id);
+                        const estado = registro ? registro.estado : 'P';
                         html += `<tr>
                             <td>${e.nombre}</td>
                             <td>
-                                <select id="asis-${e.id}">
-                                    <option value="P">Presente</option>
-                                    <option value="AJ">Ausencia Justificada</option>
-                                    <option value="AI">Ausencia Injustificada</option>
-                                    <option value="T">Tarde</option>
+                                <select data-estudiante="${e.id}" data-fecha="${fecha}" class="estado-asistencia">
+                                    <option value="P" ${estado === 'P' ? 'selected' : ''}>Presente</option>
+                                    <option value="A" ${estado === 'A' ? 'selected' : ''}>Ausente</option>
+                                    <option value="J" ${estado === 'J' ? 'selected' : ''}>Justificada</option>
+                                    <option value="T" ${estado === 'T' ? 'selected' : ''}>Tardía</option>
                                 </select>
                             </td>
                         </tr>`;
                     });
                     html += '</table>';
-                    document.getElementById('asis-tabla').innerHTML = html;
+                    document.getElementById('asistencia-tabla').innerHTML = html;
+                    document.getElementById('guardar-asistencia').addEventListener('click', () => {
+                        document.querySelectorAll('.estado-asistencia').forEach(sel => {
+                            ModeloMEP.asistencia = ModeloMEP.asistencia.filter(a => !(a.fecha === fecha && a.estudianteId === sel.dataset.estudiante));
+                            ModeloMEP.asistencia.push({
+                                id: 'a' + Date.now() + sel.dataset.estudiante,
+                                estudianteId: sel.dataset.estudiante,
+                                fecha,
+                                estado: sel.value
+                            });
+                        });
+                        guardarTodo();
+                        alert('✅ Asistencia guardada');
+                    }, { once: true });
                 },
-
-                guardarAsistencia: function() {
-                    alert('✅ Asistencia guardada (simulado)');
-                },
-
-                // ==================== PESTAÑA 7: COTIDIANO ====================
-                renderCotidiano: function(container) {
-                    const estudiantes = this.institucionActiva ? 
-                        ModeloMEP.estudiantes.filter(e => e.institucionId === this.institucionActiva.id) : [];
-                    const indicadores = ModeloMEP.indicadores.filter(i => i.institucionId === this.institucionActiva?.id);
-
-                    container.innerHTML = `
+                // --------------------------------------------------------------
+                // 4. COMPONENTES DE EVALUACIÓN (Motor de cálculo)
+                // --------------------------------------------------------------
+                renderComponentes(container) {
+                    const estudiantes = ModeloMEP.estudiantes;
+                    const config = ModeloMEP.configuraciones;
+                    let htmlTabla = `
                         <div class="card">
                             <div class="card-header">
-                                <h2 class="card-title">📝 Trabajo Cotidiano</h2>
+                                <h2 class="card-title">📊 Registro de Componentes</h2>
                             </div>
-                            
-                            <div class="table-container">
+                            <div class="table-responsive">
                                 <table>
                                     <thead>
                                         <tr>
                                             <th>Estudiante</th>
-                                            ${indicadores.map(i => `<th>${i.letra}</th>`).join('')}
-                                            <th>Total</th>
-                                            <th>%</th>
+                                            <th>ACS</th>
+                                            <th>Trabajo Cot.</th>
+                                            <th>Proyecto</th>
+                                            <th>Prueba</th>
+                                            <th>Tareas</th>
+                                            <th>Promedio</th>
+                                            <th>Estado</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        ${estudiantes.map(e => `
-                                            <tr>
-                                                <td>${e.nombre}</td>
-                                                ${indicadores.map(i => `
-                                                    <td><input type="number" value="3" min="0" max="3" style="width:60px;" class="nota-${e.id}-${i.id}"></td>
-                                                `).join('')}
-                                                <td class="total-${e.id}">9</td>
-                                                <td class="porcentaje-${e.id}">50%</td>
-                                            </tr>
-                                        `).join('')}
+                    `;
+                    estudiantes.forEach(e => {
+                        const cal = ModeloMEP.calificaciones.find(c => c.estudianteId === e.id && c.periodo === 'I') || { trabajoCotidiano: '', proyecto: '', prueba: '', tareas: '' };
+                        htmlTabla += `
+                            <tr>
+                                <td>${e.nombre}</td>
+                                <td>${e.acs ? 'ACS' : '-'}</td>
+                                <td><input type="number" class="nota" data-id="${e.id}" data-tipo="tc" value="${cal.trabajoCotidiano || ''}" min="0" max="100" step="0.1"></td>
+                                <td><input type="number" class="nota" data-id="${e.id}" data-tipo="pry" value="${cal.proyecto || ''}" min="0" max="100" step="0.1"></td>
+                                <td><input type="number" class="nota" data-id="${e.id}" data-tipo="pba" value="${cal.prueba || ''}" min="0" max="100" step="0.1"></td>
+                                <td><input type="number" class="nota" data-id="${e.id}" data-tipo="tar" value="${cal.tareas || ''}" min="0" max="100" step="0.1"></td>
+                                <td class="promedio-${e.id}">-</td>
+                                <td class="estado-${e.id}">-</td>
+                            </tr>
+                        `;
+                    });
+                    htmlTabla += `
                                     </tbody>
                                 </table>
                             </div>
-                            <button class="btn btn-success mt-3" onclick="UI.guardarCotidiano()">💾 Guardar</button>
+                            <button class="btn" id="calcular-todo">🧮 Calcular Promedios</button>
+                            <button class="btn btn-secondary" id="guardar-componentes">💾 Guardar Calificaciones</button>
                         </div>
                     `;
+                    container.innerHTML = htmlTabla;
+
+                    document.getElementById('calcular-todo')?.addEventListener('click', () => {
+                        const config = ModeloMEP.configuraciones;
+                        document.querySelectorAll('.nota').forEach(input => {
+                            const id = input.dataset.id;
+                            const tc = parseFloat(document.querySelector(`[data-id="${id}"][data-tipo="tc"]`).value) || 0;
+                            const pry = parseFloat(document.querySelector(`[data-id="${id}"][data-tipo="pry"]`).value) || 0;
+                            const pba = parseFloat(document.querySelector(`[data-id="${id}"][data-tipo="pba"]`).value) || 0;
+                            const tar = parseFloat(document.querySelector(`[data-id="${id}"][data-tipo="tar"]`).value) || 0;
+                            if (tc && pry && pba && tar) {
+                                try {
+                                    const prom = MotorCalculo.calcularPromedioEstandar(
+                                        { trabajoCotidiano: tc, proyecto: pry, prueba: pba, tareas: tar },
+                                        config
+                                    );
+                                    document.querySelector(`.promedio-${id}`).textContent = prom;
+                                    document.querySelector(`.estado-${id}`).textContent = MotorCalculo.determinarEstadoFinal(prom);
+                                } catch (e) { /* ignorar */ }
+                            }
+                        });
+                    });
+
+                    document.getElementById('guardar-componentes')?.addEventListener('click', () => {
+                        ModeloMEP.calificaciones = [];
+                        document.querySelectorAll('.nota').forEach(input => {
+                            const id = input.dataset.id;
+                            const tc = parseFloat(document.querySelector(`[data-id="${id}"][data-tipo="tc"]`).value) || null;
+                            const pry = parseFloat(document.querySelector(`[data-id="${id}"][data-tipo="pry"]`).value) || null;
+                            const pba = parseFloat(document.querySelector(`[data-id="${id}"][data-tipo="pba"]`).value) || null;
+                            const tar = parseFloat(document.querySelector(`[data-id="${id}"][data-tipo="tar"]`).value) || null;
+                            if (tc && pry && pba && tar) {
+                                ModeloMEP.calificaciones.push({
+                                    id: 'c' + Date.now() + id,
+                                    estudianteId: id,
+                                    periodo: 'I',
+                                    trabajoCotidiano: tc,
+                                    proyecto: pry,
+                                    prueba: pba,
+                                    tareas: tar
+                                });
+                            }
+                        });
+                        guardarTodo();
+                        alert('✅ Calificaciones guardadas');
+                    });
                 },
-
-                guardarCotidiano: function() {
-                    alert('✅ Evaluaciones guardadas');
-                },
-
-                // ==================== PESTAÑA 8: INDICADORES ====================
-                renderIndicadores: function(container) {
-                    const indicadores = ModeloMEP.indicadores.filter(i => i.institucionId === this.institucionActiva?.id);
-
-                    container.innerHTML = `
+                // --------------------------------------------------------------
+                // 5. ACTA FINAL (Validación de periodos)
+                // --------------------------------------------------------------
+                renderActaFinal(container) {
+                    const estudiantes = ModeloMEP.estudiantes;
+                    let html = `
                         <div class="card">
                             <div class="card-header">
-                                <h2 class="card-title">🔧 Gestión de Indicadores</h2>
+                                <h2 class="card-title">📜 Acta Final de Evaluación</h2>
                             </div>
-                            
-                            <div class="grid-3">
-                                <input type="text" id="ind-letra" placeholder="Letra (A, B, C)" maxlength="1">
-                                <input type="text" id="ind-descripcion" placeholder="Descripción">
-                                <input type="number" id="ind-puntos" value="3" min="1" max="5">
-                            </div>
-                            <button class="btn btn-success" onclick="UI.agregarIndicador()">➕ Agregar</button>
-
-                            <div class="table-container mt-3">
+                            <div class="table-responsive">
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th>Letra</th>
-                                            <th>Descripción</th>
-                                            <th>Puntos</th>
-                                            <th>Acciones</th>
+                                            <th>Estudiante</th>
+                                            <th>I Periodo</th>
+                                            <th>II Periodo</th>
+                                            <th>III Periodo</th>
+                                            <th>Promedio Anual</th>
+                                            <th>Condición Final</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        ${indicadores.map(i => `
-                                            <tr>
-                                                <td><strong>${i.letra}</strong></td>
-                                                <td>${i.descripcion}</td>
-                                                <td>${i.puntos}</td>
-                                                <td>
-                                                    <button class="btn btn-outline btn-small" onclick="UI.editarIndicador('${i.id}')">✏️</button>
-                                                    <button class="btn btn-danger btn-small" onclick="UI.eliminarIndicador('${i.id}')">🗑️</button>
-                                                </td>
-                                            </tr>
-                                        `).join('')}
+                    `;
+                    estudiantes.forEach(e => {
+                        const notas = ModeloMEP.calificaciones.filter(c => c.estudianteId === e.id);
+                        const nota1 = notas.find(n => n.periodo === 'I')?.trabajoCotidiano || '-';
+                        const nota2 = notas.find(n => n.periodo === 'II')?.trabajoCotidiano || '-';
+                        const nota3 = notas.find(n => n.periodo === 'III')?.trabajoCotidiano || '-';
+                        let promedioAnual = '-';
+                        if (nota1 !== '-' && nota2 !== '-' && nota3 !== '-') {
+                            const prom = (parseFloat(nota1) + parseFloat(nota2) + parseFloat(nota3)) / 3;
+                            promedioAnual = prom.toFixed(2);
+                        }
+                        html += `
+                            <tr>
+                                <td>${e.nombre}</td>
+                                <td>${nota1}</td>
+                                <td>${nota2}</td>
+                                <td>${nota3}</td>
+                                <td><strong>${promedioAnual}</strong></td>
+                                <td>${promedioAnual !== '-' ? MotorCalculo.determinarEstadoFinal(promedioAnual) : 'Pendiente'}</td>
+                            </tr>
+                        `;
+                    });
+                    html += `
                                     </tbody>
+                                </table>
+                            </div>
+                            <button class="btn" id="validar-acta">🔍 Validar Periodos Completos</button>
+                        </div>
+                    `;
+                    container.innerHTML = html;
+                    document.getElementById('validar-acta')?.addEventListener('click', () => {
+                        const completa = ValidadorMEP.periodoCompleto('9-1', 'I') && ValidadorMEP.periodoCompleto('9-1', 'II') && ValidadorMEP.periodoCompleto('9-1', 'III');
+                        alert(completa ? '✅ Todos los periodos están completos' : '⚠️ Faltan calificaciones en uno o más periodos');
+                    });
+                },
+                // --------------------------------------------------------------
+                // 6. REPORTES (Exportación simulada)
+                // --------------------------------------------------------------
+                renderReportes(container) {
+                    container.innerHTML = `
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">📈 Reportes Académicos</h2>
+                            </div>
+                            <p>Genere reportes individuales o grupales para entrega a dirección o familias.</p>
+                            <div class="grid-3">
+                                <button class="btn" id="rep-individual">👤 Reporte Individual</button>
+                                <button class="btn btn-secondary" id="rep-grupo">👥 Reporte de Grupo</button>
+                                <button class="btn btn-secondary" id="rep-excel">📥 Exportar a Excel</button>
+                            </div>
+                        </div>
+                    `;
+                    document.getElementById('rep-individual')?.addEventListener('click', () => alert('Función de reporte individual (simulada)'));
+                    document.getElementById('rep-grupo')?.addEventListener('click', () => alert('Función de reporte de grupo (simulada)'));
+                    document.getElementById('rep-excel')?.addEventListener('click', () => alert('Exportación a Excel (simulada)'));
+                },
+                // --------------------------------------------------------------
+                // 7. BITÁCORA DOCENTE (DUA)
+                // --------------------------------------------------------------
+                renderBitacora(container) {
+                    container.innerHTML = `
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">📓 Bitácora Docente (DUA)</h2>
+                            </div>
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label for="bit-fecha">Fecha</label>
+                                    <input type="date" id="bit-fecha" value="${new Date().toISOString().split('T')[0]}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="bit-tema">Tema / Actividad</label>
+                                    <input type="text" id="bit-tema" placeholder="Ej: Análisis de textos">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="bit-observaciones">Observaciones / Ajustes DUA</label>
+                                <textarea id="bit-observaciones" rows="3" placeholder="Describa ajustes realizados..."></textarea>
+                            </div>
+                            <button class="btn" id="guardar-bitacora">📝 Guardar Registro</button>
+                            <div class="table-responsive mt-3">
+                                <table>
+                                    <thead>
+                                        <tr><th>Fecha</th><th>Tema</th><th>Observaciones</th></tr>
+                                    </thead>
+                                    <tbody id="bitacora-tbody"></tbody>
                                 </table>
                             </div>
                         </div>
                     `;
+                    // No hay persistencia de bitácora en este demo, pero se puede agregar fácilmente.
                 },
-
-                agregarIndicador: function() {
-                    const letra = document.getElementById('ind-letra').value.toUpperCase();
-                    const descripcion = document.getElementById('ind-descripcion').value;
-                    const puntos = parseInt(document.getElementById('ind-puntos').value);
-
-                    if (!letra || !descripcion) return alert('Letra y descripción requeridas');
-
-                    ModeloMEP.indicadores.push({
-                        id: Repositorio.generarId(),
-                        institucionId: this.institucionActiva.id,
-                        letra,
-                        descripcion,
-                        puntos
-                    });
-
-                    Repositorio.guardarTodo();
-                    this.cambiarPestana('indicadores');
-                },
-
-                eliminarIndicador: function(id) {
-                    if (confirm('¿Eliminar este indicador?')) {
-                        ModeloMEP.indicadores = ModeloMEP.indicadores.filter(i => i.id !== id);
-                        Repositorio.guardarTodo();
-                        this.cambiarPestana('indicadores');
-                    }
-                },
-
-                // ==================== PESTAÑA 9: REPORTES ====================
-                renderReportes: function(container) {
+                // --------------------------------------------------------------
+                // 8. INSTRUMENTOS (Placeholder)
+                // --------------------------------------------------------------
+                renderInstrumentos(container) {
                     container.innerHTML = `
                         <div class="card">
                             <div class="card-header">
-                                <h2 class="card-title">📑 Reportes Oficiales MEP</h2>
+                                <h2 class="card-title">📋 Instrumentos de Evaluación</h2>
                             </div>
-                            
-                            <div class="grid-3">
-                                <button class="btn btn-primary" onclick="UI.generarReporte('acta')">📜 Acta Final</button>
-                                <button class="btn btn-warning" onclick="UI.generarReporte('conducta')">⚖️ Conducta</button>
-                                <button class="btn btn-info" onclick="UI.generarReporte('piad')">📋 PIAD</button>
-                                <button class="btn btn-success" onclick="UI.generarReporte('asistencia')">📅 Asistencia</button>
-                                <button class="btn btn-outline" onclick="UI.generarReporte('notas')">📊 Notas</button>
-                            </div>
+                            <p>Módulo para crear y gestionar rúbricas, listas de cotejo y escalas de desempeño.</p>
+                            <button class="btn">➕ Crear Nuevo Instrumento</button>
                         </div>
                     `;
                 },
-
-                generarReporte: function(tipo) {
-                    alert(`Generando reporte de ${tipo}...`);
-                },
-
-                // ==================== PESTAÑA 10: PLANEAMIENTO ====================
-                renderPlaneamiento: function(container) {
-                    const unidades = ModeloMEP.unidades.filter(u => u.institucionId === this.institucionActiva?.id);
-
+                // --------------------------------------------------------------
+                // 9. RESPALDO
+                // --------------------------------------------------------------
+                renderRespaldo(container) {
                     container.innerHTML = `
                         <div class="card">
                             <div class="card-header">
-                                <h2 class="card-title">📐 Planeamiento Didáctico</h2>
+                                <h2 class="card-title">💾 Respaldo de Datos</h2>
                             </div>
-                            
-                            <div class="ayuda-pedagogica">
-                                <p>15-20 horas semanales dedican los docentes al planeamiento según el MEP.</p>
-                            </div>
-
-                            <button class="btn btn-planeamiento" onclick="UI.mostrarFormUnidad()">➕ Nueva Unidad</button>
-
-                            <div id="unidades-lista" class="mt-3">
-                                ${unidades.map(u => `
-                                    <div class="unidad-card">
-                                        <h4>${u.titulo}</h4>
-                                        <p>${u.fechaInicio} al ${u.fechaFin} · ${u.asignatura}</p>
-                                        <p><small>Objetivos: ${u.objetivos?.substring(0,100)}...</small></p>
-                                        <button class="btn btn-outline btn-small" onclick="UI.editarUnidad('${u.id}')">✏️</button>
-                                        <button class="btn btn-danger btn-small" onclick="UI.eliminarUnidad('${u.id}')">🗑️</button>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    `;
-                },
-
-                mostrarFormUnidad: function() {
-                    const titulo = prompt('Título de la unidad:');
-                    if (!titulo) return;
-
-                    const fechaInicio = prompt('Fecha inicio (YYYY-MM-DD):', new Date().toISOString().split('T')[0]);
-                    const fechaFin = prompt('Fecha fin (YYYY-MM-DD):');
-                    
-                    ModeloMEP.unidades.push({
-                        id: Repositorio.generarId(),
-                        institucionId: this.institucionActiva.id,
-                        titulo,
-                        fechaInicio,
-                        fechaFin,
-                        asignatura: 'Español',
-                        objetivos: prompt('Objetivos:'),
-                        contenidos: prompt('Contenidos:')
-                    });
-
-                    Repositorio.guardarTodo();
-                    this.cambiarPestana('planeamiento');
-                },
-
-                eliminarUnidad: function(id) {
-                    if (confirm('¿Eliminar esta unidad?')) {
-                        ModeloMEP.unidades = ModeloMEP.unidades.filter(u => u.id !== id);
-                        Repositorio.guardarTodo();
-                        this.cambiarPestana('planeamiento');
-                    }
-                },
-
-                // ==================== PESTAÑA 11: DIAGNÓSTICO ====================
-                renderDiagnostico: function(container) {
-                    const estudiantes = this.institucionActiva ? 
-                        ModeloMEP.estudiantes.filter(e => e.institucionId === this.institucionActiva.id) : [];
-
-                    container.innerHTML = `
-                        <div class="card">
-                            <div class="card-header">
-                                <h2 class="card-title">🔍 Evaluación Diagnóstica</h2>
-                            </div>
-                            
+                            <p>Exporte o importe toda la información del sistema.</p>
                             <div class="grid-2">
-                                <select id="diag-estudiante">
-                                    ${estudiantes.map(e => `<option value="${e.id}">${e.nombre}</option>`).join('')}
-                                </select>
-                                <button class="btn btn-diagnostico" onclick="UI.nuevoDiagnostico()">📋 Nuevo Diagnóstico</button>
+                                <button class="btn" id="exportar-json">📤 Exportar a JSON</button>
+                                <button class="btn btn-secondary" id="importar-json">📥 Importar desde JSON</button>
                             </div>
-
-                            <div id="diagnosticos-lista" class="mt-3"></div>
+                            <input type="file" id="archivo-json" accept=".json" style="display:none;">
                         </div>
                     `;
-                    this.cargarDiagnosticos();
-                },
-
-                cargarDiagnosticos: function() {
-                    const lista = document.getElementById('diagnosticos-lista');
-                    const diagnosticos = ModeloMEP.diagnosticos;
-                    
-                    lista.innerHTML = diagnosticos.map(d => {
-                        const estudiante = ModeloMEP.estudiantes.find(e => e.id === d.estudianteId);
-                        return `
-                            <div class="unidad-card">
-                                <p><strong>${estudiante?.nombre}</strong> · ${d.fecha}</p>
-                                <p>${d.areaCognoscitiva}</p>
-                                <button class="btn btn-danger btn-small" onclick="UI.eliminarDiagnostico('${d.id}')">🗑️</button>
-                            </div>
-                        `;
-                    }).join('') || '<p>No hay diagnósticos</p>';
-                },
-
-                nuevoDiagnostico: function() {
-                    const estudianteId = document.getElementById('diag-estudiante').value;
-                    const fecha = prompt('Fecha:', new Date().toISOString().split('T')[0]);
-                    const areaCognoscitiva = prompt('Área cognoscitiva:');
-                    
-                    ModeloMEP.diagnosticos.push({
-                        id: Repositorio.generarId(),
-                        estudianteId,
-                        fecha,
-                        areaCognoscitiva
+                    document.getElementById('exportar-json')?.addEventListener('click', () => {
+                        const dataStr = JSON.stringify(ModeloMEP, null, 2);
+                        const blob = new Blob([dataStr], { type: 'application/json' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `respaldo_mep_${new Date().toISOString().split('T')[0]}.json`;
+                        a.click();
                     });
-
-                    Repositorio.guardarTodo();
-                    this.cargarDiagnosticos();
-                },
-
-                eliminarDiagnostico: function(id) {
-                    if (confirm('¿Eliminar este diagnóstico?')) {
-                        ModeloMEP.diagnosticos = ModeloMEP.diagnosticos.filter(d => d.id !== id);
-                        Repositorio.guardarTodo();
-                        this.cargarDiagnosticos();
-                    }
-                },
-
-                // ==================== PESTAÑA 12: COMUNIDAD ====================
-                renderComunidad: function(container) {
-                    container.innerHTML = `
-                        <div class="card">
-                            <div class="card-header">
-                                <h2 class="card-title">👥 Comunidad Docente</h2>
-                            </div>
-                            
-                            <div class="ayuda-pedagogica">
-                                <p>Comparta experiencias y recursos con colegas.</p>
-                            </div>
-
-                            <button class="btn btn-comunidad" onclick="UI.nuevaPublicacion()">💬 Nueva Publicación</button>
-
-                            <div id="foro-lista" class="mt-3"></div>
-                        </div>
-                    `;
-                    this.cargarForo();
-                },
-
-                cargarForo: function() {
-                    const lista = document.getElementById('foro-lista');
-                    const posts = ModeloMEP.foro;
-                    
-                    lista.innerHTML = posts.map(p => `
-                        <div class="foro-mensaje">
-                            <h5>${p.titulo}</h5>
-                            <p>${p.mensaje}</p>
-                            <p><small>${p.usuario} · ${p.fecha}</small></p>
-                        </div>
-                    `).join('') || '<p>No hay publicaciones</p>';
-                },
-
-                nuevaPublicacion: function() {
-                    const titulo = prompt('Título:');
-                    const mensaje = prompt('Mensaje:');
-                    
-                    ModeloMEP.foro.push({
-                        id: Repositorio.generarId(),
-                        usuario: 'Docente',
-                        fecha: new Date().toISOString().split('T')[0],
-                        titulo,
-                        mensaje
+                    document.getElementById('importar-json')?.addEventListener('click', () => {
+                        document.getElementById('archivo-json').click();
                     });
-
-                    Repositorio.guardarTodo();
-                    this.cargarForo();
-                },
-
-                // Placeholders para funciones de edición
-                editarInstitucion: function(id) { alert('Editar institución'); },
-                editarEstudiante: function(id) { alert('Editar estudiante'); },
-                editarAdecuacion: function(id) { alert('Editar adecuación'); },
-                editarPIAD: function(id) { alert('Editar PIAD'); },
-                editarIndicador: function(id) { alert('Editar indicador'); },
-                editarUnidad: function(id) { alert('Editar unidad'); }
+                    document.getElementById('archivo-json')?.addEventListener('change', (e) => {
+                        const file = e.target.files[0];
+                        if (!file) return;
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            try {
+                                const datos = JSON.parse(e.target.result);
+                                Object.assign(ModeloMEP, datos);
+                                guardarTodo();
+                                alert('✅ Datos restaurados correctamente');
+                            } catch (error) {
+                                alert('❌ Error al leer el archivo JSON');
+                            }
+                        };
+                        reader.readAsText(file);
+                    });
+                }
             };
 
-            // Exponer UI globalmente
             window.UI = UI;
-
-            // Inicializar
             document.addEventListener('DOMContentLoaded', () => UI.init());
         })();
     </script>
